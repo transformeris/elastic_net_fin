@@ -173,7 +173,7 @@ def guxi(stock_zh_a_hist_df,stock):
     stock_zh_a_hist_df = combanation_stock_hist_structure(stock_zh_a_hist_df, stock_structure)
     stock_zh_a_hist_df['派息'] = stock_zh_a_hist_df['派息'].fillna(0)
     stock_zh_a_hist_df.loc[:, '股息'] = stock_zh_a_hist_df['派息'] * stock_zh_a_hist_df['总股本'] / 10
-    stock_zh_a_hist_df.loc[:, '滑动股息'] = stock_zh_a_hist_df['股息'].rolling(window=250, min_periods=1).sum()
+    # stock_zh_a_hist_df.loc[:, '滑动股息'] = stock_zh_a_hist_df['股息'].rolling(window=250, min_periods=1).sum()
 
     stock_zh_a_hist_df.loc[:, '滑动股息'] = stock_zh_a_hist_df['股息'].rolling('365d', min_periods=1).sum()
     return stock_zh_a_hist_df
@@ -219,10 +219,14 @@ if __name__=='__main__':
     xianjinliuliangbiao['报表日期'] = pd.to_datetime(xianjinliuliangbiao['报表日期'], format='%Y%m%d')
     xianjinliuliangbiao.set_index('报表日期', inplace=True)
     xianjinliuliangbiao = xianjinliuliangbiao.sort_index(ascending=True)
-
-    xianjinliuliangbiao['经营活动产生的现金流量净额']
-
+    zz=xianjinliuliangbiao['经营活动产生的现金流量净额']
     date_baobiao=list(xianjinliuliangbiao.index)
-    for i in date_baobiao:
+    for i in zz.index:
+        print(i)
+
+
+
+
+
 
 

@@ -93,5 +93,5 @@ if __name__=='__main__':
             res[flag]=res0
             flag=flag+1
     zz=pd.DataFrame(res)
-    zzz=zz.Tm
+    zzz=zz.T
     zzz.to_excel('沪股通.xlsx')

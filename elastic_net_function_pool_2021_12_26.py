@@ -209,7 +209,7 @@ def zhichan():
     stock_zh_a_hist_df.loc[date_range, '净资产'] = float(zhichanfuzhai.loc[current]['股东权益合计'])
     stock_zh_a_hist_df.loc[date_range, '总资产'] = float(zhichanfuzhai.loc[previous]['负债及股东权益总计'])
 
-if __name__=='__main__':m
+if __name__=='__main__':
     stock_structure = get_StockStructure('000001')
     stock_zh_a_hist_df = ak.stock_zh_a_hist(symbol="000001", start_date="19900101", end_date='20211230', adjust="")
     stock_zh_a_hist_df['日期'] = pd.to_datetime(stock_zh_a_hist_df['日期'], format='%Y-%m-%d')

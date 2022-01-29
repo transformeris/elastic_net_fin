@@ -214,7 +214,7 @@ if __name__=='__main__':
     stock_zh_a_hist_df = ak.stock_zh_a_hist(symbol="000001", start_date="19900101", end_date='20211230', adjust="")
     stock_zh_a_hist_df['日期'] = pd.to_datetime(stock_zh_a_hist_df['日期'], format='%Y-%m-%d')
     stock_zh_a_hist_df.set_index('日期', inplace=True)
-
+f
     xianjinliuliangbiao = ak.stock_financial_report_sina(stock='000001', symbol='现金流量表')
     xianjinliuliangbiao['报表日期'] = pd.to_datetime(xianjinliuliangbiao['报表日期'], format='%Y%m%d')
     xianjinliuliangbiao.set_index('报表日期', inplace=True)

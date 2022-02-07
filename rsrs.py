@@ -119,12 +119,12 @@ def get_signal(data2, S):
     根据RSRS指标和阈值S判断是否有交易信号（最简单的情况）,trade_dir为0代表买入，为1代表卖出，为-1代表无信号
     """
     data3 = data2.copy()
-    print(data3.loc[0])
+    data3.loc[:,'trade_dir']=-1
     data3.loc[(data3['rsrs_std_cor_right'] > S) & (data3['trade_dir'] == -1), 'trade_dir'] = 0
-    data3.ix[(data3['rsrs_std_cor_right'] > S) & (data3['trade_dir'] == 1), 'trade_dir'] = -1
+    data3.loc[(data3['rsrs_std_cor_right'] > S) & (data3['trade_dir'] == 1), 'trade_dir'] = -1
 
-    data3.ix[(data3['rsrs_std_cor_right'] < -S) & (data3['trade_dir'] == -1), 'trade_dir'] = 1
-    data3.ix[(data3['rsrs_std_cor_right'] < -S) & (data3['trade_dir'] == 0), 'trade_dir'] = -1
+    data3.loc[(data3['rsrs_std_cor_right'] < -S) & (data3['trade_dir'] == -1), 'trade_dir'] = 1
+    data3.loc[(data3['rsrs_std_cor_right'] < -S) & (data3['trade_dir'] == 0), 'trade_dir'] = -1
     # data3.drop(['rsrs','r_squared','rsrs_std','rsrs_std_cor','rsrs_std_cor_right'], axis = 1, inplace = True)
     return data3
 
@@ -139,12 +139,18 @@ def RSRS(data, N=16, M=300, S=0.7, ndays=5):
 
 
 if __name__=='__main__':
-    stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sz399552")
+    stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sh000300")
     stock_zh_index_daily_df['tradeday']=stock_zh_index_daily_df.index
     stock_zh_index_daily_df['high_slice']=stock_zh_index_daily_df['high']
     stock_zh_index_daily_df['low_slice'] = stock_zh_index_daily_df['low']
     stock_zh_index_daily_df['close_slice'] = stock_zh_index_daily_df['close']
     stock_zh_index_daily_df['sec_code'] = 'sz399552'
-    # rsrs_=RSRS(stock_zh_index_daily_df, N=16, M=300, S=0.7, ndays=5)
+    rsrs_=RSRS(stock_zh_index_daily_df, N=16, M=300, S=0.7, ndays=5)
     data2 = get_rsrs(stock_zh_index_daily_df, N=16, M=300,  ndays=5)
+    data2.loc[:,'trade_dir']=-1
+    S=0.7
+    data2.loc[(data2['rsrs_std_cor_right'] > S) & (data2['trade_dir'] == -1), 'trade_dir'] = 0
+
+
+
 

@@ -3,7 +3,10 @@ import numpy as np
 import statsmodels.api as sm
 from statsmodels import regression
 import matplotlib.pyplot as plt
-
+import requests
+import re
+import bs4
+import akshare as ak
 
 def cal_rsrs(data2, data1, N=16):
     """
@@ -89,7 +92,9 @@ def rsrs_std_cor_right_mean(data2, ndays=5):
     """
     计算RSRS右偏修正标准分的ndays均线
     """
-    data2['rsrs_std_cor_right_mean'] = data2.groupby('sec_code')['rsrs_std_cor_right'].apply(pd.rolling_mean, ndays)
+    data2['rsrs_std_cor_right_mean']=data2.groupby('sec_code')['rsrs_std_cor_right'].rolling(window=ndays).mean()
+
+    # data2['rsrs_std_cor_right_mean'] = data2.groupby('sec_code')['rsrs_std_cor_right'].apply(pd.rolling_mean, ndays)
     print('RSRS右偏修正标准分均线已计算')
     return data2
 
@@ -114,7 +119,8 @@ def get_signal(data2, S):
     根据RSRS指标和阈值S判断是否有交易信号（最简单的情况）,trade_dir为0代表买入，为1代表卖出，为-1代表无信号
     """
     data3 = data2.copy()
-    data3.ix[(data3['rsrs_std_cor_right'] > S) & (data3['trade_dir'] == -1), 'trade_dir'] = 0
+    print(data3.loc[0])
+    data3.loc[(data3['rsrs_std_cor_right'] > S) & (data3['trade_dir'] == -1), 'trade_dir'] = 0
     data3.ix[(data3['rsrs_std_cor_right'] > S) & (data3['trade_dir'] == 1), 'trade_dir'] = -1
 
     data3.ix[(data3['rsrs_std_cor_right'] < -S) & (data3['trade_dir'] == -1), 'trade_dir'] = 1
@@ -133,3 +139,12 @@ def RSRS(data, N=16, M=300, S=0.7, ndays=5):
 
 
 if __name__=='__main__':
+    stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sz399552")
+    stock_zh_index_daily_df['tradeday']=stock_zh_index_daily_df.index
+    stock_zh_index_daily_df['high_slice']=stock_zh_index_daily_df['high']
+    stock_zh_index_daily_df['low_slice'] = stock_zh_index_daily_df['low']
+    stock_zh_index_daily_df['close_slice'] = stock_zh_index_daily_df['close']
+    stock_zh_index_daily_df['sec_code'] = 'sz399552'
+    # rsrs_=RSRS(stock_zh_index_daily_df, N=16, M=300, S=0.7, ndays=5)
+    data2 = get_rsrs(stock_zh_index_daily_df, N=16, M=300,  ndays=5)
+

@@ -151,6 +151,7 @@ if __name__=='__main__':
     S=0.7
     data2.loc[(data2['rsrs_std_cor_right'] > S) & (data2['trade_dir'] == -1), 'trade_dir'] = 0
 
+    
 
 
 

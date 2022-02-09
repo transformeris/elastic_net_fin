@@ -21,9 +21,11 @@ for i in etf_fund_daily.iterrows():
         code.append(i[1]['基金代码'])
 
 
+res={}
+for i in code:
+    print(i)
 
-for i in code[0:1]:
-    fund_em_etf_fund_info_df = ak.fund_em_etf_fund_info(fund='510050')
+    fund_em_etf_fund_info_df = ak.fund_em_etf_fund_info(fund=i)
     fund_em_etf_fund_info_df.set_index(['净值日期'], inplace=True)
     # ma12 = fund_em_etf_fund_info_df['单位净值'].rolling(window=5).mean()
     jinzi=fund_em_etf_fund_info_df['单位净值']
@@ -31,7 +33,8 @@ for i in code[0:1]:
     jinzi=jinzi.sort_index()
     jinzi_delta=jinzi.shift(20)
     mtm_20=(jinzi-jinzi_delta)/jinzi
-    mtm_20.set_index('510050')
+    res[i]=mtm_20
+
 
 
 

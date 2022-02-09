@@ -20,16 +20,19 @@ for i in etf_fund_daily.iterrows():
     if '指数型' in i[1]['类型']:
         code.append(i[1]['基金代码'])
 
+
+
 for i in code[0:1]:
     fund_em_etf_fund_info_df = ak.fund_em_etf_fund_info(fund='510050')
     fund_em_etf_fund_info_df.set_index(['净值日期'], inplace=True)
-    ma12 = fund_em_etf_fund_info_df['累计净值'].rolling(window=5).mean()
-    jinzi=fund_em_etf_fund_info_df['累计净值']
-    buy_date=[]
-    index=list(fund_em_etf_fund_info_df.index)
-    for i in range(1,len(index)):
-        try:
-            if float(jinzi.loc[index[i]])<ma12.loc[index[i]] and float(jinzi.loc[index[i+1]])>ma12.loc[index[i+1]]:
-                buy_date.append(index[i])
-        except:
-            pass
+    # ma12 = fund_em_etf_fund_info_df['单位净值'].rolling(window=5).mean()
+    jinzi=fund_em_etf_fund_info_df['单位净值']
+    jinzi = pd.to_numeric(jinzi)
+    jinzi=jinzi.sort_index()
+    jinzi_delta=jinzi.shift(20)
+    mtm_20=(jinzi-jinzi_delta)/jinzi
+    mtm_20.set_index('510050')
+
+
+
+

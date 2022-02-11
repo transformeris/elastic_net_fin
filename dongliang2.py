@@ -25,6 +25,20 @@ etf_all=etf_all.sort_index()
 
 delta_etf_all=etf_all.shift(20)
 mtm_20=(etf_all-delta_etf_all)/etf_all
+mtm_20['max']=mtm_20.idxmax(axis=1)
+mtm_20['max_shift_1']=mtm_20['max'].shift(1)
+mtm_20_dropna=mtm_20.dropna(how='all')
+mtm_20_dropna=mtm_20_dropna.drop('2005-03-09')
+mtm_20_dropna=mtm_20_dropna.drop('2010-09-19')
+mtm_20_dropna=mtm_20_dropna.drop('2010-10-27')
+mtm_20_dropna=mtm_20_dropna.drop('2011-01-30')
+mtm_20_dropna=mtm_20_dropna.drop('2020-01-19')
+for i in mtm_20_dropna.iterrows():
+    mtm_20_dropna.loc[i[0],'test']=etf_all.loc[i[0],mtm_20_dropna.loc[i[0],'max']]
 
+money=100000
 
+for i in zip(mtm_20_dropna.index,mtm_20_dropna['max_shift_1'],mtm_20_dropna['test']):
+
+    money=0
 

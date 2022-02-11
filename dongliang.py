@@ -39,14 +39,14 @@ for i in code:
     fund_em_etf_fund_info_df = ak.fund_em_etf_fund_info(fund=i)
     fund_em_etf_fund_info_df.set_index(['净值日期'], inplace=True)
     # ma12 = fund_em_etf_fund_info_df['单位净值'].rolling(window=5).mean()
-    jinzi=fund_em_etf_fund_info_df['单位净值']
+    jinzi=fund_em_etf_fund_info_df['累计净值']
     jinzi = pd.to_numeric(jinzi)
     jinzi=jinzi.sort_index()
-    jinzi_delta=jinzi.shift(20)
-    mtm_20=(jinzi-jinzi_delta)/jinzi
+    # jinzi_delta=jinzi.shift(20)
+    # mtm_20=(jinzi-jinzi_delta)/jinzi
     res[i]=jinzi
     n=n+1
-save_obj(res,'etf_danweijinzi')
+save_obj(res,'etf_leijijinzi')
 
 
 

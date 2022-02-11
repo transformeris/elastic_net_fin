@@ -14,6 +14,7 @@ import numpy as np
 def save_obj(obj, name):
     with open(name + '.pkl', 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+        f.close()
 
 
 def load_obj(name):
@@ -33,7 +34,7 @@ for i in etf_fund_daily.iterrows():
 
 n=0
 res={}
-for i in code:
+for i in code[0:3]:
     print(i)
     print(n)
     fund_em_etf_fund_info_df = ak.fund_em_etf_fund_info(fund=i)

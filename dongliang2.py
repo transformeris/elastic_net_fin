@@ -37,8 +37,11 @@ for i in mtm_20_dropna.iterrows():
     mtm_20_dropna.loc[i[0],'test']=etf_all.loc[i[0],mtm_20_dropna.loc[i[0],'max']]
 
 money=100000
-
+flag=0
 for i in zip(mtm_20_dropna.index,mtm_20_dropna['max_shift_1'],mtm_20_dropna['test']):
-
-    money=0
+    if i[0]!=flag:
+       fene=money/i[2]
+    elif i[0]==flag:
+        fene=fene
+    flag=i[0]
 

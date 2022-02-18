@@ -37,8 +37,9 @@ etf_open_pandas=pd.concat(etf_open, axis=1)
 
 mtm_20['stock_hold']=mtm_20['stock_mtm_max'].shift(1)
 mtm_20=mtm_20.dropna(how='all')
-mtm_20=mtm_20.drop(datetime.strptime('2005-03-23', '%Y-%m-%d'),axis=0)
-mtm_20=mtm_20.drop(datetime.strptime('2013-8-30', '%Y-%m-%d'),axis=0)
+# mtm_20=mtm_20.drop(datetime.strptime('2005-03-23', '%Y-%m-%d'),axis=0)
+# mtm_20=mtm_20.drop(datetime.strptime('2013-8-30', '%Y-%m-%d'),axis=0)
+# mtm_20=mtm_20.drop(datetime.strptime('2005-3-09', '%Y-%m-%d'),axis=0)
 
 for i in mtm_20.iterrows():
     if mtm_20.loc[i[0],'stock_mtm_max']!=mtm_20.loc[i[0],'stock_hold']:
@@ -60,9 +61,16 @@ for i,j in zip(mtm_20.index,mtm_20['stock_hold']):
     flag=j
 
 
+
+
+
 res={}
 money=1
 for i in mtm_20.iterrows():
     if i[1]['buy_sign']==1:
         mtm_20.loc[i[0],'fenne']=money/i[1]['buy_price']
+        fene=money/i[1]['buy_price']
     if i[1]['hold_change']==1:
+        mtm_20.loc[i[0],'money']=i[1]['sell_price']*money/i[1]['buy_price']
+        money=i[1]['sell_price']*money/i[1]['buy_price']
+    fene

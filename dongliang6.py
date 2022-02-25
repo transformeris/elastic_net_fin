@@ -12,6 +12,16 @@ import numpy as np
 from datetime import datetime
 from datetime import date
 
+def save_obj(obj, name):
+    with open(name + '.pkl', 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+
+
+def load_obj(name):
+    with open(name + '.pkl', 'rb') as f:
+        return pickle.load(f)
+
+
 def single_stock_tradeback(stock_code,money,trade_pay_rate,start_date,end_date):
 
     '''
@@ -54,29 +64,41 @@ if __name__=='__main__':
     start_date=date(2019,12,27)
     end_date=date(2020,1,6)
 
-    zzzz=single_stock_tradeback('sz159966',100,0.3,start_date,end_date)
+    etf_close = load_obj('etf_close')
+    etf_all = pd.concat(etf_close, axis=1)
+    etf_all = etf_all.sort_index()
+
+    delta_etf_all = etf_all.shift(10)
+    mtm_20 = (etf_all - delta_etf_all) / etf_all
+    mtm_20['stock_mtm_max'] = mtm_20.idxmax(axis=1)
+
+    mtm_20['stock_hold'] = mtm_20['stock_mtm_max'].shift(1)
+    mtm_20 = mtm_20.dropna(how='all')
+    mtm_20['test']=mtm_20.loc[mtm_20['stock_hold']=='sz159902','sz159902']
 
 
+    for i in mtm_20.iterrows():
+        if mtm_20.loc[i[0], 'stock_mtm_max'] != mtm_20.loc[i[0], 'stock_hold']:
+            mtm_20.loc[i[0], 'hold_change'] = 1
+        elif mtm_20.loc[i[0], 'stock_mtm_max'] == mtm_20.loc[i[0], 'stock_hold']:
+            mtm_20.loc[i[0], 'hold_change'] = 0
+        try:
 
-    etf_hold=etf_kline[start_date:end_date]
+            mtm_20.loc[i[0], 'sell_price'] = etf_close[i[1]['stock_hold']][i[0]]
+        except:
+            pass
 
+    mtm_20=mtm_20[mtm_20['sell_price'].notnull()]
 
-    etf_close=etf_hold['close']
-    etf_close_shift=etf_close.shift(1)
-    etf_delta=(etf_close-etf_close_shift)/etf_close_shift
-    etf_delta=etf_delta.drop(start_date)
-    etf_hold['incresing_rate']=etf_delta
-    etf_hold.loc[start_date, 'incresing_rate'] = (etf_hold.loc[start_date, 'close'] - etf_hold.loc[
-        start_date, 'open']) / etf_hold.loc[start_date, 'open']
-    etf_hold['日增长倍数']=etf_hold['incresing_rate']+1
-    etf_hold['净值倍数']=etf_hold['日增长倍数'].cumprod()
-    etf_hold['金额']=etf_hold['净值倍数']*money_after_trade
-    etf_hold.loc[start_date,'手续费']=money*trade_pay_rate
-    etf_hold.loc[end_date, '手续费'] = etf_hold.loc[end_date,'金额']*trade_pay_rate
+    res=[]
+    res2=[]
+    for i in zip(mtm_20.index,mtm_20['stock_mtm_max'],mtm_20['stock_hold']):
+        if i[1]==i[2]:
+            res.append(i[0])
+        elif i[1]!=i[2]:
+            res.append(i[0])
+            res2.append(res)
+            res=[]
 
-    etf_hold.loc[end_date,'卖出金额_手续费后']=etf_hold.loc[end_date,'金额']*(1-trade_pay_rate)
-
-
-
-
+    for i in res2:
 

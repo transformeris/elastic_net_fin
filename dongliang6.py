@@ -22,19 +22,21 @@ def load_obj(name):
         return pickle.load(f)
 
 
-def single_stock_tradeback(stock_code,money,trade_pay_rate,start_date,end_date):
+def single_stock_tradeback(stock_code,etf_kline,money,trade_pay_rate,start_date,end_date):
 
     '''
 
     :param stock_code:  str  股票代码，例：'sz159966'
+    :param etf_kline:  dict  全部etf基金k线，
     :param money: float  初始买入成本，包含手续费
     :param trade_pay_rate: float，手续费费率，【0-1】
     :param start_date: date   回测开始日期，
     :param end_date: date   回测结束日期，
     :return: pandas.Dataframe  包含净值等信息的
     '''
-    etf_kline = ak.fund_etf_hist_sina(stock_code)
-    etf_kline.set_index(etf_kline['date'], inplace=True)
+    if etf_kline==None:
+        etf_kline = ak.fund_etf_hist_sina(stock_code)
+        etf_kline.set_index(etf_kline['date'], inplace=True)
     etf_hold = etf_kline[start_date:end_date]
     etf_close = etf_hold['close']
     etf_close_shift = etf_close.shift(1)
@@ -52,7 +54,62 @@ def single_stock_tradeback(stock_code,money,trade_pay_rate,start_date,end_date):
     etf_hold.loc[end_date, '卖出金额_手续费后'] = etf_hold.loc[end_date, '金额'] * (1 - trade_pay_rate)
     return etf_hold,etf_hold.loc[end_date, '金额'] * (1 - trade_pay_rate)
 
+
+def etf_get():
+    etf_list = ak.fund_etf_category_sina(symbol="ETF基金")
+    res={}
+    res1 = {}
+    res2 = {}
+    res3 = {}
+    res4 = {}
+    res5 = {}
+    n = 1
+    for i in etf_list['symbol']:
+        if i == 'sh513200' or i == 'sh513150':
+            continue
+        print(i)
+        print(n)
+        fund_etf_hist_sina_df = ak.fund_etf_hist_sina(symbol=i)
+
+        fund_etf_hist_sina_df.set_index(['date'], inplace=True)
+        # ma12 = fund_em_etf_fund_info_df['单位净值'].rolling(window=5).mean()
+        close = fund_etf_hist_sina_df['close']
+        open_etf = fund_etf_hist_sina_df['open']
+        high = fund_etf_hist_sina_df['high']
+        low = fund_etf_hist_sina_df['low']
+        volume = fund_etf_hist_sina_df['volume']
+        fund_etf_hist_sina_df=pd.to_numeric(fund_etf_hist_sina_df).sort_index()
+        close = pd.to_numeric(close).sort_index()
+        open_etf = pd.to_numeric(open_etf).sort_index()
+        high = pd.to_numeric(high).sort_index()
+        low = pd.to_numeric(low).sort_index()
+        volume = pd.to_numeric(volume).sort_index()
+        fund_etf_hist_sina_df=fund_etf_hist_sina_df.sort_index()
+
+        close = close.sort_index()
+        open_etf = open_etf.sort_index()
+        high = high.sort_index()
+        low = low.sort_index()
+        volume = volume.sort_index()
+        # jinzi_delta=jinzi.shift(20)
+        # mtm_20=(jinzi-jinzi_delta)/jinzi
+        res[i]=fund_etf_hist_sina_df
+        res1[i] = close
+        res2[i] = open_etf
+        res3[i] = high
+        res4[i] = low
+        res5[i] = volume
+        n = n + 1
+    save_obj(res, 'etf_all')
+    # save_obj(res1, 'etf_close')
+    # save_obj(res2, 'etf_open')
+    # save_obj(res3, 'etf_high')
+    # save_obj(res4, 'etf_low')
+    # save_obj(res5, 'etf_volume')
+
+
 if __name__=='__main__':
+
     money=1
 
     trade_pay_rate=0.1#0.00015
@@ -100,5 +157,5 @@ if __name__=='__main__':
             res2.append(res)
             res=[]
 
-    for i in res2:
+
 

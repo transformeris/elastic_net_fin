@@ -37,6 +37,8 @@ def single_stock_tradeback(stock_code,etf_kline,money,trade_pay_rate,start_date,
     if etf_kline==None:
         etf_kline = ak.fund_etf_hist_sina(stock_code)
         etf_kline.set_index(etf_kline['date'], inplace=True)
+
+
     etf_hold = etf_kline[start_date:end_date]
     etf_close = etf_hold['close']
     etf_close_shift = etf_close.shift(1)
@@ -47,6 +49,7 @@ def single_stock_tradeback(stock_code,etf_kline,money,trade_pay_rate,start_date,
         start_date, 'open']) / etf_hold.loc[start_date, 'open']
     etf_hold['日增长倍数'] = etf_hold['incresing_rate'] + 1
     etf_hold['净值倍数'] = etf_hold['日增长倍数'].cumprod()
+
     etf_hold['金额'] = etf_hold['净值倍数'] * money_after_trade
     etf_hold.loc[start_date, '手续费'] = money * trade_pay_rate
     etf_hold.loc[end_date, '手续费'] = etf_hold.loc[end_date, '金额'] * trade_pay_rate
@@ -107,9 +110,7 @@ def etf_get():
     # save_obj(res4, 'etf_low')
     # save_obj(res5, 'etf_volume')
 
-
-if __name__=='__main__':
-
+def date_mtm():
     money=1
 
     trade_pay_rate=0.1#0.00015
@@ -149,13 +150,30 @@ if __name__=='__main__':
 
     res=[]
     res2=[]
+    res3={}
     for i in zip(mtm_20.index,mtm_20['stock_mtm_max'],mtm_20['stock_hold']):
         if i[1]==i[2]:
+
             res.append(i[0])
         elif i[1]!=i[2]:
             res.append(i[0])
             res2.append(res)
+            res.append(i[2])
+            # res3[i[2]]=res
             res=[]
+    return res2
+
+
+if __name__=='__main__':
+
+    res2=date_mtm()
+    etf_all=load_obj('etf_all')
+    for i in res2:
+        stock=i[-1]
+
+
+
+
 
 
 

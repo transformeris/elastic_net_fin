@@ -34,12 +34,8 @@ def single_stock_tradeback(stock_code,etf_kline,money,trade_pay_rate,start_date,
     :param end_date: date   回测结束日期，
     :return: pandas.Dataframe  包含净值等信息的
     '''
-    if etf_kline==None:
-        etf_kline = ak.fund_etf_hist_sina(stock_code)
-        etf_kline.set_index(etf_kline['date'], inplace=True)
-
-
-    etf_hold = etf_kline[start_date:end_date]
+    etf_kline_stock=etf_kline[stock_code]
+    etf_hold = etf_kline_stock[start_date:end_date]
     etf_close = etf_hold['close']
     etf_close_shift = etf_close.shift(1)
     etf_delta = (etf_close - etf_close_shift) / etf_close_shift
@@ -49,7 +45,7 @@ def single_stock_tradeback(stock_code,etf_kline,money,trade_pay_rate,start_date,
         start_date, 'open']) / etf_hold.loc[start_date, 'open']
     etf_hold['日增长倍数'] = etf_hold['incresing_rate'] + 1
     etf_hold['净值倍数'] = etf_hold['日增长倍数'].cumprod()
-
+    money_after_trade=money* (1 - trade_pay_rate)
     etf_hold['金额'] = etf_hold['净值倍数'] * money_after_trade
     etf_hold.loc[start_date, '手续费'] = money * trade_pay_rate
     etf_hold.loc[end_date, '手续费'] = etf_hold.loc[end_date, '金额'] * trade_pay_rate
@@ -126,7 +122,7 @@ def date_mtm():
     etf_all = pd.concat(etf_close, axis=1)
     etf_all = etf_all.sort_index()
 
-    delta_etf_all = etf_all.shift(10)
+    delta_etf_all = etf_all.shift(6)
     mtm_20 = (etf_all - delta_etf_all) / etf_all
     mtm_20['stock_mtm_max'] = mtm_20.idxmax(axis=1)
 
@@ -168,8 +164,19 @@ if __name__=='__main__':
 
     res2=date_mtm()
     etf_all=load_obj('etf_all')
+    res=[]
+    quxian=1
     for i in res2:
         stock=i[-1]
+        date_range=i[0:-1]
+        start=min(date_range)
+        end=max(date_range)
+        # etf_kline=etf_all[stock]
+        jinzi,quxian=single_stock_tradeback(stock,etf_all,quxian,0,start,end)
+        res.append(quxian)
+    plt.plot(res)
+    plt.show()
+
 
 
 

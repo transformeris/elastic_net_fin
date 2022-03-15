@@ -258,16 +258,25 @@ def date_mtm():
     end_date=date(2020,1,6)
 
     etf_close = load_obj('etf_close')
+    # etf_close = load_obj('etf_close')
+    res= {}
+    for i,j in etf_close.items():
+        if i=='sh510300' or i=='sz159999':
+            print('fuck')
+            #or i=='sh510300' or i=='sh510500' or i=='sz159903' or i=='sz159915':
+            res[i]=j
+
+    etf_close=res
     etf_all = pd.concat(etf_close, axis=1)
     etf_all = etf_all.sort_index()
 
-    delta_etf_all = etf_all.shift(6)
+    delta_etf_all = etf_all.shift(60)
     mtm_20 = (etf_all - delta_etf_all) / etf_all
     mtm_20['stock_mtm_max'] = mtm_20.idxmax(axis=1)
 
     mtm_20['stock_hold'] = mtm_20['stock_mtm_max'].shift(1)
     mtm_20 = mtm_20.dropna(how='all')
-    mtm_20['test']=mtm_20.loc[mtm_20['stock_hold']=='sz159902','sz159902']
+    # mtm_20['test']=mtm_20.loc[mtm_20['stock_hold']=='sz159902','sz159902']
 
 
     for i in mtm_20.iterrows():
@@ -300,20 +309,27 @@ def date_mtm():
 
 
 if __name__=='__main__':
+    etf_close = load_obj('etf_close')
+    res= {}
+    for i,j in etf_close.items():
+        if i=='sh510050' or i=='sz510300' or i=='sh510500' or i=='sz159903' or i=='sz159915':
+            res[i]=j
+
+    etf_close=res
 
     res2=date_mtm()
-    # etf_all=load_obj('etf_all')
-    # res=[]
-    # qian=[]
-    # quxian=1
-    # aaa=pd.DataFrame()
-    # fuck=[]
+    etf_all=load_obj('etf_all')
+    res=[]
+    qian=[]
+    quxian=1
+    aaa=pd.DataFrame()
+    fuck=[]
     # for i in res2:
     #     stock=i[-1]
     #     date_range=i[0:-1]
     #     start=min(date_range)
     #     end=max(date_range)
-    #     if start>date(2018,1,17) and end<date(2022,1,25):
+    #     if start>date(2011,1,17) and end<date(2022,1,25):
     #         fuck.append(i)
     #         # etf_kline=etf_all[stock]
     #         test1,test2=single_stock_tradeback(stock, etf_all, 1, 0.0001, start, end)
@@ -338,62 +354,62 @@ if __name__=='__main__':
 
 
 
-    #
-    # stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sh000300")
-    # stock_zh_index_daily_df['tradeday']=stock_zh_index_daily_df.index
-    # stock_zh_index_daily_df['high_slice']=stock_zh_index_daily_df['high']
-    # stock_zh_index_daily_df['low_slice'] = stock_zh_index_daily_df['low']
-    # stock_zh_index_daily_df['close_slice'] = stock_zh_index_daily_df['close']
-    # stock_zh_index_daily_df['sec_code'] = 'sz399552'
-    # rsrs_=RSRS(stock_zh_index_daily_df, N=16, M=300, S=0.7, ndays=5)
-    # data2 = get_rsrs(stock_zh_index_daily_df, N=16, M=300,  ndays=5)
-    # data2.loc[:,'trade_dir']=-1
-    # S=0.7
-    # data2.loc[(data2['rsrs_std_cor_right'] > S) & (data2['trade_dir'] == -1), 'trade_dir'] = 0
-    #
-    # date_rsrs=data2[data2['rsrs_std_cor_right']>S]
-    #
-    #
-    # res3=[]
-    # for i in res2:
-    #     res4=[]
-    #     for ii in i:
-    #         if ii in list(date_rsrs.index):
-    #             res4.append(ii)
-    #     if res4!=[]:
-    #         res4.append(i[-1])
-    #         res3.append(res4)
-    #
-    #
-    # res2=res3
-    # etf_all=load_obj('etf_all')
-    # res=[]
-    # qian=[]
-    # quxian=1
-    # aaa=pd.DataFrame()
-    # for i in res2:
-    #     stock=i[-1]
-    #     date_range=i[0:-1]
-    #     start=min(date_range)
-    #     end=max(date_range)
-    #     if start>date(2012,12,1):
-    #         # etf_kline=etf_all[stock]
-    #         test1,test2=single_stock_tradeback(stock, etf_all, 1, 0.0001, start, end)
-    #         jinzi,quxian=single_stock_tradeback(stock,etf_all,quxian,0,start,end)
-    #         aa=jinzi['金额']
-    #         qian.append(aa)
-    #         res.append(quxian)
-    # aaa=pd.concat(qian)
-    # plt.plot(aaa)
-    #
-    # plt.show()
-    #
-    # n=1
-    # buy_date= {}
-    # for i in res2:
-    #     buy_date[i[0]]=n
-    #     n=n+1
-    #     if len(i)>2:
-    #         for ii in i[1:-1]:
-    #             buy_date[ii] = 0
-    # zzz = pd.DataFrame.from_dict([buy_date]).T
+
+    stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sh000300")
+    stock_zh_index_daily_df['tradeday']=stock_zh_index_daily_df.index
+    stock_zh_index_daily_df['high_slice']=stock_zh_index_daily_df['high']
+    stock_zh_index_daily_df['low_slice'] = stock_zh_index_daily_df['low']
+    stock_zh_index_daily_df['close_slice'] = stock_zh_index_daily_df['close']
+    stock_zh_index_daily_df['sec_code'] = 'sz399552'
+    rsrs_=RSRS(stock_zh_index_daily_df, N=16, M=300, S=0.7, ndays=5)
+    data2 = get_rsrs(stock_zh_index_daily_df, N=16, M=300,  ndays=5)
+    data2.loc[:,'trade_dir']=-1
+    S=0.7
+    data2.loc[(data2['rsrs_std_cor_right'] > S) & (data2['trade_dir'] == -1), 'trade_dir'] = 0
+
+    date_rsrs=data2[data2['rsrs_std_cor_right']>S]
+
+
+    res3=[]
+    for i in res2:
+        res4=[]
+        for ii in i:
+            if ii in list(date_rsrs.index):
+                res4.append(ii)
+        if res4!=[]:
+            res4.append(i[-1])
+            res3.append(res4)
+
+
+    res2=res3
+    etf_all=load_obj('etf_all')
+    res=[]
+    qian=[]
+    quxian=1
+    aaa=pd.DataFrame()
+    for i in res2:
+        stock=i[-1]
+        date_range=i[0:-1]
+        start=min(date_range)
+        end=max(date_range)
+        if start>date(2013,1,1):
+            # etf_kline=etf_all[stock]
+            test1,test2=single_stock_tradeback(stock, etf_all, 1, 0.0001, start, end)
+            jinzi,quxian=single_stock_tradeback(stock,etf_all,quxian,0,start,end)
+            aa=jinzi['金额']
+            qian.append(aa)
+            res.append(quxian)
+    aaa=pd.concat(qian)
+    plt.plot(aaa)
+
+    plt.show()
+
+    n=1
+    buy_date= {}
+    for i in res2:
+        buy_date[i[0]]=n
+        n=n+1
+        if len(i)>2:
+            for ii in i[1:-1]:
+                buy_date[ii] = 0
+    zzz = pd.DataFrame.from_dict([buy_date]).T

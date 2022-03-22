@@ -93,7 +93,7 @@ def date_mtm():
 def single_stock_tradeback(stock_code,etf_kline,money,trade_pay_rate,start_date,end_date):
 
     '''
-
+    以start_date的开盘价买入，以end_date的收盘价卖出
     :param stock_code:  str  股票代码，例：'sz159966'
     :param etf_kline:  dict  全部etf基金k线，
     :param money: float  初始买入成本，包含手续费
@@ -161,4 +161,122 @@ def huiche():
 
 if __name__=='__main__':
 
+    etf_close={}
+    stock_index = load_obj('stock_index')
+    for i,j in stock_index.items():
+        etf_close[i]=j['close']
 
+    etf_all = pd.concat(etf_close, axis=1)
+    etf_all = etf_all.sort_index()
+
+    delta_etf_all = etf_all.shift(16)
+    mtm_20 = (etf_all - delta_etf_all) / etf_all
+    mtm_20['mtm_max'] = mtm_20.max(axis=1)
+
+
+
+    mtm_20['percent_90']=mtm_20.quantile(q=0.9,axis=1)
+    mtm_20['stock_mtm_max'] = mtm_20.idxmax(axis=1)
+
+
+
+    mtm_20['stock_hold'] = mtm_20['stock_mtm_max'].shift(1)
+    mtm_20['date']=mtm_20.index
+    mtm_20['date_shift']=mtm_20['date'].shift(-1)
+    mtm_20 = mtm_20.dropna(how='all')
+    # mtm_20['test']=mtm_20.loc[mtm_20['stock_hold']=='sz159902','sz159902']
+
+    for i in mtm_20.iterrows():
+        if mtm_20.loc[i[0], 'stock_mtm_max'] != mtm_20.loc[i[0], 'stock_hold']:
+            mtm_20.loc[i[0], 'hold_change'] = 1
+        elif mtm_20.loc[i[0], 'stock_mtm_max'] == mtm_20.loc[i[0], 'stock_hold']:
+            mtm_20.loc[i[0], 'hold_change'] = 0
+        try:
+
+            mtm_20.loc[i[0], 'sell_price'] = etf_close[i[1]['stock_hold']][i[0]]
+        except:
+            pass
+
+    mtm_20=mtm_20[mtm_20['sell_price'].notnull()]
+
+    # res=[]
+    # res2=[]
+    # res3={}
+    # for i in zip(mtm_20.index,mtm_20['stock_mtm_max'],mtm_20['stock_hold']):
+    #     if i[1]==i[2]:
+    #
+    #         res.append(i[0])
+    #     elif i[1]!=i[2]:
+    #         res.append(i[0])
+    #         res2.append(res)
+    #         res.append(i[2])
+    #         # res3[i[2]]=res
+    #         res=[]
+
+
+
+    res=[]
+    res2=[]
+    res3={}
+    for i in zip(mtm_20.index,mtm_20['stock_mtm_max'],mtm_20['stock_hold']):
+        if i[1]==i[2]:
+
+            res.append(i[0])
+        elif i[1]!=i[2]:
+            res.append(i[0])
+            res2.append(res)
+            res.append(i[2])
+            # res3[i[2]]=res
+            res=[]
+
+
+    res = res2
+    mtm_20_proto=mtm_20
+    mtm_20=mtm_20[mtm_20['percent_90']>=0]
+
+    useful_date=list(mtm_20.index)
+    # res=[res[0]]
+    test=[]
+    test1=[]
+    flag = 1
+    for i in res:
+        for ii in i:
+            if ii in useful_date:
+                flag=1
+                test.append(ii)
+            elif ii not in useful_date and flag==1:
+                test.append(i[-1])
+                test1.append(test)
+                test = []
+                flag=0
+                # if flag == 0:
+                #     continue
+            elif type(ii)==str:
+                continue
+
+
+    res=test1[1:]
+
+    etf_all = load_obj('stock_index')
+
+    qian = []
+    quxian = 1
+
+    for i in res:
+        stock = i[-1]
+        date_range = i[0:-1]
+        start = min(date_range)
+        end = max(date_range)
+
+        # etf_kline=etf_all[stock]
+        jinzi, quxian = single_stock_tradeback(stock, etf_all, quxian, 0, start, end)
+        aa = jinzi['金额']
+        qian.append(aa)
+
+
+    aaa = pd.concat(qian)
+    plt.plot(aaa)
+    plt.plot()
+    plt.show()
+    sw_index_daily_indicator_df = ak.sw_index_daily_indicator(symbol="801010", start_date="20191201",
+                                                              end_date="20191207", data_type="Day")

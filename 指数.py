@@ -278,5 +278,4 @@ if __name__=='__main__':
     plt.plot(aaa)
     plt.plot()
     plt.show()
-    sw_index_daily_indicator_df = ak.sw_index_daily_indicator(symbol="801010", start_date="20191201",
-                                                              end_date="20191207", data_type="Day")
+

@@ -32,3 +32,8 @@ res2=[]
 for jj in stock_zh_index_spot_df.iterrows():
     if '全指' in jj[1]['名称']:
         res2.append(jj[1]['名称'])
+
+res3=[]
+for jj in stock_zh_index_spot_df.iterrows():
+    if '300' in jj[1]['名称']:
+        res3.append(jj[1]['名称'])

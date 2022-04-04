@@ -301,3 +301,90 @@ def date_mtm():
 
 if __name__=='__main__':
     etf_all=load_obj('etf_all')
+    etf_close=load_obj('etf_close')
+
+
+    etf_code=[159995,515000,512720,512480,512760,515580,515980,588080,515050,515260,515790,512580,515700,512800,512200,512400,515220,510170,161129,159944,515210,159981,512690,512980,510150,512290,515120,512170,159843,159825,159996,161725,512880,512660,513100,510309,159920,513050,518880]
+
+    res=[]
+    for i in etf_all.keys():
+        if int(i[2:]) in etf_code:
+            res.append(i)
+    etf_target={}
+    etf_close2={}
+    for i in res:
+        etf_target[i]=etf_all[i]
+        etf_close2[i]=etf_close[i]
+
+
+
+
+    money = 1
+
+    trade_pay_rate = 0.1  # 0.00015
+
+    money_after_trade = money * (1 - trade_pay_rate)
+
+    etf_kline = ak.fund_etf_hist_sina('sz159966')
+    etf_kline.set_index(etf_kline['date'], inplace=True)
+
+
+
+    etf_all = pd.concat(etf_close2, axis=1)
+    etf_all = etf_all.sort_index()
+
+    delta_etf_all = etf_all.shift(40)
+    mtm_20 = (etf_all - delta_etf_all) / etf_all
+    mtm_20['stock_mtm_max'] = mtm_20.idxmax(axis=1)
+
+    mtm_20['stock_hold'] = mtm_20['stock_mtm_max'].shift(1)
+    mtm_20 = mtm_20.dropna(how='all')
+    # mtm_20['test'] = mtm_20.loc[mtm_20['stock_hold'] == 'sz159902', 'sz159902']
+
+    for i in mtm_20.iterrows():
+        if mtm_20.loc[i[0], 'stock_mtm_max'] != mtm_20.loc[i[0], 'stock_hold']:
+            mtm_20.loc[i[0], 'hold_change'] = 1
+        elif mtm_20.loc[i[0], 'stock_mtm_max'] == mtm_20.loc[i[0], 'stock_hold']:
+            mtm_20.loc[i[0], 'hold_change'] = 0
+        try:
+
+            mtm_20.loc[i[0], 'sell_price'] = etf_close[i[1]['stock_hold']][i[0]]
+        except:
+            pass
+
+    mtm_20 = mtm_20[mtm_20['sell_price'].notnull()]
+
+    res = []
+    res2 = []
+    res3 = {}
+    for i in zip(mtm_20.index, mtm_20['stock_mtm_max'], mtm_20['stock_hold']):
+        if i[1] == i[2]:
+
+            res.append(i[0])
+        elif i[1] != i[2]:
+            res.append(i[0])
+            res2.append(res)
+            res.append(i[2])
+            # res3[i[2]]=res
+            res = []
+
+    etf_all = load_obj('etf_all')
+    qian = []
+    quxian = 1
+
+    for i in res2:
+        stock = i[-1]
+        date_range = i[0:-1]
+        start = min(date_range)
+        end = max(date_range)
+
+        # etf_kline=etf_all[stock]
+        jinzi, quxian = single_stock_tradeback(stock, etf_all, quxian, 0, start, end)
+        aa = jinzi['金额']
+        qian.append(aa)
+
+
+    aaa = pd.concat(qian)
+    plt.plot(aaa)
+
+    plt.show()

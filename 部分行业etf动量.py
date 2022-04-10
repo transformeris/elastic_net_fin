@@ -339,52 +339,55 @@ if __name__=='__main__':
 
     mtm_20['stock_hold'] = mtm_20['stock_mtm_max'].shift(1)
     mtm_20 = mtm_20.dropna(how='all')
-    # mtm_20['test'] = mtm_20.loc[mtm_20['stock_hold'] == 'sz159902', 'sz159902']
+    mtm_20['percent_90'] = mtm_20.quantile(q=0.9, axis=1)
+    mtm_20['percent_90_shift'] = mtm_20['percent_90'].shift(1)
 
-    for i in mtm_20.iterrows():
-        if mtm_20.loc[i[0], 'stock_mtm_max'] != mtm_20.loc[i[0], 'stock_hold']:
-            mtm_20.loc[i[0], 'hold_change'] = 1
-        elif mtm_20.loc[i[0], 'stock_mtm_max'] == mtm_20.loc[i[0], 'stock_hold']:
-            mtm_20.loc[i[0], 'hold_change'] = 0
-        try:
-
-            mtm_20.loc[i[0], 'sell_price'] = etf_close[i[1]['stock_hold']][i[0]]
-        except:
-            pass
-
-    mtm_20 = mtm_20[mtm_20['sell_price'].notnull()]
-
-    res = []
-    res2 = []
-    res3 = {}
-    for i in zip(mtm_20.index, mtm_20['stock_mtm_max'], mtm_20['stock_hold']):
-        if i[1] == i[2]:
-
-            res.append(i[0])
-        elif i[1] != i[2]:
-            res.append(i[0])
-            res2.append(res)
-            res.append(i[2])
-            # res3[i[2]]=res
-            res = []
-
-    etf_all = load_obj('etf_all')
-    qian = []
-    quxian = 1
-
-    for i in res2:
-        stock = i[-1]
-        date_range = i[0:-1]
-        start = min(date_range)
-        end = max(date_range)
-
-        # etf_kline=etf_all[stock]
-        jinzi, quxian = single_stock_tradeback(stock, etf_all, quxian, 0, start, end)
-        aa = jinzi['金额']
-        qian.append(aa)
-
-
-    aaa = pd.concat(qian)
-    plt.plot(aaa)
-
-    plt.show()
+    # # mtm_20['test'] = mtm_20.loc[mtm_20['stock_hold'] == 'sz159902', 'sz159902']
+    #
+    # for i in mtm_20.iterrows():
+    #     if mtm_20.loc[i[0], 'stock_mtm_max'] != mtm_20.loc[i[0], 'stock_hold']:
+    #         mtm_20.loc[i[0], 'hold_change'] = 1
+    #     elif mtm_20.loc[i[0], 'stock_mtm_max'] == mtm_20.loc[i[0], 'stock_hold']:
+    #         mtm_20.loc[i[0], 'hold_change'] = 0
+    #     try:
+    #
+    #         mtm_20.loc[i[0], 'sell_price'] = etf_close[i[1]['stock_hold']][i[0]]
+    #     except:
+    #         pass
+    #
+    # mtm_20 = mtm_20[mtm_20['sell_price'].notnull()]
+    #
+    # res = []
+    # res2 = []
+    # res3 = {}
+    # for i in zip(mtm_20.index, mtm_20['stock_mtm_max'], mtm_20['stock_hold']):
+    #     if i[1] == i[2]:
+    #
+    #         res.append(i[0])
+    #     elif i[1] != i[2]:
+    #         res.append(i[0])
+    #         res2.append(res)
+    #         res.append(i[2])
+    #         # res3[i[2]]=res
+    #         res = []
+    #
+    # etf_all = load_obj('etf_all')
+    # qian = []
+    # quxian = 1
+    #
+    # for i in res2:
+    #     stock = i[-1]
+    #     date_range = i[0:-1]
+    #     start = min(date_range)
+    #     end = max(date_range)
+    #
+    #     # etf_kline=etf_all[stock]
+    #     jinzi, quxian = single_stock_tradeback(stock, etf_all, quxian, 0, start, end)
+    #     aa = jinzi['金额']
+    #     qian.append(aa)
+    #
+    #
+    # aaa = pd.concat(qian)
+    # plt.plot(aaa)
+    #
+    # plt.show()

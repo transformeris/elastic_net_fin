@@ -332,21 +332,29 @@ if __name__=='__main__':
     mai=0
     flag={}
     zz=delta.rolling(window=4)
+    pd.DataFrame(zz)
     for i in zz:
-        xiao_date=min(i.index)
-        delta_win=i.drop(xiao_date)
-        zhengfu=0
-        for ii in delta_win:
-            if ii<0:
-                zhengfu=zhengfu+1
-        if zhengfu==len(delta_win):
+        win=i.drop(min(i.index))
+        if i.loc[min(i.index)]>0 and (win<0).all():
             flag[max(i.index)]=1
-    flag_pand=pd.DataFrame(flag,index=[0]).T
-    zzz=pd.concat([delta,flag_pand],axis=1)
+    flag_pand = pd.DataFrame(flag, index=['买入']).T
+    zzz = pd.concat([delta, flag_pand], axis=1)
 
 
+    chiyou=0
+    zzz.loc[max(i.index), '持有'] =0
+    chichang=zzz.rolling(window=2)
+    for i in chichang:
+        if i.loc[min(i.index),'买入']==1:
+            zzz.loc[min(i.index), '持有']=1
+        if i.loc[min(i.index), '买入']==1 and i.loc[max(i.index), 'close']>0:
+            zzz.loc[max(i.index), '持有'] = 1
+        if zzz.loc[min(i.index), '持有']==1 and zzz.loc[max(i.index), 'close']>0:
+            zzz.loc[max(i.index), '持有'] = 1
+        if zzz.loc[min(i.index), '持有']==1 and zzz.loc[max(i.index), 'close']<0:
+            zzz.loc[max(i.index), '卖出'] = 1
 
-
+    hold_date=zzz['买入']==1 or zzz['持有']==1 or zzz['卖出']==1
 
 
 

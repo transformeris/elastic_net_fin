@@ -20,7 +20,7 @@ def save_obj(obj, name):
 def load_obj(name):
     with open(name + '.pkl', 'rb') as f:
         return pickle.load(f)
-
+pass
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm

@@ -133,7 +133,7 @@ def get_rsrs(data, N=16, M=300, ndays=5):
     data2 = rsrs_std(data1, M, N)
     data2 = rsrs_std_cor(data2)
     data2 = rsrs_std_cor_right(data2)
-    data2 = rsrs_std_cor_right_mean(data2, ndays)
+    # data2 = rsrs_std_cor_right_mean(data2, ndays)
     return data2
 
 
@@ -329,23 +329,24 @@ def date_mtm():
             res=[]
     return res2
 
+def code_20220508():
+    etf_all = load_obj('etf_all')
+    etf_close = load_obj('etf_close')
 
-if __name__=='__main__':
-    etf_all=load_obj('etf_all')
-    etf_close=load_obj('etf_close')
+    etf_code = [510050, 159928, 159995, 515000, 512720, 512480, 512760, 515580, 515980, 588080, 515050, 515260, 515790,
+                512580, 515700, 512800, 512200, 512400, 515220, 510170, 161129, 159944, 515210, 159981, 512690, 512980,
+                510150, 512290, 515120, 512170, 159843, 159825, 159996, 161725, 512880, 512660, 513100, 510309, 159920,
+                513050, 518880]
 
-
-    etf_code=[510050,159928,159995,515000,512720,512480,512760,515580,515980,588080,515050,515260,515790,512580,515700,512800,512200,512400,515220,510170,161129,159944,515210,159981,512690,512980,510150,512290,515120,512170,159843,159825,159996,161725,512880,512660,513100,510309,159920,513050,518880]
-
-    res=[]
+    res = []
     for i in etf_all.keys():
         if int(i[2:]) in etf_code:
             res.append(i)
-    etf_target={}
-    etf_close2={}
+    etf_target = {}
+    etf_close2 = {}
     for i in res:
-        etf_target[i]=etf_all[i]
-        etf_close2[i]=etf_close[i]
+        etf_target[i] = etf_all[i]
+        etf_close2[i] = etf_close[i]
 
     # etf_all = pd.concat(etf_close2, axis=1)
     # etf_all = etf_all.sort_index()
@@ -355,72 +356,84 @@ if __name__=='__main__':
     # mtm_20 = (etf_all - delta_etf_all) / etf_all
     # mtm_20['stock_mtm_max'] = mtm_20.idxmax(axis=1)
 
-    test_etf=etf_close2['sh510050']
-    test_etf_shift=test_etf.shift(1)
-    delta=(test_etf-test_etf_shift)/test_etf_shift
-    delta1=delta.shift(1)
+    test_etf = etf_close2['sh510050']
+    test_etf_shift = test_etf.shift(1)
+    delta = (test_etf - test_etf_shift) / test_etf_shift
+    delta1 = delta.shift(1)
     delta2 = delta.shift(2)
-    mai=0
-    flag={}
-    zz=delta.rolling(window=6)
+    mai = 0
+    flag = {}
+    zz = delta.rolling(window=6)
     pd.DataFrame(zz)
     for i in zz:
-        win=i.drop(min(i.index))
-        if i.loc[min(i.index)]>0 and (win<0.001).all():
-            flag[max(i.index)]=1
+        win = i.drop(min(i.index))
+        if i.loc[min(i.index)] > 0 and (win < 0.001).all():
+            flag[max(i.index)] = 1
     flag_pand = pd.DataFrame(flag, index=['买入']).T
     zzz = pd.concat([delta, flag_pand], axis=1)
 
-
-    chiyou=0
-    zzz.loc[max(i.index), '持有'] =0
-    chichang=zzz.rolling(window=2)
+    chiyou = 0
+    zzz.loc[max(i.index), '持有'] = 0
+    chichang = zzz.rolling(window=2)
     for i in chichang:
-        if i.loc[min(i.index),'买入']==1:
-            zzz.loc[min(i.index), '持有']=1
-        if i.loc[min(i.index), '买入']==1 and i.loc[max(i.index), 'close']>0:
+        if i.loc[min(i.index), '买入'] == 1:
+            zzz.loc[min(i.index), '持有'] = 1
+        if i.loc[min(i.index), '买入'] == 1 and i.loc[max(i.index), 'close'] > 0:
             zzz.loc[max(i.index), '持有'] = 1
-        if zzz.loc[min(i.index), '持有']==1 and zzz.loc[max(i.index), 'close']>0:
+        if zzz.loc[min(i.index), '持有'] == 1 and zzz.loc[max(i.index), 'close'] > 0:
             zzz.loc[max(i.index), '持有'] = 1
-        if zzz.loc[min(i.index), '持有']==1 and zzz.loc[max(i.index), 'close']<0:
+        if zzz.loc[min(i.index), '持有'] == 1 and zzz.loc[max(i.index), 'close'] < 0:
             zzz.loc[max(i.index), '卖出'] = 1
 
-    hold_date=zzz[zzz['买入']==1]
-    zzz['持有时间段']=zzz['买入']
-    zzz['持有时间段'][zzz['持有']==1]=1
+    hold_date = zzz[zzz['买入'] == 1]
+    zzz['持有时间段'] = zzz['买入']
+    zzz['持有时间段'][zzz['持有'] == 1] = 1
     zzz['持有时间段'][zzz['卖出'] == 1] = 1
 
-    zzzz=zzz['持有时间段']
+    zzzz = zzz['持有时间段']
 
-    res=[]
-    res1=[]
+    res = []
+    res1 = []
     for i in zzzz.iteritems():
-        if i[1]==1:
+        if i[1] == 1:
             res.append(i[0])
-        elif i[1]!=1 and res!=[]:
+        elif i[1] != 1 and res != []:
             res1.append(res)
-            res=[]
+            res = []
             # res1.append(res)
-    res=[]
-    qian=[]
-    quxian=1
+    res = []
+    qian = []
+    quxian = 1
     for i in res1:
-
-        start=min(i)
-        end=max(i)
-        jinzi, quxian=single_stock_tradeback2('sh510050', etf_all, quxian, 0.00015, start, end)
+        start = min(i)
+        end = max(i)
+        jinzi, quxian = single_stock_tradeback2('sh510050', etf_all, quxian, 0.00015, start, end)
         aa = jinzi['金额']
         qian.append(aa)
         res.append(quxian)
-    aaa=pd.concat(qian)
+    aaa = pd.concat(qian)
     plt.plot(aaa)
     # plt.plot(test_etf)
     plt.show()
 
 
+if __name__=='__main__':
+    stock_zh_index_daily_df = ak.stock_zh_index_daily(symbol="sh000300")
+    stock_zh_index_daily_df['tradeday']=stock_zh_index_daily_df.index
+    stock_zh_index_daily_df['high_slice']=stock_zh_index_daily_df['high']
+    stock_zh_index_daily_df['low_slice'] = stock_zh_index_daily_df['low']
+    stock_zh_index_daily_df['close_slice'] = stock_zh_index_daily_df['close']
+    stock_zh_index_daily_df['sec_code'] = 'sz399552'
+    rsrs_=RSRS(stock_zh_index_daily_df, N=16, M=300, S=0.7, ndays=5)
+    data2 = get_rsrs(stock_zh_index_daily_df, N=16, M=300,  ndays=5)
+    data2.loc[:,'trade_dir']=-1
+    S=0.7
+    data2.loc[(data2['rsrs_std_cor_right'] > S) & (data2['trade_dir'] == -1), 'trade_dir'] = 0
 
-
-
+    plt.plot(data2['rsrs_std'])
+    plt.show()
+    plt.plot(data2['close'])
+    plt.show()
 
 
 

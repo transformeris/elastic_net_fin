@@ -7,7 +7,8 @@ n = 6  # 6个隐藏状态
 # stock_zh_index_daily_df = ak.stock_zh_index_daily_dfck_zh_index_daily(symbol="sh000300")
 # data = pd.read_csv('沪深300.csv', index_col=0)
 data = ak.stock_zh_index_daily(symbol="sh000300")
-
+data=data[721:]
+data.set_index(data['date'],inplace=True)
 volume = data['volume']
 close = data['close']
 
@@ -29,36 +30,36 @@ zz=np.count_nonzero(A)
 model = hmm.GaussianHMM(n_components=n, covariance_type="full", n_iter=2000).fit(A)
 hidden_states = model.predict(A)
 
+plt.figure(figsize=(25, 18))
+for i in range(n):
+    pos = (hidden_states == i)
+    plt.plot_date(Date[pos], close[pos], 'o', label='hidden state %d' % i, lw=2)
+    plt.legend()
+plt.show()
+
+res = pd.DataFrame({'Date': Date, 'logReg_1': logRet_1, 'state': hidden_states}).set_index('Date')
+series = res.logReg_1
+
+templist = []
+plt.figure(figsize=(25, 18))
+for i in range(n):
+    pos = (hidden_states == i)
+    pos = np.append(1, pos[:-1])
+    res['state_ret%d' % i] = series.multiply(pos)
+    data_i = np.exp(res['state_ret%d' % i].cumsum())
+    templist.append(data_i[-1])
+    plt.plot_date(Date, data_i, '-', label='hidden state %d' % i)
+    plt.legend()
+plt.show()
+
+templist = np.array(templist).argsort()
+long = (hidden_states == templist[-1]) + (hidden_states == templist[-2])  # 买入
+short = (hidden_states == templist[0]) + (hidden_states == templist[1])  # 卖出
+long = np.append(0, long[:-1])
+short = np.append(0, short[:-1])
+
 # plt.figure(figsize=(25, 18))
-# for i in range(n):
-#     pos = (hidden_states == i)
-#     plt.plot_date(Date[pos], close[pos], 'o', label='hidden state %d' % i, lw=2)
-#     plt.legend()
-# plt.show()
-#
-# res = pd.DataFrame({'Date': Date, 'logReg_1': logRet_1, 'state': hidden_states}).set_index('Date')
-# series = res.logReg_1
-#
-# templist = []
-# plt.figure(figsize=(25, 18))
-# for i in range(n):
-#     pos = (hidden_states == i)
-#     pos = np.append(1, pos[:-1])
-#     res['state_ret%d' % i] = series.multiply(pos)
-#     data_i = np.exp(res['state_ret%d' % i].cumsum())
-#     templist.append(data_i[-1])
-#     plt.plot_date(Date, data_i, '-', label='hidden state %d' % i)
-#     plt.legend()
-# plt.show()
-#
-# templist = np.array(templist).argsort()
-# long = (hidden_states == templist[-1]) + (hidden_states == templist[-2])  # 买入
-# short = (hidden_states == templist[0]) + (hidden_states == templist[1])  # 卖出
-# long = np.append(0, long[:-1])
-# short = np.append(0, short[:-1])
-#
-# plt.figure(figsize=(25, 18))
-# res['ret'] = series.multiply(long) - series.multiply(short)
-# plt.plot_date(Date, np.exp(res['ret'].cumsum()), 'r-')
-# plt.show()
-#
+res['ret'] = series.multiply(long)# - series.multiply(short)
+plt.plot_date(Date, np.exp(res['ret'].cumsum()), 'r-')
+plt.show()
+

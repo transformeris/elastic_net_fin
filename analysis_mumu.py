@@ -16,3 +16,6 @@ for i in zz.iterrows():
 zzzzzzz=pd.DataFrame(res)
 
 zzzzzzz.to_excel('1.xls')
+#获取pandas DataFrame 某两行之间的数据
+def get_data(df, start, end):
+    return df.iloc[start:end]

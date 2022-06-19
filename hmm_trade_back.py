@@ -35,16 +35,18 @@ hidden_states = model.predict(A)
 # plt.figure(figsize=(25, 18))
 for i in range(n):
     pos = (hidden_states == i)
-    plt.plot_date(Date[pos], close[pos], 'o', label='hidden state %d' % i, lw=2)
-    plt.legend()
-plt.show()
+#     plt.plot_date(Date[pos], close[pos], 'o', label='hidden state %d' % i, lw=2)
+#     plt.legend()
+# plt.show()
 
 res = pd.DataFrame({'Date': Date, 'logReg_1': logRet_1, 'state': hidden_states}).set_index('Date')
 series = res.logReg_1
 
+data_test=A[2000:2100]
+
 templist = []
 # plt.figure(figsize=(25, 18))
 for i in range(n):
-    pos = (hidden_states == i)
+    pos = (hidden_states == i)#选出第i种状态
     pos = np.append(1, pos[:-1])
     res['state_ret%d' % i] = series.multiply(pos)

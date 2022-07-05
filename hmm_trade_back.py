@@ -26,11 +26,11 @@ close = close[5:]
 
 Date = pd.to_datetime(data.index[5:])
 A = np.column_stack([logDel, logRet_5, logVol_5])
-
+data_test=A[2000:2100]
 zz=np.count_nonzero(A)
 
-model = hmm.GaussianHMM(n_components=n, covariance_type="full", n_iter=2000).fit(A)
-hidden_states = model.predict(A)
+model = hmm.GaussianHMM(n_components=n, covariance_type="full", n_iter=2000).fit(data_test)
+hidden_states = model.predict(data_test)
 
 # plt.figure(figsize=(25, 18))
 for i in range(n):
@@ -42,7 +42,7 @@ for i in range(n):
 res = pd.DataFrame({'Date': Date, 'logReg_1': logRet_1, 'state': hidden_states}).set_index('Date')
 series = res.logReg_1
 
-data_test=A[2000:2100]
+
 
 templist = []
 # plt.figure(figsize=(25, 18))

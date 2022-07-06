@@ -28,3 +28,17 @@ def rain_fall(P):
     return q
 
 if __name__=='__main__':
+
+    ##地面入渗率
+    t=[1,2,3]
+    '''
+    t:降雨时间，s
+    fp:理论入渗率，mm/s
+    f0：初始入渗率，mm/s
+    fw：稳定入渗率，mm/s
+    K：衰减系数，由土壤成分决定，可先随便设
+    '''
+    f0=65
+    fw=1
+    K=0.5
+    fp=(f0-fw)*np.exp(-K*t)+fw

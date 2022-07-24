@@ -9,7 +9,7 @@ n = 6  # 6个隐藏状态
 data_proto=ak.stock_zh_index_daily(symbol="sh000300")
 data = ak.stock_zh_index_daily(symbol="sh000300")
 # data=data[721:]
-data=data_proto[721:3665]
+data=data_proto[721:4976]
 data.set_index(data['date'],inplace=True)
 volume = data['volume']
 close = data['close']

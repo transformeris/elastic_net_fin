@@ -9,29 +9,30 @@ from sqlalchemy.sql import func
 import pandas as pd
 import math
 # get_query_count()
-#auth('18826075966','Van951023')
-auth('13119680825','13138620023Asdf')
+# auth('18826075966','Van951023')
+# auth('13119680825','13138620023Asdf')
+auth('15323303725','13138620023Asdf')
 # z=query(opt.OPT_DAILY_PREOPEN).limit(10)
 # zz=opt.run_query(z)
-import pandas as pd
-from sqlalchemy import create_engine
-import sqlalchemy
-host = '127.0.0.1'
-port = 3306
-db = 'world'
-user = 'root'
-password = '18826076791asdf!'
-chartset='utf8'
-
-# engine = create_engine(str(r"mysql+mysqldb://%s:" + '%s' + "@%s/%s") % (user, password, host, db),encoding='utf-8')
-engine = create_engine('mysql+mysqldb://root:18826076791asdf!@127.0.0.1/world?charset=utf8',encoding='utf-8')
-t0=time.time()
-
-
-# df=get_all_securities()
-# df.to_sql('index',con=engine,if_exists='replace',index=False)
-df4=get_price('300390.XSHG', start_date='1991-01-01', end_date='2200-01-01', frequency='1d', fields=['open', 'close','low','high','volume','money','factor','pre_close'], skip_paused=True,panel=False)
-df4.to_csv('天华超净daily.csv',encoding='utf_8_sig')
+# import pandas as pd
+# from sqlalchemy import create_engine
+# import sqlalchemy
+# host = '127.0.0.1'
+# port = 3306
+# db = 'world'
+# user = 'root'
+# password = '18826076791asdf!'
+# chartset='utf8'
+#
+# # engine = create_engine(str(r"mysql+mysqldb://%s:" + '%s' + "@%s/%s") % (user, password, host, db),encoding='utf-8')
+# engine = create_engine('mysql+mysqldb://root:18826076791asdf!@127.0.0.1/world?charset=utf8',encoding='utf-8')
+# t0=time.time()
+#
+#
+# # df=get_all_securities()
+# # df.to_sql('index',con=engine,if_exists='replace',index=False)
+df4=get_price('512480.XSHG', start_date='1990-01-01', end_date='2200-01-01', frequency='1m', fields=['open', 'close', 'low', 'high', 'volume', 'money', 'factor', 'high_limit', 'low_limit', 'avg', 'pre_close', 'paused'], skip_paused=True,panel=False)
+df4.to_csv('半导体ETF_min.csv',encoding='utf_8_sig')
 #a=get_all_securities(types=['stock'], date=None)[0:3]
 # for i in range(0,904):
 #     print(i)

@@ -31,8 +31,8 @@ auth('15323303725','13138620023Asdf')
 #
 # # df=get_all_securities()
 # # df.to_sql('index',con=engine,if_exists='replace',index=False)
-df4=get_price('512480.XSHG', start_date='1990-01-01', end_date='2200-01-01', frequency='1m', fields=['open', 'close', 'low', 'high', 'volume', 'money', 'factor', 'high_limit', 'low_limit', 'avg', 'pre_close', 'paused'], skip_paused=True,panel=False)
-df4.to_csv('半导体ETF_min.csv',encoding='utf_8_sig')
+df4=get_price('512310.XSHG', start_date='1990-01-01', end_date='2200-01-01', frequency='1m', fields=['open', 'close', 'low', 'high', 'volume', 'money', 'factor', 'high_limit', 'low_limit', 'avg', 'pre_close', 'paused'], skip_paused=True,panel=False)
+df4.to_csv('500工业ETF_512310_ETF_min.csv',encoding='utf_8_sig')
 #a=get_all_securities(types=['stock'], date=None)[0:3]
 # for i in range(0,904):
 #     print(i)

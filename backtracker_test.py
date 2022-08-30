@@ -34,7 +34,7 @@ if __name__ == '__main__':
     #     # 数据必须小于todate
     #     todate=datetime.datetime(2021, 12, 31),
     #     reverse=False)
-    # data=zhengquan_kline[datetime.date(2016, 8, 10):datetime.date(2020, 8, 30)]
+    # data=zhengquan _kline[datetime.date(2016, 8, 10):datetime.date(2020, 8, 30)]
     zhengquan_kline.loc[:,'trade_date']=zhengquan_kline.index
     # zhengquan_kline.set_index(datetime.datetime(zhengquan_kline.index))
     pd.to_datetime(zhengquan_kline.loc[:,'trade_date'])

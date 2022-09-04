@@ -30,8 +30,14 @@ if __name__=='__main__':
 
     etf_kline_all=load_obj('etf_all')
 
-    zhengquan_kline=etf_kline_all['sh512880']
+    zhengquan_kline=etf_kline_all['sh510050']
+    aa=zhengquan_kline['volume']
+    zhengquan_kline.loc[:,'volume_ma10']=aa.rolling(10,center=False).mean().shift()
+    zhengquan_kline.loc[:, 'c/o']=(zhengquan_kline['close']/zhengquan_kline['open']).shift()
+    zhengquan_kline.loc[:,'hold_signal']=1
+    zhengquan_kline.loc[:, 'hold_signal'][zhengquan_kline.loc[:, 'c/o']>1.03] = 0
+    zhengquan_kline.loc[:, 'hold_signal'][zhengquan_kline.loc[:, 'c/o'] < 0.98] = 0
+    zhengquan_kline.loc[:, 'hold_signal'][zhengquan_kline.loc[:, 'volume_ma10'].shift() > 3*zhengquan_kline.loc[:,'volume_ma10']] = 0
 
-    zhengquan_kline['jizhunxian']=1
-
-
+    zhengquan_kline.loc[:,'shouyi']=((zhengquan_kline['close']/zhengquan_kline['open'])-1)*zhengquan_kline.loc[:, 'hold_signal']
+    zhengquan_kline.loc[:, 'zhongshouyi']=zhengquan_kline.loc[:,'shouyi'].cumsum()

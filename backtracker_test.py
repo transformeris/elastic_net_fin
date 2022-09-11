@@ -78,7 +78,7 @@ if __name__ == '__main__':
     cerebro.broker.setcash(100000.0)
     # 引擎运行前打印期出资金
     cerebro.addstrategy(TestStrategy)
-    print('组合期初资金: %.2f' % cerebro.broker.getvalue())
+    print('初: %.2f' % cerebro.broker.getvalue())
     cerebro.run()
     # 引擎运行后打期末资金
-    print('组合期末资金: %.2f' % cerebro.broker.getvalue())
+    print('末: %.2f' % cerebro.broker.getvalue())

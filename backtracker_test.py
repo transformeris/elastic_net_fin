@@ -80,5 +80,5 @@ if __name__ == '__main__':
     cerebro.addstrategy(TestStrategy)
     print('初: %.2f' % cerebro.broker.getvalue())
     cerebro.run()
-    # 引擎运行后打期末资金
+    # 引擎运行后打期末资金2
     print('末: %.2f' % cerebro.broker.getvalue())

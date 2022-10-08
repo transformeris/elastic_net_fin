@@ -2,9 +2,9 @@ import datetime  #
 import os.path  # 路径管理
 import sys  # 获取当前运行脚本的路径 (in argv[0])
 import pickle
-
+import numpy as np
 import pandas as pd
-
+import matplotlib as plt
 
 def load_obj(name):
     with open(name + '.pkl', 'rb') as f:
@@ -30,13 +30,221 @@ class TestStrategy(bt.Strategy):
     def __init__(self):
         # 保存收盘价的引用
         self.dataclose = self.datas[0].close
-        print('fuck',list(self.datas))
+
     def next(self):
         # 记录收盘价
         self.log('Close, %.2f' % self.dataclose[0]) ##self.dataclose[0]即为收盘价
 
 
+class GridStrategy(bt.Strategy):
+    params = (
+        ("printlog", True),
+        ("top", 2),
+        ("buttom", 0),
+    )
 
+    def __init__(self):
+
+        self.mid = (self.p.top + self.p.buttom) / 2.0
+        print(self.mid)
+        # 百分比区间计算
+        # 这里多1/2，是因为arange函数是左闭右开区间。
+        perc_level = [x for x in np.arange(1 + 0.02 * 5, 1 - 0.02 * 5 - 0.02 / 2, -0.02)]
+        # 价格区间
+        # print(self.mid)
+        self.price_levels = [self.mid * x for x in perc_level]
+        # 记录上一次穿越的网格
+        self.last_price_index = None
+        # 总手续费
+
+
+        self.comm = 0.0
+
+
+    def next(self):
+        # print(self.last_price_index)
+        # 开仓
+        if self.last_price_index == None:
+            # print("b", len(self.price_levels))
+            for i in range(len(self.price_levels)):
+                price = self.data.close[0]
+                print("c", i, price, self.price_levels)
+                if self.data.close[0] > self.price_levels[i]:
+                    self.last_price_index = i
+                    self.order_target_percent(target=i / (len(self.price_levels) - 1))
+                    print("a")
+                    return
+        # 调仓
+        else:
+            signal = False
+            while True:
+                upper = None
+                lower = None
+                if self.last_price_index > 0:
+                    upper = self.price_levels[self.last_price_index - 1]
+                if self.last_price_index < len(self.price_levels) - 1:
+                    lower = self.price_levels[self.last_price_index + 1]
+                # 还不是最轻仓，继续涨，再卖一档
+                if upper != None and self.data.close > upper:
+                    self.last_price_index = self.last_price_index - 1
+                    print("fuck",  self.price_levels,self.last_price_index,[upper,lower])
+                    signal = True
+                    continue
+                # 还不是最重仓，继续跌，再买一档
+                if lower != None and self.data.close < lower:
+                    self.last_price_index = self.last_price_index + 1
+                    signal = True
+                    continue
+                break
+            if signal:
+                self.long_short = None
+                self.order_target_percent(target=self.last_price_index / (len(self.price_levels) - 1))
+                print(self.last_price_index / (len(self.price_levels) - 1))
+
+
+    # 输出交易记录
+    def log(self, txt, dt=None, doprint=False):
+        if self.params.printlog or doprint:
+            dt = dt or self.datas[0].datetime.date(0)
+            print('%s, %s' % (dt.isoformat(), txt))
+
+
+    def notify_order(self, order):
+        # 有交易提交/被接受，啥也不做
+        if order.status in [order.Submitted, order.Accepted]:
+            return
+        # 交易完成，报告结果
+        if order.status in [order.Completed]:
+            if order.isbuy():
+                self.log(
+                    '执行买入, 价格: %.2f, 成本: %.2f, 手续费 %.2f' %
+                    (order.executed.price,
+                     order.executed.value,
+                     order.executed.comm))
+                self.buyprice = order.executed.price
+
+
+                self.comm += order.executed.comm
+            else:
+                self.log(
+                '执行卖出, 价格: %.2f, 成本: %.2f, 手续费 %.2f' %
+                (order.executed.price,
+                 order.executed.value,
+                 order.executed.comm))
+            self.comm += order.executed.comm
+        elif order.status in [order.Canceled, order.Margin, order.Rejected]:
+            self.log("交易失败")
+            self.order = None
+
+
+    # 输出手续费
+    def stop(self):
+        self.log("手续费:%.2f 成本比例:%.5f" % (self.comm, self.comm / self.broker.getvalue()))
+
+class jinzitaStrategy(bt.Strategy):
+    params = (
+        ("printlog", True),
+        ("top", 2),
+        ("buttom", 0),
+    )
+
+    def __init__(self):
+
+        self.mid = (self.p.top + self.p.buttom) / 2.0
+        print(self.mid)
+        # 百分比区间计算
+        # 这里多1/2，是因为arange函数是左闭右开区间。
+        perc_level = [x for x in np.arange(1 + 0.02 * 5, 1 - 0.02 * 5 - 0.02 / 2, -0.02)]
+        # 价格区间
+        # print(self.mid)
+        self.price_levels = [self.mid * x for x in perc_level]
+        # 记录上一次穿越的网格
+        self.last_price_index = None
+        # 总手续费
+
+
+        self.comm = 0.0
+
+
+    def next(self):
+        # print(self.last_price_index)
+        # 开仓
+        if self.last_price_index == None:
+            # print("b", len(self.price_levels))
+            for i in range(len(self.price_levels)):
+                price = self.data.close[0]
+                # print("c", i, price, self.price_levels[i][0])
+                if self.data.close[0] > self.price_levels[i]:
+                    self.last_price_index = i
+                    self.order_target_percent(target=i / (len(self.price_levels) - 1))
+
+                    print("a")
+                    return
+        # 调仓
+        else:
+            signal = False
+            while True:
+                upper = None
+                lower = None
+                if self.last_price_index > 0:
+                    upper = self.price_levels[self.last_price_index - 1]
+                if self.last_price_index < len(self.price_levels) - 1:
+                    lower = self.price_levels[self.last_price_index + 1]
+                # 还不是最轻仓，继续涨，再卖一档
+                if upper != None and self.data.close > upper:
+                    self.last_price_index = self.last_price_index - 1
+                    signal = True
+                    continue
+                # 还不是最重仓，继续跌，再买一档
+                if lower != None and self.data.close < lower:
+                    self.last_price_index = self.last_price_index + 1
+                    signal = True
+                    continue
+                break
+            if signal:
+                self.long_short = None
+                self.order_target_percent(target=self.last_price_index / (len(self.price_levels) - 1))
+                print(self.last_price_index / (len(self.price_levels) - 1))
+
+
+    # 输出交易记录
+    def log(self, txt, dt=None, doprint=False):
+        if self.params.printlog or doprint:
+            dt = dt or self.datas[0].datetime.date(0)
+            print('%s, %s' % (dt.isoformat(), txt))
+
+
+    def notify_order(self, order):
+        # 有交易提交/被接受，啥也不做
+        if order.status in [order.Submitted, order.Accepted]:
+            return
+        # 交易完成，报告结果
+        if order.status in [order.Completed]:
+            if order.isbuy():
+                self.log(
+                    '执行买入, 价格: %.2f, 成本: %.2f, 手续费 %.2f' %
+                    (order.executed.price,
+                     order.executed.value,
+                     order.executed.comm))
+                self.buyprice = order.executed.price
+
+
+                self.comm += order.executed.comm
+            else:
+                self.log(
+                '执行卖出, 价格: %.2f, 成本: %.2f, 手续费 %.2f' %
+                (order.executed.price,
+                 order.executed.value,
+                 order.executed.comm))
+            self.comm += order.executed.comm
+        elif order.status in [order.Canceled, order.Margin, order.Rejected]:
+            self.log("交易失败")
+            self.order = None
+
+
+    # 输出手续费
+    def stop(self):
+        self.log("手续费:%.2f 成本比例:%.5f" % (self.comm, self.comm / self.broker.getvalue()))
 
 
 if __name__ == '__main__':
@@ -67,7 +275,7 @@ if __name__ == '__main__':
     # zhengquan_kline.set_index(datetime.datetime(zhengquan_kline.index))
     pd.to_datetime(zhengquan_kline.loc[:,'trade_date'])
     zhengquan_kline.set_index(pd.to_datetime(zhengquan_kline.loc[:,'trade_date']),inplace=True)
-    data=bt.feeds.PandasData(dataname=zhengquan_kline,fromdate=datetime.datetime(2016,8,1),todate=datetime.datetime(2016,8,9))
+    data=bt.feeds.PandasData(dataname=zhengquan_kline,fromdate=datetime.datetime(2018,1,1),todate=datetime.datetime(2019,1,30))
 
 
     # 加载交易数据
@@ -77,8 +285,16 @@ if __name__ == '__main__':
     # 设置投资金额100000.0
     cerebro.broker.setcash(100000.0)
     # 引擎运行前打印期出资金
-    cerebro.addstrategy(TestStrategy)
+    cerebro.addstrategy(GridStrategy)
     print('初: %.2f' % cerebro.broker.getvalue())
+    cerebro.addobserver(bt.observers.Broker)
     cerebro.run()
+    # cerebro.plot()
     # 引擎运行后打期末资金2
     print('末: %.2f' % cerebro.broker.getvalue())
+
+    perc_levels = [x for x in np.arange(
+        1 + 0.005 * 5,
+        # 这里多1/2，是因为 arange函数是左闭右开区间。
+        1 - 0.005 * 5 - 0.005 / 2,
+        -0.005)]

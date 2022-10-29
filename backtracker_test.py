@@ -87,7 +87,7 @@ class GridStrategy(bt.Strategy):
                 # 还不是最轻仓，继续涨，再卖一档
                 if upper != None and self.data.close > upper:
                     self.last_price_index = self.last_price_index - 1
-                    print("fuck",  self.price_levels,self.last_price_index,[upper,lower])
+                    print("fuck",  self.price_levels,self.last_price_index,[upper,lowerpppp9ui])
                     signal = True
                     continue
                 # 还不是最重仓，继续跌，再买一档

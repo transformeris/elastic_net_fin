@@ -87,7 +87,7 @@ class GridStrategy(bt.Strategy):
                 # 还不是最轻仓，继续涨，再卖一档
                 if upper != None and self.data.close > upper:
                     self.last_price_index = self.last_price_index - 1
-                    print("fuck",  self.price_levels,self.last_price_index,[upper,lowerpppp9ui])
+                    print("fuck",  self.price_levels,self.last_price_index,[upper,lower])
                     signal = True
                     continue
                 # 还不是最重仓，继续跌，再买一档
@@ -247,6 +247,30 @@ class jinzitaStrategy(bt.Strategy):
         self.log("手续费:%.2f 成本比例:%.5f" % (self.comm, self.comm / self.broker.getvalue()))
 
 
+
+class TestStrategy(bt.Strategy):
+    def __init__(self):
+        # 打印数据集和数据集对应的名称
+        print("-------------self.datas-------------")
+        print(list(self.datas))
+        print(self.datas[0].open)
+        # print("-------------self.data-------------")
+        # print(self.data._name, list(self.data)) # 返回第一个导入的数据表格，缩写形式
+        # print("-------------self.data0-------------")
+        # print(self.data0._name, self.data0) # 返回第一个导入的数据表格，缩写形式
+        # print("-------------self.datas[0]-------------")
+        # print(self.datas[0]._name, list(self.datas[0])) # 返回第一个导入的数据表格，常规形式
+        # print("-------------self.datas[1]-------------")
+        # # print(self.datas[1]._name, self.datas[1]) # 返回第二个导入的数据表格，常规形式
+        # # print("-------------self.datas[-1]-------------")
+        # # print(self.datas[-1]._name, self.datas[-1]) # 返回最后一个导入的数据表格
+        # # print("-------------self.datas[-2]-------------")
+        # # print(self.datas[-2]._name, self.datas[-2]) # 返回倒数第二个导入的数据表格
+        # print(list(self.data.line))
+        # a=self.data.close*2
+        # print(list(a))
+
+
 if __name__ == '__main__':
 
     etf_kline_all=load_obj('etf_all')
@@ -277,6 +301,7 @@ if __name__ == '__main__':
     zhengquan_kline.set_index(pd.to_datetime(zhengquan_kline.loc[:,'trade_date']),inplace=True)
     data=bt.feeds.PandasData(dataname=zhengquan_kline,fromdate=datetime.datetime(2018,1,1),todate=datetime.datetime(2019,1,30))
 
+    data_watch=zhengquan_kline[datetime.datetime(2018,1,1):datetime.datetime(2019,1,30)]
 
     # 加载交易数据
     cerebro.adddata(data)
@@ -285,16 +310,8 @@ if __name__ == '__main__':
     # 设置投资金额100000.0
     cerebro.broker.setcash(100000.0)
     # 引擎运行前打印期出资金
-    cerebro.addstrategy(GridStrategy)
+    cerebro.addstrategy(TestStrategy)
     print('初: %.2f' % cerebro.broker.getvalue())
     cerebro.addobserver(bt.observers.Broker)
     cerebro.run()
-    # cerebro.plot()
-    # 引擎运行后打期末资金2
-    print('末: %.2f' % cerebro.broker.getvalue())
 
-    perc_levels = [x for x in np.arange(
-        1 + 0.005 * 5,
-        # 这里多1/2，是因为 arange函数是左闭右开区间。
-        1 - 0.005 * 5 - 0.005 / 2,
-        -0.005)]

@@ -253,7 +253,7 @@ class TestStrategy(bt.Strategy):
         # 打印数据集和数据集对应的名称
         print("-------------self.datas-------------")
         print(list(self.datas))
-        print(self.datas[0].open)
+        print(self.datas[0])
         # print("-------------self.data-------------")
         # print(self.data._name, list(self.data)) # 返回第一个导入的数据表格，缩写形式
         # print("-------------self.data0-------------")

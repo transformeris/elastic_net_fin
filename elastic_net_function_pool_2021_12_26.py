@@ -224,7 +224,11 @@ if __name__=='__main__':
     for i in zz.index:
         print(i)
 
+    import akshare as ak
 
+    stock_zcfz_em_df = ak.stock_em_xjll(date="20200331")
+    print(stock_zcfz_em_df)
 
+    ak.stock_em_xjll(date="20200331")
 
 

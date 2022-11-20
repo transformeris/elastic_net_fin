@@ -227,7 +227,7 @@ if __name__=='__main__':
     now_date=datetime.datetime(2020,10,9)
 
     z=now_date- relativedelta(years=1)
-
+s
     rrr=shangzheng.loc[str(z):str(now_date),:]
     if str(now_date) in rrr.index:
         pd.DataFrame.drop(rrr,labels=str(now_date))

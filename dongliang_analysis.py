@@ -10,6 +10,7 @@ shangzheng['rishouyi']=(shangzheng['close']-shangzheng['open'])/shangzheng['open
 a=shangzheng.loc['2020-01-04':'2021-01-04','fff']
 a_p=np.percentile(a,[90])
 # ddd=a[a>a_p[0]]
+
 ddd=a[a>15]
 zz=shangzheng.loc[list(ddd.index),:]
 print(np.cumprod(zz['rishouyi']+1))

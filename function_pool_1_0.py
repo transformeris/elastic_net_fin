@@ -214,36 +214,45 @@ def zhichan():
 if __name__=='__main__':
     shangzheng = pd.read_csv('上证50_daily.csv')
 
-    from dateutil.relativedelta import relativedelta
-    import datetime
+    # from dateutil.relativedelta import relativedelta
+    # import datetime
+    #
+    # shangzheng.set_index('Unnamed: 0', inplace=True)
+    # shangzheng['rishouyi'] = (shangzheng['close'] - shangzheng['open'].shift(1)) / shangzheng['open'].shift(1)
+    # s_time = datetime.datetime.now()
+    # shangzheng['close_20'] = shangzheng['close'].shift(20)
+    # shangzheng['mtm_20'] = (shangzheng['close'] - shangzheng['close'].shift(20))/shangzheng['close_20']
+    #
+    # shangzheng=shangzheng.dropna()
+    #
+    # now_date=datetime.datetime(2020,10,9)
+    #
+    # z=now_date- relativedelta(years=1)
+    #
+    # rrr=shangzheng.loc[str(z):str(now_date),:]
 
-    shangzheng.set_index('Unnamed: 0', inplace=True)
-    shangzheng['rishouyi'] = (shangzheng['close'] - shangzheng['open']) / shangzheng['open']
-    s_time = datetime.datetime.now()
-    shangzheng['close_20'] = shangzheng['close'].shift(20)
-    shangzheng['mtm_20'] = (shangzheng['close'] - shangzheng['close'].shift(20))/shangzheng['close_20']
+    shangzheng2 = shangzheng[[i % 2 == 1 for i in range(len(shangzheng.index))]]
+    # for i in shangzheng.iterrows():
+    #     date_lower=pd.to_datetime(i[0])-relativedelta(years=1)
+    #     mtm_year=shangzheng.loc[str(date_lower):str(i[0]),'mtm_20']
+    #     mtm_year_upper=np.percentile(mtm_year,[0])[0]
+    #     if shangzheng.loc[i[0],'mtm_20']>mtm_year_upper:
+    #         shangzheng.loc[i[0], 'hold_chubu']=1
+    #
+    # shangzheng['hold']=shangzheng['hold_chubu'].shift(1)
+    # zz = shangzheng[shangzheng['hold']==1]
+    # # print(np.cumprod(zz['rishouyi'] + 1))
+    #
+    # a = zz.loc['2020-01-04':'2022-01-04', 'rishouyi']
+    # shangzheng=shangzheng[[i%2==1 for i in range(len(shangzheng.index))]]
+    # shangzheng['jinzhi']=np.cumprod(zz['rishouyi'] + 1)
+    # print(np.cumprod(a + 1))
+    # plt.plot(np.cumprod(zz['rishouyi'] + 1))
+    # plt.show()
 
-    shangzheng=shangzheng.dropna()
 
-    now_date=datetime.datetime(2020,10,9)
 
-    z=now_date- relativedelta(years=1)
-
-    rrr=shangzheng.loc[str(z):str(now_date),:]
-
-    for i in shangzheng.iterrows():
-        date_lower=pd.to_datetime(i[0])-relativedelta(years=1)
-        mtm_year=shangzheng.loc[str(date_lower):str(i[0]),'mtm_20']
-        mtm_year_upper=np.percentile(mtm_year,[0])[0]
-        if shangzheng.loc[i[0],'mtm_20']>mtm_year_upper:
-            shangzheng.loc[i[0], 'hold_chubu']=1
-
-    shangzheng['hold']=shangzheng['hold_chubu'].shift(1)
-    zz = shangzheng[shangzheng['hold']==1]
-    # print(np.cumprod(zz['rishouyi'] + 1))
-
-    a = zz.loc['2018-01-04':'2019-01-04', 'rishouyi']
-
-    print(np.cumprod(a + 1))
-    plt.plot(np.cumprod(zz['rishouyi'] + 1))
-    plt.show()
+    # import akshare as ak
+    #
+    # stock_zh_index_daily_em_df = ak.stock_zh_index_daily_em(symbol="sz399812")
+    # ak.stock_hk_hist(symbol="zsHSI")

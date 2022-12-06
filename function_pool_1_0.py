@@ -214,10 +214,13 @@ def zhichan():
 if __name__=='__main__':
     shangzheng = pd.read_csv('上证50_daily.csv')
 
+    shangzheng['open_shift']=shangzheng['open'].shift(1)
+    shangzheng['delta_point']=shangzheng['close']-shangzheng['open_shift']
+    shangzheng['delta_value']=shangzheng['delta_point']/shangzheng['open_shift']+1
     # from dateutil.relativedelta import relativedelta
     # import datetime
     #
-    # shangzheng.set_index('Unnamed: 0', inplace=True)
+    shangzheng.set_index('Unnamed: 0', inplace=True)
     # shangzheng['rishouyi'] = (shangzheng['close'] - shangzheng['open'].shift(1)) / shangzheng['open'].shift(1)
     # s_time = datetime.datetime.now()
     # shangzheng['close_20'] = shangzheng['close'].shift(20)
@@ -231,7 +234,8 @@ if __name__=='__main__':
     #
     # rrr=shangzheng.loc[str(z):str(now_date),:]
 
-    shangzheng2 = shangzheng[[i % 2 == 1 for i in range(len(shangzheng.index))]]
+    shangzheng2 = shangzheng[[i % 2 == 0 for i in range(len(shangzheng.index))]]
+    shangzheng2['jinzhi'] = np.cumprod(shangzheng2['delta_value'])
     # for i in shangzheng.iterrows():
     #     date_lower=pd.to_datetime(i[0])-relativedelta(years=1)
     #     mtm_year=shangzheng.loc[str(date_lower):str(i[0]),'mtm_20']
@@ -247,8 +251,9 @@ if __name__=='__main__':
     # shangzheng=shangzheng[[i%2==1 for i in range(len(shangzheng.index))]]
     # shangzheng['jinzhi']=np.cumprod(zz['rishouyi'] + 1)
     # print(np.cumprod(a + 1))
-    # plt.plot(np.cumprod(zz['rishouyi'] + 1))
-    # plt.show()
+    plt.plot(shangzheng2.loc['2020-01-02':'2022-01-04','jinzhi']/shangzheng2.loc['2020-01-02','jinzhi'])
+    plt.plot(shangzheng.loc['2020-01-02':'2022-01-04','close']/shangzheng.loc['2020-01-02','close'])
+    plt.show()
 
 
 

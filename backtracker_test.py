@@ -296,10 +296,10 @@ if __name__ == '__main__':
     #     reverse=False)
     # data=zhengquan _kline[datetime.date(2016, 8, 10):datetime.date(2020, 8, 30)]
     zhengquan_kline.loc[:,'trade_date']=zhengquan_kline.index
-    # zhengquan_kline.set_index(datetime.datetime(zhengquan_kline.index))
+    zhengquan_kline.set_index(datetime.datetime(zhengquan_kline.index))
     pd.to_datetime(zhengquan_kline.loc[:,'trade_date'])
     zhengquan_kline.set_index(pd.to_datetime(zhengquan_kline.loc[:,'trade_date']),inplace=True)
-    data=bt.feeds.PandasData(dataname=zhengquan_kline,fromdate=datetime.datetime(2018,1,1),todate=datetime.datetime(2019,1,30))
+    data=bt.feeds.PandasData(dataname=zhengquan_kline,fromdate=datetime.datetime(2018,1,1),todate=datetime.datetime(2018,1,30))
 
     data_watch=zhengquan_kline[datetime.datetime(2018,1,1):datetime.datetime(2019,1,30)]
 

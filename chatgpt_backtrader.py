@@ -42,7 +42,39 @@ class MyStrategy(bt.Strategy):
                 'price': self.data.close[0],
             }
 
+class SignalBuySellStrategy(bt.Strategy):
+    def __init__(self):
+        # create a variable to track the current position
+        self.position = 0
+        self.split_value = self.broker.getvalue() / 5.0
 
+    def next(self):
+        # check if we have a signal to buy
+        if self.data.signal==1:
+            self.split_value = self.broker.getvalue() / 5.0
+            # check if we are not already in a position
+            if self.position == 0:
+                # calculate the number of shares to buy
+                shares = int(self.split_value / self.data)
+
+                # buy the shares
+                self.buy(size=shares)
+
+                # update the position variable
+                self.position = 1
+
+        # check if we have a signal to sell
+        if self.data.signal==-1:
+            self.split_value = self.broker.getvalue() / 5.0
+            # check if we have a position
+            if self.position != 0:
+                shares = int(self.split_value / self.data)
+
+                # sell one share
+                self.sell(size=shares)
+
+                # update the position variable
+                self.position -= 1
 
 # class TestStrategy(bt.Strategy):
 #     params = (

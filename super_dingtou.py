@@ -15,6 +15,48 @@ def load_obj(name):
 def get_values(x):
     return x
 
+class mydata(bt.feeds.PandasData):
+    lines = ('signal',)
+    params = (('signal', -1),)
+
+class SignalBuySellStrategy(bt.Strategy):
+    def __init__(self):
+        # create a variable to track the current position
+        self.my_position = 0
+        self.split_value = self.broker.getvalue() / 5.0
+        # self.data.signal=self.data.signal
+
+    def next(self):
+
+        # check if we have a signal to buy
+        if self.data.signal[0]==1:
+            self.split_value = self.broker.getvalue() / 5.0
+            # check if we are not already in a position
+
+            # calculate the number of shares to buy
+            shares = int(self.split_value / self.data)
+
+            # buy the shares
+            self.buy(size=shares)
+
+            # update the position variable
+            self.my_position = 1
+
+        # check if we have a signal to sell
+        if self.data.signal==-1:
+            self.split_value = self.broker.getvalue() / 5.0
+            # check if we have a position
+            if self.position != 0:
+                shares = int(self.split_value / self.data)
+
+                # sell one share
+                self.sell(size=shares)
+
+                # update the position variable
+                # self.position -= 1
+        print(self.broker.getcash())
+        print(self.broker.getvalue())
+
 if __name__=='__main__':
     etf_kline_all = load_obj('etf_all')
     zhengquan_kline = etf_kline_all['sh512880']
@@ -29,9 +71,34 @@ if __name__=='__main__':
         delta_close_window=zhengquan_kline.loc[i[1]['trade_date_shift']:i[0],'delta_close']
         zz=scipy.stats.percentileofscore(delta_close_window, zhengquan_kline.loc[i[0],'delta_close'])
         zhengquan_kline.loc[i[0], 'delta_percent']=zz
+    zhengquan_kline.loc[zhengquan_kline['delta_percent']==1.639344262295082,'signal']=1
+    zhengquan_kline.loc[zhengquan_kline['delta_percent'] ==100, 'signal'] = -1
+    data = zhengquan_kline.to_dict(orient='list')
+    zhengquan_kline.loc[zhengquan_kline['signal']!=0,'signal']=0
 
 
 
+    # # create a Backtrader data feed
+    # data_feed = mydata(dataname=zhengquan_kline)
+    # # data_feed.addcolumn('signal', zhengquan_kline['signal'])
+    # # data = bt.feeds.PandasData(dataname=zhengquan_kline, fromdate=datetime.datetime(2016, 1, 1),todate=datetime.datetime(2019, 1, 30))
+    #
+    # cerebro = bt.Cerebro()
+    # cerebro.adddata(data_feed)
+    # cerebro.broker.setcash(10000.0)
+    # # 将策略添加到回测实例中
+    # cerebro.addstrategy(SignalBuySellStrategy)
+    # cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name='ta')
+    # # 运行回测
+    # # 运行回测
+    # results = cerebro.run()
+    # cerebro.addwriter(bt.WriterFile, out='results.csv', csv=True)
+    # # 获取回测结果
+    # result = results
+    # strategy = result[0]
+    # ta = strategy.analyzers.ta.get_analysis()
+    # print(ta)
+    # cerebro.plot(style='candlestick')
 
 
 

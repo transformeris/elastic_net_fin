@@ -205,3 +205,5 @@ result = results[0]
 # cerebro.plot()
 # 打印交易报告
 # print(result.analyzers.TradeAnalyzer.get_analysis())
+
+

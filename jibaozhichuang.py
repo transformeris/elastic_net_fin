@@ -160,8 +160,9 @@ class MyWidget(QWidget):
                 self.select_button(self.button1)
         elif event.key() == Qt.Key_S:
             print('按下了下键')
+            print(self.button1.index(self.selected_button))
             if self.selected_button ==self.button1:
-                self.select_button(self.button3)
+                self.select_button([self.button1, self.button3].index(self.selected_button) - 2)
             # if self.selected_button in [self.button1, self.button2]:
             #     self.select_button(
             #         [self.button3, self.button4])
@@ -169,7 +170,8 @@ class MyWidget(QWidget):
             print('按下了左键')
             if self.selected_button in [self.button2, self.button4]:
                 self.select_button(
-                    [self.button1, self.button3][[self.button1, self.button3].index(self.selected_button) - 2])
+                    [self.button1, self.button3]
+                    [[self.button1, self.button3].index(self.selected_button) - 2])
         elif event.key() == Qt.Key_D:
             print('按下了右键')
             if self.selected_button in [self.button1, self.button3]:

@@ -278,7 +278,7 @@ if __name__ == '__main__':
     zhengquan_kline=etf_kline_all['sh512880']
 
     # 创建Cerebro引擎
-    cerebro = bt.Cerebro()
+    cerebro = bt.Cerebro(cheat_)
     # Cerebro引擎在后台创建broker(经纪人)，系统默认资金量为10000
 
     # 获取当前运行脚本所在目录

@@ -30,18 +30,112 @@ def plot_cumulative_return(data):
     plt.legend(prop=font)
     plt.title('策略与基准累计收益', fontproperties=font)
     plt.savefig('cumulative_return.png', dpi=300)
+def backtest_strategy_T1(data, benchmark, commission, slippage, start_date, end_date):
+    data = data[(data.index >= start_date) & (data.index <= end_date)]
+    benchmark = benchmark[(benchmark.index >= start_date) & (benchmark.index <= end_date)]
 
+    data = data.loc[start_date:end_date]
+    benchmark = benchmark.loc[start_date:end_date]
+
+    # 初始化现金和持仓
+    cash = 100
+    position = 0
+
+    # 计算每日收益
+    data['daily_return'] = (data['close'] - data['open'] - slippage) / (data['open'] + slippage) - commission
+
+    # 初始化策略收益和基准收益
+    data['strategy_return'] = 0
+    data['benchmark_return'] = (benchmark['close'] / benchmark['close'].shift(1)) - 1
+    data['cash'] = 0
+    data['position'] = 0
+    data['last_trade_date'] = pd.NaT # 最后一次交易日期
+
+    for i in range(1, len(data)):
+        # 判断是否满足T+1交易限制
+        if not pd.isnull(data.iloc[i - 1]['last_trade_date']):
+            days_since_last_trade = (data.iloc[i]['date'] - data.iloc[i - 1]['last_trade_date']).days
+            if days_since_last_trade <= 1:
+                data.iloc[i, data.columns.get_loc('strategy_return')] = 0
+                data.iloc[i, data.columns.get_loc('cash')] = cash
+                data.iloc[i, data.columns.get_loc('position')] = position
+                data.iloc[i, data.columns.get_loc('last_trade_date')] = data.iloc[i - 1]['last_trade_date']
+                continue
+
+        # 买入
+        buy_value = min(cash, data.iloc[i]['open'])
+        shares_to_buy = buy_value / (data.iloc[i]['open'] + slippage)
+        cash -= shares_to_buy * (data.iloc[i]['open'] + slippage)
+
+        # 增加持仓
+        position += shares_to_buy
+
+        # 卖出
+        sell_value = min(position * data.iloc[i]['close'], position * (data.iloc[i]['close'] - slippage))
+        shares_to_sell = sell_value / (data.iloc[i]['close'] - slippage)
+        cash += shares_to_sell * (data.iloc[i]['close'] - slippage)
+
+        # 减少持仓
+        position -= shares_to_sell
+
+        # 更新最后交易日期
+        data.iloc[i, data.columns.get_loc('last_trade_date')] = data.iloc[i]['date']
+
+        # 计算策略收益
+        data.iloc[i, data.columns.get_loc('strategy_return')] = (sell_value - buy_value) / (buy_value + slippage)
+        data.iloc[i, data.columns.get_loc('cash')] = cash
+        data.iloc[i, data.columns.get_loc('position')] = position
+
+    return data
 
 def backtest_strategy(data, benchmark, commission, slippage, start_date, end_date):
     data = data[(data.index >= start_date) & (data.index <= end_date)]
     benchmark = benchmark[(benchmark.index >= start_date) & (benchmark.index <= end_date)]
 
+    data = data.loc[start_date:end_date]
+    benchmark = benchmark.loc[start_date:end_date]
+
+    # 初始化现金和持仓
+    cash = 100
+    position = 0
+
+    # 计算每日收益
+    data['daily_return'] = (data['close'] - data['open'] - slippage) / (data['open'] + slippage) - commission
+
+    # 初始化策略收益和基准收益
+    data['strategy_return'] = 0
+    data['benchmark_return'] = (benchmark['close'] / benchmark['close'].shift(1)) - 1
+    data['cash'] = 0
+    data['position'] = 0
+    for i in range(1, len(data)):
+        # 买入
+        buy_value = min(cash, data.iloc[i]['open'])
+        shares_to_buy = buy_value / (data.iloc[i]['open'] + slippage)
+        cash -= shares_to_buy * (data.iloc[i]['open'] + slippage)
+
+        # 增加持仓
+        position += shares_to_buy
+
+        # 卖出
+        sell_value = min(position * data.iloc[i]['close'], position * (data.iloc[i]['close'] - slippage))
+        shares_to_sell = sell_value / (data.iloc[i]['close'] - slippage)
+        cash += shares_to_sell * (data.iloc[i]['close'] - slippage)
+
+        # 减少持仓
+        position -= shares_to_sell
+
+        # 计算策略收益
+        data.iloc[i, data.columns.get_loc('strategy_return')] = (sell_value - buy_value) / (buy_value + slippage)
+        data.iloc[i, data.columns.get_loc('cash')] = cash
+        data.iloc[i, data.columns.get_loc('position')] = position
     # data['daily_return'] = (data['close'] - data['open']) / data['open'] * (1 - commission - slippage)
-    data['daily_return'] = (data['close']- data['open'].shift(1)) / data['open'].shift(1)* (1 - commission - slippage)
-    data['cumulative_return'] = (1 + data['daily_return']).cumprod()
+    # data['daily_return'] = (data['close']- data['open'].shift(1)) / data['open'].shift(1)* (1 - commission - slippage)
+    data['cumulative_return'] = (1 + data['strategy_return']).cumprod()
     data['benchmark_daily_return'] = (benchmark['close'] - benchmark['close'].shift(1)) / benchmark['close'].shift(1)
     data['benchmark_cumulative_return'] = (1 + data['benchmark_daily_return']).cumprod()
     data['excess_return'] = data['cumulative_return'] - data['benchmark_cumulative_return']
+
+
 
     # data['drawdown'] = (data['cumulative_return'] / data['cumulative_return'].cummax()) - 1
     # max_drawdown = data['drawdown'].min()
@@ -79,7 +173,7 @@ if __name__ == '__main__':
     # data = pd.read_csv('data.csv', index_col=0, parse_dates=True)
     # benchmark = pd.read_csv('benchmark.csv', index_col=0, parse_dates=True)
     etf_kline_all = load_obj('etf_all')
-    zhengquan_kline = etf_kline_all['sz159905']
+    zhengquan_kline = etf_kline_all['sz159919']
     zhengquan_kline.loc[:, 'trade_date'] = zhengquan_kline.index
     pd.to_datetime(zhengquan_kline.loc[:, 'trade_date'])
     zhengquan_kline.set_index(pd.to_datetime(zhengquan_kline.loc[:, 'trade_date']), inplace=True)
@@ -89,8 +183,8 @@ if __name__ == '__main__':
 
     commission = 0.00006
     slippage = 0
-    start_date = '2018-01-01'
-    end_date = '2020-01-01'
+    start_date = '2014-01-01'
+    end_date = '2016-01-01'
 
     result = backtest_strategy(data, benchmark, commission, slippage, start_date, end_date)
     print(result)

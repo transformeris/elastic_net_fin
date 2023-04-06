@@ -67,7 +67,7 @@
 
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QGridLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QGridLayout,QStackedWidget
 from PyQt5.QtCore import Qt
 
 class MainWindow(QWidget):
@@ -79,6 +79,9 @@ class MainWindow(QWidget):
     def initUI(self):
         self.setGeometry(300, 300, 300, 200)
         self.setWindowTitle('PyQt Key Navigation Example with Button Highlight')
+
+
+
 
         grid = QGridLayout()
 

@@ -231,4 +231,4 @@ if __name__=='__main__':
 
     ak.stock_em_xjll(date="20200331")
 
-
+    ak.stock_financial_indicator()

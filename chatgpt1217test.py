@@ -6,6 +6,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         layout1 = QVBoxLayout()
+        layout2=QGridLayout()
         # 创建两个小部件
         self.widget1 = QWidget()
         self.widget2 = QWidget()
@@ -13,10 +14,16 @@ class MainWindow(QWidget):
         self.widget1.setLayout(layout1)
         # 将文本框添加到小部件1中
         self.widget1.layout().addWidget(textbox)
+
         # 创建按钮
         self.button1 = QPushButton("跳转到小部件1")
         self.button2 = QPushButton("跳转到小部件2")
+        self.button3 = QPushButton("跳转到小部件5")
 
+        self.widget1.layout().addWidget(self.button1)
+        self.widget2.setLayout(layout2)
+        self.widget2.layout().addWidget(self.button3)
+        self.widget2.layout().addWidget(self.button2)
         # 创建QStackedWidget容器
         self.stack = QStackedWidget()
         self.stack.addWidget(self.widget1)
@@ -28,8 +35,8 @@ class MainWindow(QWidget):
         # button2.keyPressEvent()
         # 创建布局并添加按钮和容器
         layout = QGridLayout()
-        layout.addWidget(self.button1)
-        layout.addWidget(self.button2)
+        # layout.addWidget(self.button1)
+        # layout.addWidget(self.button2)
         layout.addWidget(self.stack)
         self.setLayout(layout)
         self.selected_button_idx = 0

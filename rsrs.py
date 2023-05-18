@@ -151,7 +151,9 @@ if __name__=='__main__':
     S=0.7
     data2.loc[(data2['rsrs_std_cor_right'] > S) & (data2['trade_dir'] == -1), 'trade_dir'] = 0
 
-    
+    data = ak.stock_zh_a_daily(symbol='sh000001', start_date='20100101', end_date='20201231')
+
+    ak.stock_us_daily()
 
 
 

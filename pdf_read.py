@@ -1,6 +1,7 @@
 import pdfplumber
 import pdfplumber.page
 import pandas as pd
+
 import pickle
 def save_obj(obj, name):
     with open(name + '.pkl', 'wb') as f:
@@ -12,104 +13,104 @@ def load_obj(name):
         return pickle.load(f)
 res={}
 n=1
-# with pdfplumber.open(r'D:\onedrive\pythonProject/综合问答题库（多旋翼）.pdf') as pdf:
-#     print(pdfplumber.page.Page)
-#     zz=pdfplumber.page.Page
-#
-#     for page in pdf.pages:
-#         # 获取当前页面的全部文本信息，包括表格中的文字,没有内容则打印None
-#         res[n]=page.extract_text()
-#         n=n+1
-#         print(page.extract_text())
+with pdfplumber.open(r'D:\onedrive\文档\WXWork Files\File\2023-04\图纸\图纸\500 千伏鳌峰开关站扩建第一台主变工程电气二次图纸\D0202\446-B50081S-D0202-19 主变小室监控交换机屏一端子排图.pdf') as pdf:
+    print(pdfplumber.page.Page)
+    zz=pdfplumber.page.Page
+
+    for page in pdf.pages:
+        # 获取当前页面的全部文本信息，包括表格中的文字,没有内容则打印None
+        res[n]=page.extract_text()
+        n=n+1
+        print(page.extract_text())
 # save_obj(res,'综合问答题库（多旋翼）')
-
-zz=load_obj('综合问答题库（多旋翼）')
-text=str()
-res={}
-zzz=[]
-for i,j in zz.items():
-    text=text+j
-aa=range(0,236)
-aaa=[]
-for i in aa:
-    aaa.append(str(i))
-
-res={}
-text2=str()
-from collections import Counter
-for n in text.splitlines():
-    z=n.replace(' ','')
-    text2=text2+z
-for i in range(1,236):
-    t1=text2.split(str(i)+'.')[1].split(str(i+1)+'.')[0]
-    res[i]=t1
-res_timu={}
-res_A={}
-res_B={}
-res_gabage={}
-res_C={}
-
-
-
-for i,j in res.items():
-    if 'A、' in j and j.count('A、')==1:
-        res_timu[i]=j.split('A、')[0]
-        res_A[i]=j.split('A、')[1].split('B、')[0]
-        res_B[i]=j.split('A、')[1].split('B、')[1].split('C、')[0]
-        res_C[i]=j.split('A、')[1].split('B、')[1].split('C、')[1]
-    else:
-        res_gabage[i]=j
-res_gabage2={}
-for i,j in res_B.items():
-    if '参' in j or '考' in j or '答' in j or '案' in j:
-        res_gabage2[i]=j
-        res_B[i]=j.split('参')[0]
+#
+# zz=load_obj('综合问答题库（多旋翼）')
+# text=str()
+# res={}
+# zzz=[]
+# for i,j in zz.items():
+#     text=text+j
+# aa=range(0,236)
+# aaa=[]
+# for i in aa:
+#     aaa.append(str(i))
+#
+# res={}
+# text2=str()
+# from collections import Counter
+# for n in text.splitlines():
+#     z=n.replace(' ','')
+#     text2=text2+z
+# for i in range(1,236):
+#     t1=text2.split(str(i)+'.')[1].split(str(i+1)+'.')[0]
+#     res[i]=t1
+# res_timu={}
+# res_A={}
+# res_B={}
+# res_gabage={}
+# res_C={}
 
 
-res_gabage3={}
-res_gabage4={}
-res_gabage5={}
-for i, j in res_C.items():
-    if '参' in j or '考' in j or '答' in j or '案' in j:
-        res_gabage3[i] = j
-        # res_C[i] = j.split('参')[0]
-        if '参考' in j:
-            res_C[i] = j.split('参考')[0]
-            res_gabage4[i]=j
-
-        if '参考答案' in j:
-            res_C[i] = j.split('参考答案')[0]
-        elif '考答案' in j:
-            res_C[i] = j.split('考答案')[0]
-        elif '答案' in j:
-            res_C[i] = j.split('答案')[0]
-        elif '案' in j:
-            res_C[i] = j.split('案')[0]
-        else:
-            res_gabage5[i] = j
-
-res_daan={}
-gabage_daan={}
-for i,j in res.items():
-    if i in res_timu.keys():
-        jj=j.replace(res_timu[i],'')
-        jjj=jj.replace(res_A[i],'')
-        jjjj = jjj.replace(res_B[i], '')
-        jjjjj = jjjj.replace(res_C[i], '')
-        a=jjjjj.count('A')
-        b = jjjjj.count('B')
-        c = jjjjj.count('C')
-        if a==2 and b==1 and c==1:
-            res_daan[i]='A'
-        elif b==2 and a==1 and c==1:
-            res_daan[i]='B'
-        elif c==2 and a==1 and b==1:
-            res_daan[i]='C'
-        else:
-            gabage_daan[i]=j
-for i,j in gabage_daan.items():
-    res_daan[i]=j[-1]
-    res_C[i]=res_C[i][0:-1]
+#
+# for i,j in res.items():
+#     if 'A、' in j and j.count('A、')==1:
+#         res_timu[i]=j.split('A、')[0]
+#         res_A[i]=j.split('A、')[1].split('B、')[0]
+#         res_B[i]=j.split('A、')[1].split('B、')[1].split('C、')[0]
+#         res_C[i]=j.split('A、')[1].split('B、')[1].split('C、')[1]
+#     else:
+#         res_gabage[i]=j
+# res_gabage2={}
+# for i,j in res_B.items():
+#     if '参' in j or '考' in j or '答' in j or '案' in j:
+#         res_gabage2[i]=j
+#         res_B[i]=j.split('参')[0]
+#
+#
+# res_gabage3={}
+# res_gabage4={}
+# res_gabage5={}
+# for i, j in res_C.items():
+#     if '参' in j or '考' in j or '答' in j or '案' in j:
+#         res_gabage3[i] = j
+#         # res_C[i] = j.split('参')[0]
+#         if '参考' in j:
+#             res_C[i] = j.split('参考')[0]
+#             res_gabage4[i]=j
+#
+#         if '参考答案' in j:
+#             res_C[i] = j.split('参考答案')[0]
+#         elif '考答案' in j:
+#             res_C[i] = j.split('考答案')[0]
+#         elif '答案' in j:
+#             res_C[i] = j.split('答案')[0]
+#         elif '案' in j:
+#             res_C[i] = j.split('案')[0]
+#         else:
+#             res_gabage5[i] = j
+#
+# res_daan={}
+# gabage_daan={}
+# for i,j in res.items():
+#     if i in res_timu.keys():
+#         jj=j.replace(res_timu[i],'')
+#         jjj=jj.replace(res_A[i],'')
+#         jjjj = jjj.replace(res_B[i], '')
+#         jjjjj = jjjj.replace(res_C[i], '')
+#         a=jjjjj.count('A')
+#         b = jjjjj.count('B')
+#         c = jjjjj.count('C')
+#         if a==2 and b==1 and c==1:
+#             res_daan[i]='A'
+#         elif b==2 and a==1 and c==1:
+#             res_daan[i]='B'
+#         elif c==2 and a==1 and b==1:
+#             res_daan[i]='C'
+#         else:
+#             gabage_daan[i]=j
+# for i,j in gabage_daan.items():
+#     res_daan[i]=j[-1]
+#     res_C[i]=res_C[i][0:-1]
 # gabage_daan2={}
 # for i,j in res.items():
 #     if '参考答案：' in j:
@@ -136,17 +137,17 @@ for i,j in gabage_daan.items():
 #             print(daan)
 #             res_daan[i] = daan
 #     else:
-#         gabage_daan2[i]=j
-ec=pd.DataFrame()
-for i in res_timu.keys():
-    ec.loc[i,'题干']=res_timu[i]
-    ec.loc[i, '选项1'] = res_A[i]
-    ec.loc[i, '选项2'] = res_B[i]
-    ec.loc[i, '选项3'] = res_C[i]
-for i in res_daan.keys():
-    ec.loc[i, '答案'] = res_daan[i]
-ec.sort_index()
-ec.to_excel('综合问答3.xlsx')
+# #         gabage_daan2[i]=j
+# ec=pd.DataFrame()
+# for i in res_timu.keys():
+#     ec.loc[i,'题干']=res_timu[i]
+#     ec.loc[i, '选项1'] = res_A[i]
+#     ec.loc[i, '选项2'] = res_B[i]
+#     ec.loc[i, '选项3'] = res_C[i]
+# for i in res_daan.keys():
+#     ec.loc[i, '答案'] = res_daan[i]
+# ec.sort_index()
+# ec.to_excel('综合问答3.xlsx')
     # for i in aaa:
     #     if i in n:
     #         res[i]=n

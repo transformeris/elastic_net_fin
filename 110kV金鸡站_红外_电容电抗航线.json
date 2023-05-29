@@ -1,0 +1,1077 @@
+{
+    "areaSize": 0,
+    "autoflightLength": 0,
+    "autoflightPointsCount": 0,
+    "cameraDisplayName": 0,
+    "cameraHeading": 0,
+
+    "cameraMode": 0,
+    "cornerRadiusInMeters": 5,
+    "date": "2023-03-23T11:24:41",
+    "elecFenceBox": [
+    ],
+    "finishedAction": 1,
+    "flightPathMode": 0,
+    "gimbalMode": 2,
+    "gimbalPitchAngle": 0,
+    "height": 50,
+    "i_sideCamOverlap": 0,
+    "i_sideTaskOverlap": 0,
+    "imgFlightFov": 65.976288069603015,
+    "imgSideFov": 81.751366658685868,
+    "isSubstationTrajectory": false,
+    "lasorFov": 60,
+    "mainFlightAngle": 0,
+    "mainLineCount": 0,
+    "makeWayType": 0,
+    "origin": 1,
+    "overlapRatio": 0.59999999999999998,
+    "points": [
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 0,
+            "cornerRadiusInMeters": 5,
+            "dh": 39.974974441493075,
+            "gimbalPitch": 0,
+            "height": 39.974974441493075,
+            "isStart": true,
+            "keyID": -1,
+            "lat": 22.164859669108903,
+            "lng": 112.48228092945016,
+            "phaseSequence": "",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 0,
+            "cornerRadiusInMeters": 5,
+            "dh": 39.958391952479403,
+            "gimbalPitch": 0,
+            "height": 39.958391952479403,
+            "isStart": false,
+            "keyID": -3,
+            "lat": 22.164538123867402,
+            "lng": 112.48257993928158,
+            "phaseSequence": "",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 0,
+            "cornerRadiusInMeters": 5,
+            "dh": 39.988999175990145,
+            "gimbalPitch": 0,
+            "height": 39.988999175990145,
+            "isStart": false,
+            "keyID": -3,
+            "lat": 22.164549619811865,
+            "lng": 112.48259676356918,
+            "phaseSequence": "",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 90.000002699869313,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.722617673838659,
+            "gimbalPitch": -52.623594290371194,
+            "height": 17.722617673838659,
+            "isStart": false,
+            "keyID": 1,
+            "lat": 22.164550108725109,
+            "lng": 112.4825969819636,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": 90.000002699869313,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -52.623594290371194,
+                    "keyID": 1,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 102.6653111184458,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.596077966654821,
+            "gimbalPitch": -27.660264003057978,
+            "height": 17.596077966654821,
+            "isStart": false,
+            "keyID": 2,
+            "lat": 22.164580809705061,
+            "lng": 112.48256810761848,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": 102.6653111184458,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -27.660264003057978,
+                    "keyID": 2,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 126.46576853527731,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.648748207057043,
+            "gimbalPitch": -33.460206638114038,
+            "height": 17.648748207057043,
+            "isStart": false,
+            "keyID": 3,
+            "lat": 22.164608612668232,
+            "lng": 112.48261044266589,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": 126.46576853527731,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -33.460206638114038,
+                    "keyID": 3,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 170.85002327666001,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.538417625392004,
+            "gimbalPitch": -38.512057576744972,
+            "height": 17.538417625392004,
+            "isStart": false,
+            "keyID": 4,
+            "lat": 22.164640239423836,
+            "lng": 112.48266179424985,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": 170.85002327666001,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -38.512057576744972,
+                    "keyID": 4,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": -170.61291806245259,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.638199377024694,
+            "gimbalPitch": -49.835875823889097,
+            "height": 17.638199377024694,
+            "isStart": false,
+            "keyID": 9,
+            "lat": 22.164580224855953,
+            "lng": 112.48271103182769,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": -170.61291806245259,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -49.835875823889097,
+                    "keyID": 9,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": -86.31547205857909,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.623270559275671,
+            "gimbalPitch": -38.597558791411892,
+            "height": 17.623270559275671,
+            "isStart": false,
+            "keyID": 5,
+            "lat": 22.164573008370379,
+            "lng": 112.48273683411263,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": -86.31547205857909,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -38.597558791411892,
+                    "keyID": 5,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": -94.927929645783138,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.568640279734655,
+            "gimbalPitch": -42.830056437378239,
+            "height": 17.568640279734655,
+            "isStart": false,
+            "keyID": 10,
+            "lat": 22.164533369267282,
+            "lng": 112.48276984901905,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": -94.927929645783138,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -42.830056437378239,
+                    "keyID": 10,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": -60.536421887681584,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.679866600001379,
+            "gimbalPitch": -41.473959439732759,
+            "height": 17.679866600001379,
+            "isStart": false,
+            "keyID": 11,
+            "lat": 22.164509266990798,
+            "lng": 112.48274362503219,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": -60.536421887681584,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -41.473959439732759,
+                    "keyID": 11,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": -65.878634339075802,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.669842052424475,
+            "gimbalPitch": -27.849259525183584,
+            "height": 17.669842052424475,
+            "isStart": false,
+            "keyID": 12,
+            "lat": 22.164485254543902,
+            "lng": 112.48276070261964,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": -65.878634339075802,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -27.849259525183584,
+                    "keyID": 12,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": -2.8787512492289076,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.701286840403601,
+            "gimbalPitch": -41.355236979953652,
+            "height": 17.701286840403601,
+            "isStart": false,
+            "keyID": 13,
+            "lat": 22.164457155986387,
+            "lng": 112.48267610620684,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": -2.8787512492289076,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -41.355236979953652,
+                    "keyID": 13,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 45.825264934226837,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.633401679957434,
+            "gimbalPitch": -61.306547948848703,
+            "height": 17.633401679957434,
+            "isStart": false,
+            "keyID": 14,
+            "lat": 22.164481773357608,
+            "lng": 112.48264581892748,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": 45.825264934226837,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -61.306547948848703,
+                    "keyID": 14,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 19.567536373631558,
+            "cornerRadiusInMeters": 5,
+            "dh": 17.653522777522131,
+            "gimbalPitch": -48.467984404575262,
+            "height": 17.653522777522131,
+            "isStart": false,
+            "keyID": 15,
+            "lat": 22.164499650990624,
+            "lng": 112.48262790375713,
+            "phaseSequence": "左",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+                {
+                    "FocalLengthRatio": 1,
+                    "aircraftYaw": 19.567536373631558,
+                    "cameraType": 8,
+                    "captureCount": 1,
+                    "gimbalPitch": -48.467984404575262,
+                    "keyID": 15,
+                    "keyName": ""
+                }
+            ]
+        },
+        {
+            "SIMainWayPointType": "",
+            "aircraftYaw": 0,
+            "cornerRadiusInMeters": 5,
+            "dh": 39.857338714564364,
+            "gimbalPitch": 0,
+            "height": 39.857338714564364,
+            "isStart": false,
+            "keyID": -1,
+            "lat": 22.164862430354425,
+            "lng": 112.4822805588568,
+            "phaseSequence": "",
+            "towerName": "",
+            "turnMode": 0,
+            "yawPitchArray": [
+            ]
+        }
+    ],
+    "powerline": {
+        "boundaryPts": [
+        ],
+        "keyPoint": [
+            {
+                "ID": 1,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 12.861728112699534,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.16454978126092,
+                "lng": 112.48263298547862,
+                "pX": 652873.73513928871,
+                "pY": 2451786.8235978871,
+                "pZ": 12.861728112699534,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 2,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 13.370940077312072,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.164564153374638,
+                "lng": 112.48264420005074,
+                "pX": 652874.87611776928,
+                "pY": 2451788.4260981637,
+                "pZ": 13.370940077312072,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 3,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 13.275558180457978,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.16457262440537,
+                "lng": 112.48266166811973,
+                "pX": 652876.66837507335,
+                "pY": 2451789.3815580676,
+                "pZ": 13.275558180457978,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 4,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 12.992799946360346,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.1645892272889,
+                "lng": 112.48267006753933,
+                "pX": 652877.51662538864,
+                "pY": 2451791.2282031323,
+                "pZ": 12.992799946360346,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 5,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 12.96928660695526,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.164576905391488,
+                "lng": 112.48268045474192,
+                "pX": 652878.60113952996,
+                "pY": 2451789.8744456191,
+                "pZ": 12.96928660695526,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 9,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 12.030084459583254,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.164538118126579,
+                "lng": 112.48270310438743,
+                "pX": 652880.97884599015,
+                "pY": 2451785.6029262817,
+                "pZ": 12.030084459583254,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 10,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 11.871013552796006,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.164529140863475,
+                "lng": 112.48271042419115,
+                "pX": 652881.74341546383,
+                "pY": 2451784.6163808261,
+                "pZ": 11.871013552796006,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 11,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 13.486080133053013,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.16453070782033,
+                "lng": 112.48270379272964,
+                "pX": 652881.05784376722,
+                "pY": 2451784.7831881135,
+                "pZ": 13.486080133053013,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 12,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 13.476055446269367,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.16451519021988,
+                "lng": 112.48269076691628,
+                "pX": 652879.73131753772,
+                "pY": 2451783.0520409318,
+                "pZ": 13.476055446269367,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 13,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 12.828204250609048,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.164507116211936,
+                "lng": 112.4826739338621,
+                "pX": 652878.00411710178,
+                "pY": 2451782.1411765302,
+                "pZ": 12.828204250609048,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 14,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 12.381917006352726,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.164499681064484,
+                "lng": 112.48266599688367,
+                "pX": 652877.19364466285,
+                "pY": 2451781.3100021901,
+                "pZ": 12.381917006352726,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            },
+            {
+                "ID": 15,
+                "additionalPartInfo": [
+                ],
+                "cameraAngle": 4,
+                "cameraDistance": 1,
+                "cameraOrder": 0,
+                "captureCount": 1,
+                "circuitType": "",
+                "curAccountID": "",
+                "dh": 12.875698016356093,
+                "hardwareType": "",
+                "index": -1,
+                "isUsed": true,
+                "lat": 22.164535537817923,
+                "lng": 112.48264202344522,
+                "pX": 652874.68258914968,
+                "pY": 2451785.2557377005,
+                "pZ": 12.875698016356093,
+                "partName": "",
+                "partitionName": "",
+                "phaseSequence": "左",
+                "towerIndex": 1,
+                "towerSide": ""
+            }
+        ],
+        "originSafeDis": 0,
+        "safeBox": [
+        ],
+        "towerType": "",
+        "waypoint": [
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": -1,
+                "order": 3,
+                "pX": 652837.09399696277,
+                "pY": 2451820.7783204583,
+                "pZ": 39.974974441493075,
+                "rotationCenterX": 652870.73513928871,
+                "rotationCenterY": 2451786.8235978871,
+                "rotationCenterZ": 12.861728112699534,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": -3,
+                "order": 3,
+                "pX": 652868.27728863643,
+                "pY": 2451785.4795342949,
+                "pZ": 39.958391952479403,
+                "rotationCenterX": 652866.86315365718,
+                "rotationCenterY": 2451786.0933548477,
+                "rotationCenterZ": 19.486080157721563,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": -3,
+                "order": 3,
+                "pX": 652869.99988575862,
+                "pY": 2451786.7692481545,
+                "pZ": 39.988999175990145,
+                "rotationCenterX": 652868.27728863643,
+                "rotationCenterY": 2451785.4795342949,
+                "rotationCenterZ": 17.82032423015885,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 1,
+                "order": 3,
+                "pX": 652870.0218793957,
+                "pY": 2451786.8235980538,
+                "pZ": 17.722617673838659,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -52.623594290371194,
+                        "cameraType": 8,
+                        "cameraYaw": 90.000002699869313,
+                        "keyPosX": 652873.73513928871,
+                        "keyPosY": 2451786.8235978871,
+                        "keyPosZ": 12.861728112699534,
+                        "photoKeyID": 1
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 2,
+                "order": 3,
+                "pX": 652867.01098843501,
+                "pY": 2451790.1935786274,
+                "pZ": 17.596077966654821,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -27.660264003057978,
+                        "cameraType": 8,
+                        "cameraYaw": 102.6653111184458,
+                        "keyPosX": 652874.87611776928,
+                        "keyPosY": 2451788.4260981637,
+                        "keyPosZ": 13.370940077312072,
+                        "photoKeyID": 2
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 3,
+                "order": 3,
+                "pX": 652871.34678288386,
+                "pY": 2451793.3144110707,
+                "pZ": 17.648748207057043,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -33.460206638114038,
+                        "cameraType": 8,
+                        "cameraYaw": 126.46576853527731,
+                        "keyPosX": 652876.66837507335,
+                        "keyPosY": 2451789.3815580676,
+                        "keyPosZ": 13.275558180457978,
+                        "photoKeyID": 3
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 4,
+                "order": 3,
+                "pX": 652876.60828228877,
+                "pY": 2451796.8676754502,
+                "pZ": 17.538417625392004,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -38.512057576744972,
+                        "cameraType": 8,
+                        "cameraYaw": 170.85002327666001,
+                        "keyPosX": 652877.51662538864,
+                        "keyPosY": 2451791.2282031323,
+                        "keyPosZ": 12.992799946360346,
+                        "photoKeyID": 4
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": true,
+                "keyID": 9,
+                "order": 3,
+                "pX": 652881.75084896968,
+                "pY": 2451790.2727521923,
+                "pZ": 17.638199377024694,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -49.835875823889097,
+                        "cameraType": 8,
+                        "cameraYaw": 189.38708193754741,
+                        "keyPosX": 652880.97884599015,
+                        "keyPosY": 2451785.6029262817,
+                        "keyPosZ": 12.030084459583254,
+                        "photoKeyID": 9
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 5,
+                "order": 3,
+                "pX": 652884.41954251216,
+                "pY": 2451789.4997641114,
+                "pZ": 17.623270559275671,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -38.597558791411892,
+                        "cameraType": 8,
+                        "cameraYaw": -86.31547205857909,
+                        "keyPosX": 652878.60113952996,
+                        "keyPosY": 2451789.8744456191,
+                        "keyPosZ": 12.96928660695526,
+                        "photoKeyID": 5
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 10,
+                "order": 3,
+                "pX": 652887.86710186885,
+                "pY": 2451785.1443730858,
+                "pZ": 17.568640279734655,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -42.830056437378239,
+                        "cameraType": 8,
+                        "cameraYaw": 265.07207035421686,
+                        "keyPosX": 652881.74341546383,
+                        "keyPosY": 2451784.6163808261,
+                        "keyPosZ": 11.871013552796006,
+                        "photoKeyID": 10
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 11,
+                "order": 3,
+                "pX": 652885.18878003047,
+                "pY": 2451782.4494821099,
+                "pZ": 17.679866600001379,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -41.473959439732759,
+                        "cameraType": 8,
+                        "cameraYaw": -60.536421887681584,
+                        "keyPosX": 652881.05784376722,
+                        "keyPosY": 2451784.7831881135,
+                        "keyPosZ": 13.486080133053013,
+                        "photoKeyID": 11
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 12,
+                "order": 3,
+                "pX": 652886.97588940547,
+                "pY": 2451779.8081447151,
+                "pZ": 17.669842052424475,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -27.849259525183584,
+                        "cameraType": 8,
+                        "cameraYaw": -65.878634339075802,
+                        "keyPosX": 652879.73131753772,
+                        "keyPosY": 2451783.0520409318,
+                        "keyPosZ": 13.476055446269367,
+                        "photoKeyID": 12
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 13,
+                "order": 3,
+                "pX": 652878.28215619014,
+                "pY": 2451776.6120225457,
+                "pZ": 17.701286840403601,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -41.355236979953652,
+                        "cameraType": 8,
+                        "cameraYaw": -2.8787512492289076,
+                        "keyPosX": 652878.00411710178,
+                        "keyPosY": 2451782.1411765302,
+                        "keyPosZ": 12.828204250609048,
+                        "photoKeyID": 13
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 14,
+                "order": 3,
+                "pX": 652875.13212796138,
+                "pY": 2451779.3070327309,
+                "pZ": 17.633401679957434,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -61.306547948848703,
+                        "cameraType": 8,
+                        "cameraYaw": 45.825264934226837,
+                        "keyPosX": 652877.19364466285,
+                        "keyPosY": 2451781.3100021901,
+                        "keyPosZ": 12.381917006352726,
+                        "photoKeyID": 14
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": 15,
+                "order": 3,
+                "pX": 652873.26527615474,
+                "pY": 2451781.2683126,
+                "pZ": 17.653522777522131,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                    {
+                        "FocalLengthRatio": 1,
+                        "cameraPitch": -48.467984404575262,
+                        "cameraType": 8,
+                        "cameraYaw": 19.567536373631558,
+                        "keyPosX": 652874.68258914968,
+                        "keyPosY": 2451785.2557377005,
+                        "keyPosZ": 12.875698016356093,
+                        "photoKeyID": 15
+                    }
+                ]
+            },
+            {
+                "IDFromMainWayPoint": -1,
+                "SIMainWayPointType": "",
+                "isEmergencyReturnPoint": false,
+                "keyID": -1,
+                "order": 3,
+                "pX": 652837.05279465602,
+                "pY": 2451821.0836583641,
+                "pZ": 39.857338714564364,
+                "rotationCenterX": 652872.64694452169,
+                "rotationCenterY": 2451786.0013305531,
+                "rotationCenterZ": 9.4885424950266231,
+                "towerIndex": 1,
+                "yawPitchArray": [
+                ]
+            }
+        ]
+    },
+    "sideOverlapRation": 0.45000000000000001,
+    "speed": 5,
+    "startHeight": 0,
+    "startPosx": 0,
+    "startPosy": 0,
+    "substationVirtualTowerPosX": 652877.89909756032,
+    "substationVirtualTowerPosY": 2451786.04127962,
+    "substationVirtualTowerPosZ": 12.868280482400392,
+    "taskname": "110kV金鸡站_红外_电容电抗航线",
+    "type": 0,
+    "updateTime": "2023-03-23T11:24:41",
+    "uploaded": false,
+    "webplannedtimeinterval": 2,
+    "yawMode": 0
+}

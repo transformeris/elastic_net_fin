@@ -2,8 +2,14 @@ import backtrader as bt
 import akshare as ak
 import pandas as pd
 import datetime
+import numpy as np
 import json
 import warnings
+import docx
+import backtrader as bt
+import backtrader.analyzers as btanalyzers
+import backtrader.feeds as btfeeds
+import backtrader.strategies as btstrats
 
 class RSRS(bt.Indicator):
     lines = ('rsrs',)
@@ -25,150 +31,249 @@ class RSRS(bt.Indicator):
         denominator = sum((x[i] - x_mean) ** 2 for i in range(self.rolling_window))
         self.lines.rsrs[0] = numerator / denominator
 
+
 class ETFBacktest(bt.Strategy):
     params = (
-        ('etf1', '510050.SH'), # 创成长ETF
-        ('etf2', '510880.SH'), # 红利低波ETF
-        ('period', 25), # 计算涨跌幅的周期
-        ('rebalance_days', 1), # 调仓周期
+        ('growth_etf', '510050.SH'),  # 创成长ETF
+        ('dividend_etf', '510880.SH'),  # 红利低波ETF
+        ('period', 25),  # 计算涨跌幅的周期
+        ('rebalance_days', 1),  # 调仓周期
         ('commission', 0.0001),  # 手续费
-        ('rsrs_threshold', 0)  # RSRS指标阈值
+        ('rsrs_threshold', -1)  # RSRS指标阈值
     )
 
     def __init__(self):
-        cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name='trade_analyzer')
-        cerebro.addanalyzer(bt.analyzers.DrawDown, _name='drawdown')
-        cerebro.addanalyzer(bt.analyzers.SharpeRatio_A, _name='sharpe')
-        self.etf1 = self.datas[0]
-        print('cusk',etf1_data)
-        self.etf2 = self.datas[1]
+
+
+
+
+        self.returns = []
+        self.max_drawdown = None
+        self.sharpe_ratio = None
+        self.information_ratio = None
+        self.win_rate = None
+
+        self.growth_etf = self.datas[0]
+        self.dividend_etf = self.datas[1]
         self.rebalance_counter = 0
 
         self.log_returns = []
-        self.log_df = pd.DataFrame(columns=['date', 'etf1_position', 'etf2_position', 'total_position', 'cash'])
-        self.rsrs = RSRS(self.etf1.close, period=self.params.period)
+        self.log_df = pd.DataFrame(columns=[
+            'date', 'growth_etf_position', 'dividend_etf_position',
+            'total_position', 'cash', 'calculate_returns_growth_etf',
+            'calculate_returns_dividend_etf','value'
+        ])
+
+        self.rsrs = RSRS(self.growth_etf.close, period=self.params.period)
         self.zscore = (self.rsrs - pd.Series(self.rsrs)) / bt.indicators.StandardDeviation(self.rsrs)
+
         cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name='trade_analyzer')
         self.trade_type = None
 
-
-    def record_trade(self):
-        if abs(self.zscore[0]) < 0.1 and self.trade_type != 'none':
-            if self.trade_type == 'long':
-                self.trade_pnl = (self.etf1.close[0] - self.trade_price) * self.trade_size - self.trade_commission
-            elif self.trade_type == 'short':
-                self.trade_pnl = (self.trade_price - self.etf2.close[0]) * self.trade_size - self.trade_commission
-            self.trade_dict['date'].append(self.trade_date)
-            self.trade_dict['type'].append(self.trade_type)
-            self.trade_dict['size'].append(self.trade_size)
-            self.trade_dict['price'].append(self.trade_price)
-            self.trade_dict['commission'].append(self.trade_commission)
-            self.trade_dict['pnl'].append(self.trade_pnl)
-            self.trade_size = None
-            self.trade_price = None
-            self.trade_type = None
-            self.trade_date = None
-            self.trade_commission = None
-            self.trade_pnl = None
-
     def next(self):
+        """
+        This method is called for each new bar (or candle) in the data feed.
+        It is used to calculate the RSRS indicator, check if it is above the
+        threshold, and place orders accordingly.
+        """
         if self.rebalance_counter == self.params.rebalance_days:
             self.rebalance_counter = 0
-            etf1_returns = self.calculate_returns(self.etf1)
-            etf2_returns = self.calculate_returns(self.etf2)
-            if self.rsrs[0] > self.params.rsrs_threshold:
-                if etf1_returns > etf2_returns:
-                    self.order_target_percent(self.etf2, target=0)
-                    self.order_target_percent(self.etf1, target=1.0)
+            growth_etf_returns = self.calculate_returns(self.growth_etf)
+            dividend_etf_returns = self.calculate_returns(self.dividend_etf)
 
+            if self.rsrs[0] > self.params.rsrs_threshold:
+                if growth_etf_returns > dividend_etf_returns:
+                    self.order_target_percent(self.dividend_etf, target=0)
+                    self.order_target_percent(self.growth_etf, target=1.0)
+
+                    self.trade_size = int(self.broker.getcash() / self.growth_etf.close[0])
+                    self.trade_price = self.growth_etf.close[0]
+                    self.trade_type = 'short'
+                    self.trade_date = self.data.datetime.date(0)
+                    self.trade_commission = self.trade_size * self.trade_price * self.params.commission
 
                 else:
-                    self.order_target_percent(self.etf1, target=0)
-                    self.order_target_percent(self.etf2, target=1.0)
+                    self.order_target_percent(self.growth_etf, target=0)
+                    self.order_target_percent(self.dividend_etf, target=1.0)
 
-                    self.trade_size = int(self.broker.getcash() / self.etf2.close[0])
-                    self.trade_price = self.etf2.close[0]
+                    self.trade_size = int(self.broker.getcash() / self.dividend_etf.close[0])
+                    self.trade_price = self.dividend_etf.close[0]
                     self.trade_type = 'short'
                     self.trade_date = self.data.datetime.date(0)
                     self.trade_commission = self.trade_size * self.trade_price * self.params.commission
             else:
-                self.order_target_percent(self.etf1, target=0)
-                self.order_target_percent(self.etf2, target=0)
-                self.record_trade()
+                self.order_target_percent(self.growth_etf, target=0)
+                self.order_target_percent(self.dividend_etf, target=0)
+
         self.rebalance_counter += 1
-        self.log_returns.append([self.datas[0].datetime.date(0), self.calculate_returns(self.etf1), self.calculate_returns(self.etf2),self.log_returns])
+
+        self.log_returns.append([
+            self.datas[0].datetime.date(0),
+            self.calculate_returns(self.growth_etf),
+            self.calculate_returns(self.dividend_etf),
+            self.log_returns
+        ])
+
         # 计算持仓股、份额、账户总份额和现金等信息
-        position_etf1 = self.getposition(self.etf1).size
-        position_etf2 = self.getposition(self.etf2).size
-        total_position = position_etf1 + position_etf2
+        growth_etf_position = self.getposition(self.growth_etf).size
+        dividend_etf_position = self.getposition(self.dividend_etf).size
+        total_position = growth_etf_position + dividend_etf_position
         cash = self.broker.get_cash()
         date = self.datas[0].datetime.date(0)
-        calculate_returns_etf1 = self.calculate_returns(self.etf1)
-        calculate_returns_etf2 = self.calculate_returns(self.etf2)
+        calculate_returns_growth_etf = self.calculate_returns(self.growth_etf)
+        calculate_returns_dividend_etf = self.calculate_returns(self.dividend_etf)
+        value = self.broker.getvalue()
 
         # 将信息添加到log_df中
-        self.log_df = self.log_df.append({'date': date, 'etf1_position': position_etf1, 'etf2_position': position_etf2,
-                                          'total_position': total_position, 'cash': cash,'calculate_returns_etf1':calculate_returns_etf1,'calculate_returns_etf2':calculate_returns_etf2}, ignore_index=True)
+        self.log_df = self.log_df.append({
+            'date': date,
+            'growth_etf_position': growth_etf_position,
+            'dividend_etf_position': dividend_etf_position,
+            'total_position': total_position,
+            'cash': cash,
+            'calculate_returns_growth_etf': calculate_returns_growth_etf,
+            'calculate_returns_dividend_etf': calculate_returns_dividend_etf,
+            'value': value
+        }, ignore_index=True)
 
     def calculate_returns(self, data):
         returns = (data.close[0] - data.close[-self.params.period]) / data.close[-self.params.period]
         return returns
+    def get_log_df(self):
+        return self.log_df
 
     def stop(self):
-        trades = pd.DataFrame.from_dict(self.trade_dict)
-        trades.set_index('date', inplace=True)
-        trades.to_csv('trades.csv')
-        # self.log_df.to_csv('backtest_log.csv', index=False)
-        # returns = self.broker.getvalue() / self.broker.getcash() - 1.0
-        # max_drawdown = self.analyzers.drawdown.get_analysis()['max']['drawdown']
-        # trade_analyzer = self.analyzers.trade_analyzer.get_analysis()
-        # # sharpe_dict = self.analyzers.sharpe.get_analysis()
-        # sharpe_dict = self.analyzers.sharpe.get_analysis()
-        # print(trade_analyzer)
-        # # sharpe_ratio = self.analyzers.sharpe.get_analysis()['len']
-        # # sharpe_ratio = self.analyzers.Sharpe.get_analysis()['len']
-        # # information_ratio = self.stats.inforatio.get_analysis()['rnorm100']
-        # # win_rate = self.stats.won.total / self.stats.len.total
-        #
-        # # 将回测指标转换为JSON格式
-        # results = {
-        #     'returns': returns,
-        #     'max_drawdown': max_drawdown,
-        #     # 'sharpe_ratio': sharpe_ratio,
-        #     # 'information_ratio': information_ratio,
-        #     # 'win_rate': win_rate
-        # }
-        # results_json = json.dumps(results)
-        # print(results_json)
-        #
-        # # 将JSON格式的回测指标写入文件中
-        # with open('backtest_results.json', 'w') as f:
-        #     f.write(results_json)
+        print(self.log_df)
 
+
+        # self.returns = self.broker.getvalue() / self.broker.getcash() - 1.0
+        # self.max_drawdown = self.analyzers.drawdown.get_analysis()['max']['drawdown']
+        # trade_analyzer = self.analyzers.trade_analyzer.get_analysis()
+        #
+        # self.win_rate = trade_analyzer['won']['total'] / trade_analyzer['total']['total']
+        # self.sharpe_ratio = self.analyzers.sharpe.get_analysis()
+        #
+        # self.information_ratio = self.stats.inforatio.get_analysis()
 
 
 if __name__ == '__main__':
     cerebro = bt.Cerebro()
     cerebro.addstrategy(ETFBacktest)
-    etf1_data = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
-    etf2_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
-    etf1_data.rename(
-        columns={'日期': 'date', '收盘': 'close', '开盘': 'open', '最高': 'high', '最低': 'low', '成交量': 'volume', '成交额': 'amount',
-                 '振幅': 'amplitude', '涨跌幅': 'pct_change'}, inplace=True)
-    etf2_data.rename(
-        columns={'日期': 'date', '收盘': 'close', '开盘': 'open', '最高': 'high', '最低': 'low', '成交量': 'volume', '成交额': 'amount',
-                 '振幅': 'amplitude', '涨跌幅': 'pct_change'}, inplace=True)
-    etf1_data.set_index(pd.to_datetime(etf1_data.loc[:, 'date']), inplace=True)
-    etf2_data.set_index(pd.to_datetime(etf2_data.loc[:, 'date']), inplace=True)
+
+    growth_etf_data = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
+    dividend_etf_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
+
+    growth_etf_data.rename(
+        columns={
+            '日期': 'date', '收盘': 'close', '开盘': 'open', '最高': 'high',
+            '最低': 'low', '成交量': 'volume', '成交额': 'amount',
+            '振幅': 'amplitude', '涨跌幅': 'pct_change'
+        },
+        inplace=True
+    )
+
+    dividend_etf_data.rename(
+        columns={
+            '日期': 'date', '收盘': 'close', '开盘': 'open', '最高': 'high',
+            '最低': 'low', '成交量': 'volume', '成交额': 'amount',
+            '振幅': 'amplitude', '涨跌幅': 'pct_change'
+        },
+        inplace=True
+    )
+
+    growth_etf_data.set_index(pd.to_datetime(growth_etf_data.loc[:, 'date']), inplace=True)
+    dividend_etf_data.set_index(pd.to_datetime(dividend_etf_data.loc[:, 'date']), inplace=True)
 
     start_date = datetime.datetime(2018, 1, 1)
     end_date = datetime.datetime(2023, 12, 31)
-    etf1_data = bt.feeds.PandasData(dataname=etf1_data, fromdate=start_date, todate=end_date)
-    etf2_data = bt.feeds.PandasData(dataname=etf2_data, fromdate=start_date, todate=end_date)
-    cerebro.adddata(etf1_data)
-    cerebro.adddata(etf2_data)
+
+    growth_etf_data = bt.feeds.PandasData(dataname=growth_etf_data, fromdate=start_date, todate=end_date)
+    dividend_etf_data = bt.feeds.PandasData(dataname=dividend_etf_data, fromdate=start_date, todate=end_date)
+
+    cerebro.adddata(growth_etf_data)
+    cerebro.adddata(dividend_etf_data)
+
     cerebro.broker.setcash(1000000.0)
     cerebro.run()
-    cerebro.plot()
 
-    # cerebro.plot(data0=etf1_data, data1=etf2_data)
+    cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name='trade_analyzer')  # 交易分析
+    cerebro.addanalyzer(bt.analyzers.DrawDown, _name='drawdown')  # 最大回撤
+    cerebro.addanalyzer(bt.analyzers.SharpeRatio_A, _name='sharpe')  # 夏普比率
+    cerebro.addanalyzer(bt.analyzers.Returns, _name='returns')  # 收益率
+    cerebro.addanalyzer(bt.analyzers.TimeDrawDown, _name='timedrawdown')  # 时间最大回撤
+    cerebro.addanalyzer(bt.analyzers.SQN, _name='sqn')  # SQN
+    cerebro.addanalyzer(bt.analyzers.Transactions, _name='transactions')  # 交易记录
+    cerebro.addanalyzer(bt.analyzers.VWR, _name='vwr')  # 年化收益率
+    cerebro.addanalyzer(bt.analyzers.PyFolio, _name='pyfolio')  # pyfolio分析
+    cerebro.addanalyzer(bt.analyzers.PeriodStats, _name='periodstats')  # 周期分析
+    cerebro.addanalyzer(bt.analyzers.GrossLeverage, _name='grossLeverage')  # 杠杆
+    cerebro.addanalyzer(bt.analyzers.PositionsValue, _name='positionsValue')  # 持仓价值
+    cerebro.addanalyzer(bt.analyzers.LogReturnsRolling, _name='logreturnsrolling')  # 对数收益率
+    cerebro.addanalyzer(bt.analyzers.TimeReturn, _name='timereturn')  # 时间收益率
+    cerebro.addanalyzer(bt.analyzers.Calmar, _name='calmar')  # 卡玛比率
+
+    strat = cerebro.run()[0]
+    # print('最终资金: %.2f' % cerebro.broker.getvalue())
+    # print('夏普比率:', strat.analyzers.SharpeRatio.get_analysis())
+    # print('回撤指标:', strat.analyzers.DW.get_analysis())
+    cerebro.plot()
+    # strategy = cerebro.runstrats[0][0]
+    # log_df = strategy.get_log_df()
+
+    sharp= strat.analyzers.timedrawdown.get_analysis()
+
+    trade_analyzer = strat.analyzers.trade_analyzer.get_analysis()
+    drawdown = strat.analyzers.drawdown.get_analysis()
+    sharpe = strat.analyzers.sharpe.get_analysis()
+    returns = strat.analyzers.returns.get_analysis()
+    timedrawdown = strat.analyzers.timedrawdown.get_analysis()
+    sqn = strat.analyzers.sqn.get_analysis()
+    transactions = strat.analyzers.transactions.get_analysis()
+    vwr = strat.analyzers.vwr.get_analysis()
+    pyfolio = strat.analyzers.pyfolio.get_analysis()
+    periodstats = strat.analyzers.periodstats.get_analysis()
+    grossLeverage = strat.analyzers.grossLeverage.get_analysis()
+    positionsValue = strat.analyzers.positionsValue.get_analysis()
+    logreturnsrolling = strat.analyzers.logreturnsrolling.get_analysis()
+    timereturn = strat.analyzers.timereturn.get_analysis()
+    calmar = strat.analyzers.calmar.get_analysis()
+
+    # 打印结果
+    print('Trade Analyzer:', trade_analyzer)
+    print('Drawdown:', drawdown)
+    print('Sharpe Ratio:', sharpe)
+    print('Returns:', returns)
+    print('Time Drawdown:', timedrawdown)
+    print('SQN:', sqn)
+    print('Transactions:', transactions)
+    print('VWR:', vwr)
+    print('PyFolio:', pyfolio)
+    print('Period Stats:', periodstats)
+    print('Gross Leverage:', grossLeverage)
+    print('Positions Value:', positionsValue)
+    print('Log Returns Rolling:', logreturnsrolling)
+    print('Time Return:', timereturn)
+    print('Calmar Ratio:', calmar)
+
+    strategy = cerebro.runstrats[0][0]
+    log_df = strategy.get_log_df()
+    values=list(log_df.loc[:, 'value'])
+    dates=list(log_df.loc[:, 'date'])
+    # 计算每个时间点的净值相对于之前的最高净值的回撤值
+    max_values = np.maximum.accumulate(values)
+    drawdowns = (max_values - values) / max_values
+
+    # 找到回撤值最大的时间点，即最大回撤发生的时间点
+    max_drawdown_index = np.argmax(drawdowns)
+
+    # 找到最大回撤发生的开始时间和结束时间
+    end_index = max_drawdown_index
+    start_index = np.argmax(values[:max_drawdown_index])
+    max_drawdown_start_date = dates[start_index]
+    max_drawdown_end_date = dates[end_index]
+
+    # 打印结果
+    print('Max Drawdown:', drawdowns[max_drawdown_index])
+    print('Max Drawdown Start Date:', max_drawdown_start_date)
+    print('Max Drawdown End Date:', max_drawdown_end_date)
+

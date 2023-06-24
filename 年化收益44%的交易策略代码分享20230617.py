@@ -65,8 +65,8 @@ if __name__ == '__main__':
 
     etf1_data, etf2_data = etf1_data.align(etf2_data, join='inner')
     # 计算涨跌幅
-    etf1_pct_change = etf1_data['close'].pct_change(periods=21)
-    etf2_pct_change = etf2_data['close'].pct_change(periods=21)
+    etf1_pct_change = etf1_data['close'].pct_change(periods=25)
+    etf2_pct_change = etf2_data['close'].pct_change(periods=25)
 
     signals_df = pd.DataFrame(index=etf1_data.index)
     signals_df['signal'] = pd.Series(np.where(etf1_pct_change > etf2_pct_change, 'buy_etf1', 'buy_etf2'),

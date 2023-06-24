@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b9783557-5988-400b-af72-16fc28312c61" name="Default Changelist" comment="Default Changelist">
+      <change afterPath="$PROJECT_DIR$/chaozuopiaokfenxi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/年化收益44%的交易策略代码分享.py" beforeDir="false" afterPath="$PROJECT_DIR$/年化收益44%的交易策略代码分享.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/年化收益44%的交易策略代码分享20230617.py" beforeDir="false" afterPath="$PROJECT_DIR$/年化收益44%的交易策略代码分享20230617.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/操作票分析.py" beforeDir="false" afterPath="$PROJECT_DIR$/操作票分析.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Stub" />
+        <option value="Python Unit Test" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="KEEP" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Roaming/Python/Python38/site-packages/akshare/stock_feature/stock_three_report_em.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/../../Anaconda/Lib/site-packages/backtrader/feeds/pandafeed.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/../../Anaconda/Lib/site-packages/pandas/core/frame.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/../../Anaconda/Lib/site-packages/pandas/core/generic.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/../../Anaconda/Lib/site-packages/scipy/special/_testutils.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backtest_log.csv" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/backtrade_gpt4.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/caibaofenxi.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/chatgpt_backtrader.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/coploitx_tiaojiao.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/elastic_net_function_pool_2021_12_26.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/super_dingtou.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/yunxinjinshai.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/年化收益44%的交易策略代码分享.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="1uVtdBSCekQ4SzgjumPwGnK3AJI" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/onedrive/pythonProject&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\onedrive\pythonProject" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.年化收益44%的交易策略代码分享">
+    <configuration name="操作票分析" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="worm_eastmoney" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/操作票分析.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="年化收益44%的交易策略代码分享" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="worm_eastmoney" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/年化收益44%的交易策略代码分享.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="年化收益44%的交易策略代码分享20230617" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="worm_eastmoney" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/年化收益44%的交易策略代码分享20230617.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="worm_eastmoney" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="chaozuopiaokfenxi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="worm_eastmoney" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/chaozuopiaokfenxi.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="coploitx_tiaojiao" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="worm_eastmoney" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coploitx_tiaojiao.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.chaozuopiaokfenxi" />
+      <item itemvalue="Python.年化收益44%的交易策略代码分享20230617" />
+      <item itemvalue="Python.操作票分析" />
+      <item itemvalue="Python.年化收益44%的交易策略代码分享" />
+      <item itemvalue="Python.coploitx_tiaojiao" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.年化收益44%的交易策略代码分享" />
+        <item itemvalue="Python.年化收益44%的交易策略代码分享20230617" />
+        <item itemvalue="Python.操作票分析" />
+        <item itemvalue="Python.chaozuopiaokfenxi" />
+        <item itemvalue="Python.coploitx_tiaojiao" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b9783557-5988-400b-af72-16fc28312c61" name="Default Changelist" comment="" />
+      <created>1624762668285</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1624762668285</updated>
+      <workItem from="1624762669826" duration="647000" />
+      <workItem from="1624955858084" duration="2166000" />
+      <workItem from="1624958101532" duration="23080000" />
+      <workItem from="1625449602326" duration="22006000" />
+      <workItem from="1625584991047" duration="32469000" />
+      <workItem from="1625966367233" duration="2844000" />
+      <workItem from="1625970294607" duration="754000" />
+      <workItem from="1626423190334" duration="12868000" />
+      <workItem from="1626948592346" duration="3044000" />
+      <workItem from="1626960193967" duration="58399000" />
+      <workItem from="1627562113797" duration="7163000" />
+      <workItem from="1627892177794" duration="3000" />
+      <workItem from="1628172572512" duration="2000" />
+      <workItem from="1629188356249" duration="1069000" />
+      <workItem from="1630978151952" duration="10635000" />
+      <workItem from="1631083223048" duration="14657000" />
+      <workItem from="1631697160953" duration="6000" />
+      <workItem from="1631755717878" duration="7000" />
+      <workItem from="1632656197689" duration="2833000" />
+      <workItem from="1633146696212" duration="8705000" />
+      <workItem from="1634087437023" duration="7075000" />
+      <workItem from="1634604351314" duration="16262000" />
+      <workItem from="1635468336875" duration="10000" />
+      <workItem from="1635689720409" duration="13000" />
+      <workItem from="1636898887068" duration="5000" />
+      <workItem from="1640140016808" duration="38819000" />
+      <workItem from="1641204178065" duration="4582000" />
+      <workItem from="1641345300957" duration="7418000" />
+      <workItem from="1641624119613" duration="60000" />
+      <workItem from="1643026432284" duration="144000" />
+      <workItem from="1643182831573" duration="3687000" />
+      <workItem from="1643334005108" duration="18588000" />
+      <workItem from="1644195168141" duration="35686000" />
+      <workItem from="1644455922034" duration="24817000" />
+      <workItem from="1644998255932" duration="17707000" />
+      <workItem from="1645151099752" duration="58729000" />
+      <workItem from="1646831578610" duration="10560000" />
+      <workItem from="1647179670441" duration="296000" />
+      <workItem from="1647344034382" duration="30744000" />
+      <workItem from="1648261930321" duration="1803000" />
+      <workItem from="1648353172659" duration="10015000" />
+      <workItem from="1649066995161" duration="3695000" />
+      <workItem from="1650681374685" duration="35000" />
+      <workItem from="1650717887590" duration="594000" />
+      <workItem from="1651307794991" duration="9997000" />
+      <workItem from="1651372476869" duration="2057000" />
+      <workItem from="1651398485160" duration="2923000" />
+      <workItem from="1651411169303" duration="370000" />
+      <workItem from="1651411735896" duration="589000" />
+      <workItem from="1651413243474" duration="95000" />
+      <workItem from="1651413437713" duration="11393000" />
+      <workItem from="1651632269460" duration="12947000" />
+      <workItem from="1652005743991" duration="2204000" />
+      <workItem from="1652601402606" duration="11000" />
+      <workItem from="1653046298747" duration="21857000" />
+      <workItem from="1653311171742" duration="7173000" />
+      <workItem from="1654224741602" duration="104000" />
+      <workItem from="1654224881226" duration="3474000" />
+      <workItem from="1654233697774" duration="379000" />
+      <workItem from="1654257721107" duration="243000" />
+      <workItem from="1654257977250" duration="1314000" />
+      <workItem from="1654259422117" duration="985000" />
+      <workItem from="1654260532505" duration="91000" />
+      <workItem from="1654260647369" duration="408000" />
+      <workItem from="1654261087475" duration="2023000" />
+      <workItem from="1654864281269" duration="144000" />
+      <workItem from="1654864446037" duration="171000" />
+      <workItem from="1654864640265" duration="3015000" />
+      <workItem from="1655558741404" duration="4884000" />
+      <workItem from="1655642831286" duration="422000" />
+      <workItem from="1656983338201" duration="48815000" />
+      <workItem from="1657423166806" duration="40197000" />
+      <workItem from="1658066743574" duration="2736000" />
+      <workItem from="1658151937857" duration="33955000" />
+      <workItem from="1658844192755" duration="29000" />
+      <workItem from="1659268258859" duration="1733000" />
+      <workItem from="1659603537322" duration="350000" />
+      <workItem from="1659603943706" duration="7021000" />
+      <workItem from="1659632115937" duration="35584000" />
+      <workItem from="1660109319566" duration="26188000" />
+      <workItem from="1660658001706" duration="28531000" />
+      <workItem from="1661478893760" duration="2488000" />
+      <workItem from="1661677500552" duration="14870000" />
+      <workItem from="1662170948750" duration="10479000" />
+      <workItem from="1662259239989" duration="21943000" />
+      <workItem from="1662900788268" duration="54000" />
+      <workItem from="1662975480368" duration="2761000" />
+      <workItem from="1663552210434" duration="6000" />
+      <workItem from="1663552302859" duration="17000" />
+      <workItem from="1663552446767" duration="2000" />
+      <workItem from="1663576413897" duration="2844000" />
+      <workItem from="1663674343191" duration="12813000" />
+      <workItem from="1663987786019" duration="2475000" />
+      <workItem from="1664096740305" duration="6902000" />
+      <workItem from="1664963723772" duration="14186000" />
+      <workItem from="1665488014569" duration="421000" />
+      <workItem from="1667027328429" duration="6065000" />
+      <workItem from="1667703816583" duration="1426000" />
+      <workItem from="1667706390526" duration="14342000" />
+      <workItem from="1668220238716" duration="6801000" />
+      <workItem from="1668906358919" duration="4793000" />
+      <workItem from="1668915486508" duration="11833000" />
+      <workItem from="1669387980679" duration="7000" />
+      <workItem from="1669512469664" duration="12406000" />
+      <workItem from="1670315237762" duration="30128000" />
+      <workItem from="1671016480765" duration="15873000" />
+      <workItem from="1671959992126" duration="227000" />
+      <workItem from="1672056434753" duration="53976000" />
+      <workItem from="1673146540599" duration="1652000" />
+      <workItem from="1673149273197" duration="3430000" />
+      <workItem from="1673178886301" duration="2840000" />
+      <workItem from="1674008223716" duration="12084000" />
+      <workItem from="1674124429361" duration="1909000" />
+      <workItem from="1675525927692" duration="10008000" />
+      <workItem from="1676691134486" duration="1863000" />
+      <workItem from="1677061252755" duration="1009000" />
+      <workItem from="1677854662594" duration="596000" />
+      <workItem from="1678453462125" duration="670000" />
+      <workItem from="1678595006375" duration="3993000" />
+      <workItem from="1679128936478" duration="43959000" />
+      <workItem from="1680778591204" duration="12498000" />
+      <workItem from="1680920246336" duration="32948000" />
+      <workItem from="1681216922553" duration="24289000" />
+      <workItem from="1681609941622" duration="2345000" />
+      <workItem from="1681650252465" duration="791000" />
+      <workItem from="1681651064349" duration="12078000" />
+      <workItem from="1682415347252" duration="21285000" />
+      <workItem from="1682587138237" duration="750000" />
+      <workItem from="1682746330235" duration="4110000" />
+      <workItem from="1682757202912" duration="416000" />
+      <workItem from="1682757708554" duration="113000" />
+      <workItem from="1682757942269" duration="22557000" />
+      <workItem from="1684072650601" duration="1279000" />
+      <workItem from="1684157208975" duration="23377000" />
+      <workItem from="1685178028663" duration="3310000" />
+      <workItem from="1685182492213" duration="21694000" />
+      <workItem from="1685370289345" duration="8094000" />
+      <workItem from="1685871326002" duration="36719000" />
+      <workItem from="1687055369158" duration="44178000" />
+    </task>
+    <task id="LOCAL-00054" summary="Default Changelist">
+      <created>1657942237845</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1657942237845</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Default Changelist">
+      <created>1657979206998</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1657979206998</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Default Changelist">
+      <created>1658663725624</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1658663725624</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Default Changelist">
+      <created>1659606194008</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1659606194008</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Default Changelist">
+      <created>1660310536882</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1660310536883</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Default Changelist">
+      <created>1660398516461</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1660398516461</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Default Changelist">
+      <created>1660620783079</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1660620783080</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Default Changelist">
+      <created>1661178712225</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1661178712225</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Default Changelist">
+      <created>1661251839251</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1661251839251</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Default Changelist">
+      <created>1661691540625</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1661691540626</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Default Changelist">
+      <created>1661692252658</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1661692252659</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Default Changelist">
+      <created>1661692973373</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1661692973373</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Default Changelist">
+      <created>1661871372685</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1661871372685</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Default Changelist">
+      <created>1661873242136</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1661873242136</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Default Changelist">
+      <created>1661873366190</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1661873366190</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Default Changelist">
+      <created>1661874384532</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1661874384532</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Default Changelist">
+      <created>1662260832434</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1662260832434</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Default Changelist">
+      <created>1662900827749</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1662900827750</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Default Changelist">
+      <created>1663160867092</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1663160867092</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Default Changelist">
+      <created>1663674495461</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1663674495461</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Default Changelist">
+      <created>1665228296962</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1665228296963</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Default Changelist">
+      <created>1667027559866</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1667027559867</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Default Changelist">
+      <created>1667047105964</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1667047105964</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Default Changelist">
+      <created>1667703937724</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1667703937725</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Default Changelist">
+      <created>1667910067104</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1667910067105</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Default Changelist">
+      <created>1668341674212</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1668341674213</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Default Changelist">
+      <created>1668428469050</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1668428469050</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Default Changelist">
+      <created>1668915832467</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1668915832467</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Default Changelist">
+      <created>1668929260815</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1668929260815</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Default Changelist">
+      <created>1669211566674</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1669211566674</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Default Changelist">
+      <created>1669728355162</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1669728355163</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Default Changelist">
+      <created>1670323247288</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1670323247289</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Default Changelist">
+      <created>1672547511579</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1672547511580</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Default Changelist">
+      <created>1672665061530</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1672665061530</updated>
+    </task>
+    <task id="LOCAL-00088" summary="Default Changelist">
+      <created>1674201901125</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1674201901126</updated>
+    </task>
+    <task id="LOCAL-00089" summary="Default Changelist">
+      <created>1676120599988</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1676120599989</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Default Changelist">
+      <created>1676378938876</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1676378938876</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Default Changelist">
+      <created>1676723389346</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1676723389346</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Default Changelist">
+      <created>1679216226245</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1679216226246</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Default Changelist">
+      <created>1679232441126</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1679232441126</updated>
+    </task>
+    <task id="LOCAL-00094" summary="Default Changelist">
+      <created>1680794681767</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1680794681768</updated>
+    </task>
+    <task id="LOCAL-00095" summary="Default Changelist">
+      <created>1681049848431</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1681049848432</updated>
+    </task>
+    <task id="LOCAL-00096" summary="Default Changelist">
+      <created>1684413458484</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1684413458485</updated>
+    </task>
+    <task id="LOCAL-00097" summary="Default Changelist">
+      <created>1685370216103</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1685370216103</updated>
+    </task>
+    <task id="LOCAL-00098" summary="Default Changelist">
+      <created>1685370234537</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1685370234537</updated>
+    </task>
+    <task id="LOCAL-00099" summary="Default Changelist">
+      <created>1685878477818</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1685878477818</updated>
+    </task>
+    <task id="LOCAL-00100" summary="Default Changelist">
+      <created>1687057659319</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1687057659319</updated>
+    </task>
+    <task id="LOCAL-00101" summary="Default Changelist">
+      <created>1687076806513</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1687076806513</updated>
+    </task>
+    <task id="LOCAL-00102" summary="Default Changelist">
+      <created>1687185669489</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1687185669489</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="1" value="TOOL_WINDOW" />
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="test connect" />
+    <MESSAGE value="Default Changelist" />
+    <option name="LAST_COMMIT_MESSAGE" value="Default Changelist" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="test" />
+        <watch expression="test1" />
+        <watch expression="i" />
+        <watch expression="ii" language="Python" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/test_ivix_liangxiaobai_py$jukuan.coverage" NAME="jukuan Coverage Results" MODIFIED="1627219054756" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$wufangluoji2.coverage" NAME="wufangluoji2 覆盖结果" MODIFIED="1682766508637" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$pdf_read3.coverage" NAME="pdf_read3 覆盖结果" MODIFIED="1659777134155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$chatgpt_test.coverage" NAME="chatgpt_test 覆盖结果" MODIFIED="1670939452723" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/worm_eastmoney$dongcai1.coverage" NAME="dongcai1 Coverage Results" MODIFIED="1624763015401" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/chelue_py$zlmm_in_out_separate.coverage" NAME="zlmm_in_out_separate Coverage Results" MODIFIED="1631278246850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$tmall_maotai.coverage" NAME="tmall_maotai 覆盖结果" MODIFIED="1673150497323" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$wufangluoji.coverage" NAME="wufangluoji 覆盖结果" MODIFIED="1682758149605" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$dongliang6.coverage" NAME="dongliang6 Coverage Results" MODIFIED="1646452524765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$1111111111111111111111111111111.coverage" NAME="1111111111111111111111111111111 覆盖结果" MODIFIED="1670323227035" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/worm_eastmoney$test_ivix_liangxiaobai.coverage" NAME="test_ivix_liangxiaobai Coverage Results" MODIFIED="1625832303358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$pyqt_bos.coverage" NAME="pyqt_bos 覆盖结果" MODIFIED="1679753583970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$biaoshipai.coverage" NAME="biaoshipai 覆盖结果" MODIFIED="1684483522692" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$.coverage" NAME="站内排水 覆盖结果" MODIFIED="1657465334883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$leidexiangjie.coverage" NAME="leidexiangjie 覆盖结果" MODIFIED="1662297618983" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$super_dingtou.coverage" NAME="super_dingtou 覆盖结果" MODIFIED="1675526209549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$44_.coverage" NAME="年化收益44%的交易策略代码分享 覆盖结果" MODIFIED="1687079099428" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/beixiangzhijin_py$dongliang4.coverage" NAME="dongliang4 Coverage Results" MODIFIED="1645169244702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

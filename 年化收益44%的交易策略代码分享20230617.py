@@ -49,7 +49,7 @@ class ETFBacktest(bt.Strategy):
             print('%s, %s' % (dt.isoformat(), txt))
 
 if __name__ == '__main__':
-    cerebro = bt.Cerebro()
+    cerebro = bt.Cerebro(tradehistory=True)
     cerebro.addstrategy(ETFBacktest)
     etf1_data = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
     etf2_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')

@@ -45,10 +45,10 @@ class ETFBacktest(bt.Strategy):
     params = (
         ('growth_etf', '510050.SH'),  # 创成长ETF
         ('dividend_etf', '510880.SH'),  # 红利低波ETF
-        ('period', 25),  # 计算涨跌幅的周期
+        ('period', 21),  # 计算涨跌幅的周期
         ('rebalance_days', 1),  # 调仓周期
         ('commission', 0.0001), # 手续费
-        ('cheat_on_open', True), # 开盘成交
+        ('cheat_on_open', False), # 开盘成交
         ('rsrs_threshold', -1)  # RSRS指标阈值
     )
 
@@ -94,7 +94,7 @@ class ETFBacktest(bt.Strategy):
             if self.rsrs[0] > self.params.rsrs_threshold:
                 if growth_etf_returns > dividend_etf_returns:
                     self.order_target_percent(self.dividend_etf, target=0,price=self.dividend_etf.open[0])
-                    self.order_target_percent(self.growth_etf, target=1.0,price=self.growth_etf.close[0])
+                    self.order_target_percent(self.growth_etf, target=1.0,exectype=bt.Order.Close)
 
                     self.trade_size = int(self.broker.getcash() / self.growth_etf.close[0])
                     self.trade_price = self.growth_etf.close[0]
@@ -104,7 +104,7 @@ class ETFBacktest(bt.Strategy):
 
                 else:
                     self.order_target_percent(self.growth_etf, target=0,price=self.growth_etf.open[0])
-                    self.order_target_percent(self.dividend_etf, target=1.0,price=self.dividend_etf.close[0])
+                    self.order_target_percent(self.dividend_etf, target=1.0,exectype=bt.Order.Close)
 
                     self.trade_size = int(self.broker.getcash() / self.dividend_etf.close[0])
                     self.trade_price = self.dividend_etf.close[0]
@@ -146,72 +146,72 @@ class ETFBacktest(bt.Strategy):
             'value': value
         }, ignore_index=True)
 
-    def next_open(self):
-        if self.params.cheat_on_open:
-            """
-                    This method is called for each new bar (or candle) in the data feed.
-                    It is used to calculate the RSRS indicator, check if it is above the
-                    threshold, and place orders accordingly.
-                    """
-            if self.rebalance_counter == self.params.rebalance_days:
-                self.rebalance_counter = 0
-                growth_etf_returns = self.calculate_returns(self.growth_etf)
-                dividend_etf_returns = self.calculate_returns(self.dividend_etf)
-
-                if self.rsrs[0] > self.params.rsrs_threshold:
-                    if growth_etf_returns > dividend_etf_returns:
-                        self.order_target_percent(self.dividend_etf, target=0)
-                        self.order_target_percent(self.growth_etf, target=1.0)
-
-                        # self.trade_size = int(self.broker.getcash() / self.growth_etf.close[0])
-                        # self.trade_price = self.growth_etf.close[0]
-                        # self.trade_type = 'short'
-                        # self.trade_date = self.data.datetime.date(0)
-                        # self.trade_commission = self.trade_size * self.trade_price * self.params.commission
-
-                    else:
-                        self.order_target_percent(self.growth_etf, target=0)
-                        self.order_target_percent(self.dividend_etf, target=1.0)
-
-                        # self.trade_size = int(self.broker.getcash() / self.dividend_etf.close[0])
-                        # self.trade_price = self.dividend_etf.close[0]
-                        # self.trade_type = 'short'
-                        # self.trade_date = self.data.datetime.date(0)
-                        # self.trade_commission = self.trade_size * self.trade_price * self.params.commission
-                else:
-                    self.order_target_percent(self.growth_etf, target=0)
-                    self.order_target_percent(self.dividend_etf, target=0)
-
-            self.rebalance_counter += 1
-
-            self.log_returns.append([
-                self.datas[0].datetime.date(0),
-                self.calculate_returns(self.growth_etf),
-                self.calculate_returns(self.dividend_etf),
-                self.log_returns
-            ])
-
-            # 计算持仓股、份额、账户总份额和现金等信息
-            growth_etf_position = self.getposition(self.growth_etf).size
-            dividend_etf_position = self.getposition(self.dividend_etf).size
-            total_position = growth_etf_position + dividend_etf_position
-            cash = self.broker.get_cash()
-            date = self.datas[0].datetime.date(0)
-            calculate_returns_growth_etf = self.calculate_returns(self.growth_etf)
-            calculate_returns_dividend_etf = self.calculate_returns(self.dividend_etf)
-            value = self.broker.getvalue()
-
-            # 将信息添加到log_df中
-            self.log_df = self.log_df.append({
-                'date': date,
-                'growth_etf_position': growth_etf_position,
-                'dividend_etf_position': dividend_etf_position,
-                'total_position': total_position,
-                'cash': cash,
-                'calculate_returns_growth_etf': calculate_returns_growth_etf,
-                'calculate_returns_dividend_etf': calculate_returns_dividend_etf,
-                'value': value
-            }, ignore_index=True)
+    # def next_open(self):
+    #     if self.params.cheat_on_open:
+    #         """
+    #                 This method is called for each new bar (or candle) in the data feed.
+    #                 It is used to calculate the RSRS indicator, check if it is above the
+    #                 threshold, and place orders accordingly.
+    #                 """
+    #         if self.rebalance_counter == self.params.rebalance_days:
+    #             self.rebalance_counter = 0
+    #             growth_etf_returns = self.calculate_returns(self.growth_etf)
+    #             dividend_etf_returns = self.calculate_returns(self.dividend_etf)
+    #
+    #             if self.rsrs[0] > self.params.rsrs_threshold:
+    #                 if growth_etf_returns > dividend_etf_returns:
+    #                     self.order_target_percent(self.dividend_etf, target=0)
+    #                     self.order_target_percent(self.growth_etf, target=1.0)
+    #
+    #                     # self.trade_size = int(self.broker.getcash() / self.growth_etf.close[0])
+    #                     # self.trade_price = self.growth_etf.close[0]
+    #                     # self.trade_type = 'short'
+    #                     # self.trade_date = self.data.datetime.date(0)
+    #                     # self.trade_commission = self.trade_size * self.trade_price * self.params.commission
+    #
+    #                 else:
+    #                     self.order_target_percent(self.growth_etf, target=0)
+    #                     self.order_target_percent(self.dividend_etf, target=1.0)
+    #
+    #                     # self.trade_size = int(self.broker.getcash() / self.dividend_etf.close[0])
+    #                     # self.trade_price = self.dividend_etf.close[0]
+    #                     # self.trade_type = 'short'
+    #                     # self.trade_date = self.data.datetime.date(0)
+    #                     # self.trade_commission = self.trade_size * self.trade_price * self.params.commission
+    #             else:
+    #                 self.order_target_percent(self.growth_etf, target=0)
+    #                 self.order_target_percent(self.dividend_etf, target=0)
+    #
+    #         self.rebalance_counter += 1
+    #
+    #         self.log_returns.append([
+    #             self.datas[0].datetime.date(0),
+    #             self.calculate_returns(self.growth_etf),
+    #             self.calculate_returns(self.dividend_etf),
+    #             self.log_returns
+    #         ])
+    #
+    #         # 计算持仓股、份额、账户总份额和现金等信息
+    #         growth_etf_position = self.getposition(self.growth_etf).size
+    #         dividend_etf_position = self.getposition(self.dividend_etf).size
+    #         total_position = growth_etf_position + dividend_etf_position
+    #         cash = self.broker.get_cash()
+    #         date = self.datas[0].datetime.date(0)
+    #         calculate_returns_growth_etf = self.calculate_returns(self.growth_etf)
+    #         calculate_returns_dividend_etf = self.calculate_returns(self.dividend_etf)
+    #         value = self.broker.getvalue()
+    #
+    #         # 将信息添加到log_df中
+    #         self.log_df = self.log_df.append({
+    #             'date': date,
+    #             'growth_etf_position': growth_etf_position,
+    #             'dividend_etf_position': dividend_etf_position,
+    #             'total_position': total_position,
+    #             'cash': cash,
+    #             'calculate_returns_growth_etf': calculate_returns_growth_etf,
+    #             'calculate_returns_dividend_etf': calculate_returns_dividend_etf,
+    #             'value': value
+    #         }, ignore_index=True)
 
 
     def calculate_returns(self, data):
@@ -234,16 +234,27 @@ class ETFBacktest(bt.Strategy):
         # self.sharpe_ratio = self.analyzers.sharpe.get_analysis()
         #
         # self.information_ratio = self.stats.inforatio.get_analysis()
+
 class OrderRecorder(bt.Analyzer):
     def __init__(self):
         self.orders = []
 
     def notify_order(self, order):
 
-        self.orders.append([self.strategy.datetime.datetime(),order])
+        self.orders.append([self.strategy.datetime.datetime(0),order])
+
+
+class TradeRecorder(bt.Analyzer):
+    def __init__(self):
+        self.trades = []
+
+    def notify_trade(self, trade):
+
+        self.trades.append([self.strategy.datetime.datetime(0),trade])
+
 
 if __name__ == '__main__':
-    cerebro = bt.Cerebro(cheat_on_open=False)
+    cerebro = bt.Cerebro(tradehistory=True)
     cerebro.addstrategy(ETFBacktest)
 
     growth_etf_data = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
@@ -272,7 +283,8 @@ if __name__ == '__main__':
 
     start_date = datetime.datetime(2018, 1, 1)
     end_date = datetime.datetime(2023, 12, 31)
-
+    growth_etf_data0=growth_etf_data
+    dividend_etf_data0=dividend_etf_data
     growth_etf_data = bt.feeds.PandasData(dataname=growth_etf_data, fromdate=start_date, todate=end_date)
     dividend_etf_data = bt.feeds.PandasData(dataname=dividend_etf_data, fromdate=start_date, todate=end_date)
 
@@ -300,6 +312,7 @@ if __name__ == '__main__':
     # cerebro.addanalyzer(Transactions,_name='allTransactions')
 
     cerebro.addanalyzer(OrderRecorder, _name='order_recorder')
+    cerebro.addanalyzer(TradeRecorder, _name='trade_recorder')
     strat = cerebro.run()[0]
     # print('最终资金: %.2f' % cerebro.broker.getvalue())
     # print('夏普比率:', strat.analyzers.SharpeRatio.get_analysis())
@@ -364,5 +377,18 @@ if __name__ == '__main__':
     print('Max Drawdown:', drawdowns[max_drawdown_index])
     print('Max Drawdown Start Date:', max_drawdown_start_date)
     print('Max Drawdown End Date:', max_drawdown_end_date)
-
+    trade= strat.analyzers.trade_recorder.trades
     zz=strat.analyzers.order_recorder.orders
+
+    ref_num=[]
+    for i in zz:
+        ref_num.append(i[1].ref)
+
+    res={}
+    for i in set(ref_num):
+        res0=[]
+        for ii in zz:
+            if ii[1].ref==i:
+                res0.append(ii)
+        res[i]=res0
+

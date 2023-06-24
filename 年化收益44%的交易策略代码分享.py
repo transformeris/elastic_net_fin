@@ -224,6 +224,7 @@ class ETFBacktest(bt.Strategy):
         print(self.log_df)
 
 
+
         # self.returns = self.broker.getvalue() / self.broker.getcash() - 1.0
         # self.max_drawdown = self.analyzers.drawdown.get_analysis()['max']['drawdown']
         # trade_analyzer = self.analyzers.trade_analyzer.get_analysis()

@@ -187,6 +187,7 @@ if __name__ == '__main__':
     hs_300=ak.stock_zh_index_daily_em(symbol='sh000300')
     growth_etf_data = ak.fund_etf_hist_em(symbol='516130', adjust='qfq')
     dividend_etf_data = ak.fund_etf_hist_em(symbol='515450', adjust='qfq')
+    dividend_etf_data=ak.fund_etf_hist_sina(symbol='sz159649')
     growth_etf_data=rename_columns(growth_etf_data)
     hs_300=rename_columns(hs_300)
 

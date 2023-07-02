@@ -49,7 +49,7 @@ class ETFBacktest(bt.Strategy):
         ('rebalance_days', 1),  # 调仓周期
         ('commission', 0.0001), # 手续费
         ('cheat_on_open', False), # 开盘成交
-        ('rsrs_threshold', -100)  # RSRS指标阈值
+        ('rsrs_threshold', -1)  # RSRS指标阈值
     )
 
     def __init__(self):
@@ -61,7 +61,7 @@ class ETFBacktest(bt.Strategy):
 
         self.growth_etf = self.datas[0]
         self.dividend_etf = self.datas[1]
-        self.hs_300 = self.datas[2]
+        # self.hs_300 = self.datas[2]
         self.rebalance_counter = 0
 
         self.log_returns = []
@@ -71,7 +71,7 @@ class ETFBacktest(bt.Strategy):
             'calculate_returns_dividend_etf','value'
         ])
 
-        self.rsrs = RSRS(self.dividend_etf.close, period=self.params.period)
+        self.rsrs = RSRS(self.growth_etf.close, period=self.params.period)
         self.zscore = (self.rsrs - pd.Series(self.rsrs)) / bt.indicators.StandardDeviation(self.rsrs)
 
         cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name='trade_analyzer')
@@ -184,13 +184,17 @@ def rename_columns(data):
 if __name__ == '__main__':
     cerebro = bt.Cerebro(tradehistory=True)
     cerebro.addstrategy(ETFBacktest)
-    hs_300=ak.stock_zh_index_daily_em(symbol='sh000300')
-    growth_etf_data = ak.fund_etf_hist_em(symbol='516130', adjust='qfq')
-    dividend_etf_data = ak.fund_etf_hist_em(symbol='515450', adjust='qfq')
-    dividend_etf_data=ak.fund_etf_hist_sina(symbol='sz159649')
+    # hs_300=ak.stock_zh_index_daily_em(symbol='sh000300')
+    growth_etf_data = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
+    dividend_etf_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
+    # dividend_etf_data=ak.fund_etf_hist_sina(symbol='sz159649')
+    dividend_etf_data=ak.stock_zh_index_daily_em(symbol='csiH30269')
+    '''
+    红利低波在15年股市崩溃后出现了50%的回测，如果用国债替代，回测结果应该会更好
+    '''
     growth_etf_data=rename_columns(growth_etf_data)
-    hs_300=rename_columns(hs_300)
-
+    # hs_300=rename_columns(hs_300)
+    zzzzz=ak.stock_zh_index_spot()
     dividend_etf_data=rename_columns(dividend_etf_data)
 
     start_date = datetime.datetime(2018, 1, 1)
@@ -200,10 +204,10 @@ if __name__ == '__main__':
     dividend_etf_data0=dividend_etf_data
     growth_etf_data = bt.feeds.PandasData(dataname=growth_etf_data, fromdate=start_date, todate=end_date)
     dividend_etf_data = bt.feeds.PandasData(dataname=dividend_etf_data, fromdate=start_date, todate=end_date)
-    hs_300 =bt.feeds.PandasData(dataname=hs_300, fromdate=start_date, todate=end_date)
+    # hs_300 =bt.feeds.PandasData(dataname=hs_300, fromdate=start_date, todate=end_date)
     cerebro.adddata(growth_etf_data)
     cerebro.adddata(dividend_etf_data)
-    cerebro.adddata(hs_300)
+    # cerebro.adddata(hs_300)
     cerebro.broker.setcash(1000000.0)
     cerebro.run()
     cerebro.addanalyzer(TradeRecorder, _name='trade_recorder')

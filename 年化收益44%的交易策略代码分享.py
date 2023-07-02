@@ -53,10 +53,6 @@ class ETFBacktest(bt.Strategy):
     )
 
     def __init__(self):
-
-
-
-
         self.returns = []
         self.max_drawdown = None
         self.sharpe_ratio = None

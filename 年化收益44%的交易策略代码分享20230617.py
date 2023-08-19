@@ -47,12 +47,41 @@ class ETFBacktest(bt.Strategy):
         if self.params.printlog or doprint:
             dt = dt or self.datas[0].datetime.date(0)
             print('%s, %s' % (dt.isoformat(), txt))
+def max_rolling_returns(stock_df):
+    """
+    计算股票过去10、20、30、40、50天的收益率，并取其最大值
+    symbol: 股票代码
+    start_date: 开始日期
+    """
+    # 获取历史行情数据
+    # stock_df = ak.stock_zh_a_hist(symbol=symbol, start_date=start_date)
+
+    # 计算收益率
+    returns = stock_df['close'].pct_change()
+
+    # 计算滚动收益率
+    rolling_returns = returns.rolling(window=10).max()
+
+    # 取最大值
+    max_return = rolling_returns.max()
+
+    # 将结果添加到DataFrame中
+    result_df = pd.DataFrame(max_return)
+
+    # 将结果与历史行情数据合并
+    result_df = pd.concat([stock_df, result_df], axis=1)
+
+    return result_df
+
+
+
+
 
 if __name__ == '__main__':
-    cerebro = bt.Cerebro(tradehistory=True)
-    cerebro.addstrategy(ETFBacktest)
+
     etf1_data = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
-    etf2_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
+
+    etf2_data = ak.stock_zh_index_daily_em(symbol='sh000013')
     etf1_data.rename(
         columns={'日期': 'date', '收盘': 'close', '开盘': 'open', '最高': 'high', '最低': 'low', '成交量': 'volume', '成交额': 'amount',
                  '振幅': 'amplitude', '涨跌幅': 'pct_change'}, inplace=True)
@@ -68,6 +97,8 @@ if __name__ == '__main__':
     etf1_pct_change = etf1_data['close'].pct_change(periods=25)
     etf2_pct_change = etf2_data['close'].pct_change(periods=25)
 
+    # data=max_rolling_returns(etf1_data)
+
     signals_df = pd.DataFrame(index=etf1_data.index)
     signals_df['signal'] = pd.Series(np.where(etf1_pct_change > etf2_pct_change, 'buy_etf1', 'buy_etf2'),
                                      index=etf1_data.index)
@@ -75,18 +106,91 @@ if __name__ == '__main__':
                                       index=etf1_data.index)
 
     signals_df['change_position'] = signals_df['holding'].shift(1) != signals_df['holding']
+
+    maotai_df = etf1_data
+    # 计算收益率
+    returns = maotai_df['close'].pct_change(periods=20)
+    etf1_data['return_20']=etf1_data['close'].pct_change(periods=20)
+    etf1_data['return_40']=etf1_data['close'].pct_change(periods=40)
+    etf1_data['return_60']=etf1_data['close'].pct_change(periods=60)
+
+    etf2_data['return_20']=etf2_data['close'].pct_change(periods=20)
+    etf2_data['return_40']=etf2_data['close'].pct_change(periods=40)
+    etf2_data['return_60']=etf2_data['close'].pct_change(periods=60)
+
+    tiaochangzhouqi=5
+    etf1=etf1_data
+    etf2=etf2_data
+    start_date= '2010-01-01'
+    end_date= '2021-01-01'
+    etf1_data=etf1_data.loc[start_date:end_date,:]
+    etf2_data=etf2_data.loc[start_date:end_date,:]
+    # etf1_data.to_excel('etf1_data.xlsx')
+    # etf2_data.to_excel('etf2_data.xlsx')
+    signals_df=signals_df.loc[start_date:end_date,:]
+    etf1_resample_f=etf1_data.resample('M').first()
+    etf1_resample_l=etf1_data.resample('M').last()
+    etf2_resample_f=etf2_data.resample('M').first()
+    etf2_resample_l=etf2_data.resample('M').last()
+
+    etf1_yuedushouyi=(etf1_resample_f.loc[:,'open']-etf1_resample_f.loc[:,'close'].shift(1))/etf1_resample_f.loc[:,'close'].shift(1)
+
+    etf2_yuedushouyi=(etf2_resample_f.loc[:,'open']-etf2_resample_f.loc[:,'close'].shift(1))/etf2_resample_f.loc[:,'close'].shift(1)
+
+    etf1_pre=etf1_resample_f.loc[:,'close'].shift(1)
+
+    best_holding = pd.Series(np.where(etf1_yuedushouyi > etf2_yuedushouyi, 'etf1', 'etf2'),
+                                      index=etf1_yuedushouyi.index)
+    # best_holding = best_holding.shift(1)
+    best_return20_select=pd.Series(np.where(etf1_resample_l['return_20'] > etf2_resample_l['return_20'], 'etf1', 'etf2'),
+                                      index=etf1_resample_l['return_20'].index).shift(1)
+
+    best_return40_select = pd.Series(
+        np.where(etf1_resample_l['return_40'] > etf2_resample_l['return_40'], 'etf1', 'etf2'),
+        index=etf1_resample_l['return_40'].index).shift(1)
+
+    date_list=list(best_holding.index)
+    res={}
+    for i in date_list:
+        if best_holding[i]==best_return20_select[i] and best_holding[i]!=best_return40_select[i]:
+            res[i]='return_20'
+        elif best_holding[i]!=best_return20_select[i] and best_holding[i]==best_return40_select[i]:
+            res[i]='return_40'
+        elif best_holding[i]==best_return20_select[i] and best_holding[i]==best_return40_select[i]:
+            res[i]='return_20'
+        elif best_holding[i]!=best_return20_select[i] and best_holding[i]!=best_return40_select[i]:
+            res[i]='null'
+    holding={}
+    for i in res.keys():
+        if res[i]=='return_20':
+            holding[i]=best_return20_select[i]
+        elif res[i]=='return_40':
+            holding[i]=best_return40_select[i]
+        elif res[i]=='null':
+            holding[i]='etf2'
+
+    shouyi={}
+    for i,j in holding.items():
+        if j=='etf1':
+            shouyi[i]=etf1_yuedushouyi[i]
+        elif j=='etf2':
+            shouyi[i]=etf2_yuedushouyi[i]
+
+
+
     # signals_df.to_csv('signal_df.csv')
 
-    data1 = bt.feeds.PandasData(dataname=etf1_data)
-    data2 = bt.feeds.PandasData(dataname=etf2_data)
+    # data1 = bt.feeds.PandasData(dataname=etf1_data)
+    # data2 = bt.feeds.PandasData(dataname=etf2_data)
+    #
+    # cerebro.adddata(data1)
+    # cerebro.adddata(data2)
+    #
+    # cerebro.broker.setcash(100000.0)
+    # cerebro.broker.setcommission(commission=0.001)
+    #
+    # print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
+    # cerebro.run()
+    # print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
 
-    cerebro.adddata(data1)
-    cerebro.adddata(data2)
-
-    cerebro.broker.setcash(100000.0)
-    cerebro.broker.setcommission(commission=0.001)
-
-    print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
-    cerebro.run()
-    print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
 

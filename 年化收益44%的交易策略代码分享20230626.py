@@ -45,11 +45,11 @@ class ETFBacktest(bt.Strategy):
     params = (
         ('growth_etf', '510050.SH'),  # 创成长ETF
         ('dividend_etf', '510880.SH'),  # 红利低波ETF
-        ('period', 21),  # 计算涨跌幅的周期
+        ('period', 50),  # 计算涨跌幅的周期
         ('rebalance_days', 1),  # 调仓周期
-        ('commission', 0.0001), # 手续费
+        ('commission', 0.01), # 手续费
         ('cheat_on_open', False), # 开盘成交
-        ('rsrs_threshold', -1)  # RSRS指标阈值
+        ('rsrs_threshold', -10000)  # RSRS指标阈值
     )
 
     def __init__(self):
@@ -58,6 +58,7 @@ class ETFBacktest(bt.Strategy):
         self.sharpe_ratio = None
         self.information_ratio = None
         self.win_rate = None
+
 
         self.growth_etf = self.datas[0]
         self.dividend_etf = self.datas[1]
@@ -83,6 +84,7 @@ class ETFBacktest(bt.Strategy):
         It is used to calculate the RSRS indicator, check if it is above the
         threshold, and place orders accordingly.
         """
+
         if self.rebalance_counter == self.params.rebalance_days:
             self.rebalance_counter = 0
             growth_etf_returns = self.calculate_returns(self.growth_etf)
@@ -90,8 +92,8 @@ class ETFBacktest(bt.Strategy):
 
             if self.rsrs[0] > self.params.rsrs_threshold:
                 if growth_etf_returns > dividend_etf_returns:
-                    self.order_target_percent(self.dividend_etf, target=0,price=self.dividend_etf.open[0])
-                    self.order_target_percent(self.growth_etf, target=1.0,exectype=bt.Order.Close)
+                    self.order_target_percent(self.dividend_etf, target=0,exectype=bt.Order.Market)
+                    self.order_target_percent(self.growth_etf, target=0.98,exectype=bt.Order.Close)
 
                     self.trade_size = int(self.broker.getcash() / self.growth_etf.close[0])
                     self.trade_price = self.growth_etf.close[0]
@@ -100,8 +102,8 @@ class ETFBacktest(bt.Strategy):
                     self.trade_commission = self.trade_size * self.trade_price * self.params.commission
 
                 else:
-                    self.order_target_percent(self.growth_etf, target=0,price=self.growth_etf.open[0])
-                    self.order_target_percent(self.dividend_etf, target=1.0,exectype=bt.Order.Close)
+                    self.order_target_percent(self.growth_etf, target=0,exectype=bt.Order.Market)
+                    self.order_target_percent(self.dividend_etf, target=0.98,exectype=bt.Order.Close)
 
                     self.trade_size = int(self.broker.getcash() / self.dividend_etf.close[0])
                     self.trade_price = self.dividend_etf.close[0]
@@ -183,12 +185,14 @@ def rename_columns(data):
 
 if __name__ == '__main__':
     cerebro = bt.Cerebro(tradehistory=True)
-    cerebro.addstrategy(ETFBacktest)
+    cerebro.addstrategy(ETFBacktest,period=30)
     # hs_300=ak.stock_zh_index_daily_em(symbol='sh000300')
-    growth_etf_data = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
-    dividend_etf_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
+    # growth_etf_data = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
+    # dividend_etf_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
     # dividend_etf_data=ak.fund_etf_hist_sina(symbol='sz159649')
-    dividend_etf_data=ak.stock_zh_index_daily_em(symbol='csiH30269')
+    growth_etf_data=ak.stock_zh_index_daily_em(symbol='sh000300')
+
+    dividend_etf_data=ak.stock_zh_index_daily_em(symbol='sh000013')
     '''
     红利低波在15年股市崩溃后出现了50%的回测，如果用国债替代，回测结果应该会更好
     '''
@@ -197,7 +201,7 @@ if __name__ == '__main__':
     zzzzz=ak.stock_zh_index_spot()
     dividend_etf_data=rename_columns(dividend_etf_data)
 
-    start_date = datetime.datetime(2018, 1, 1)
+    start_date = datetime.datetime(2010, 1, 1)
     end_date = datetime.datetime(2023, 12, 31)
 
     growth_etf_data0=growth_etf_data
@@ -209,6 +213,7 @@ if __name__ == '__main__':
     cerebro.adddata(dividend_etf_data)
     # cerebro.adddata(hs_300)
     cerebro.broker.setcash(1000000.0)
+    cerebro.broker.setcommission(commission=0.0001,stocklike=True)
     cerebro.run()
     cerebro.addanalyzer(TradeRecorder, _name='trade_recorder')
     cerebro.addanalyzer(OrderRecorder, _name='order_recorder')
@@ -251,4 +256,18 @@ if __name__ == '__main__':
             if ii[1].ref==i:
                 res0.append(ii)
         res[i]=res0
+
+    delta = log_df['date'].iloc[-1] - log_df['date'].iloc[0]
+    days = delta.days
+
+    # 计算投资的总回报
+    total_return = (log_df['value'].iloc[-1] - log_df['value'].iloc[0]) / log_df['value'].iloc[0]
+
+    # 计算年化收益
+    annual_return = ((1 + total_return) ** (365 / days) - 1)*100
+    print("年化收益率为：{:.2f}%".format(annual_return))
+
+
+
     cerebro.plot()
+

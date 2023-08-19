@@ -35,7 +35,7 @@
 # 检查监控后台信息无异常。
 # '''
 
-text='''再经调度令。'''
+text='''我爱卡马拉的经理。'''
 # import spacy
 # nlp = spacy.load("en_core_web_sm")
 # doc = nlp(text)
@@ -57,6 +57,9 @@ text='''再经调度令。'''
 #
 # res=jieba.cut(text)
 import hanlp
+import akshare as ak
+
+
 
 'D:\hanlp模型20230611\large_corpus_cws_albert_base_20211228_160926'
 hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_SMALL_ZH

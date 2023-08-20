@@ -53,11 +53,11 @@ class ETFBacktest(bt.Strategy):
 
         stock_name = {1: 'cyb_etf', 2: 'hs300_etf', 3: 'ndaq_etf', 4: 'gold_etf'}
         self.holding_signal = self.datas[0]
-        self.cyb_etf = self.datas[1]
-        self.hs300_etf = self.datas[2]
-        self.ndaq_etf = self.datas[3]
-        self.gold_etf = self.datas[4]
-        self.jp_etf = self.datas[5]
+        # self.cyb_etf = self.datas[1]
+        # self.hs300_etf = self.datas[2]
+        # self.ndaq_etf = self.datas[3]
+        # self.gold_etf = self.datas[4]
+        # self.jp_etf = self.datas[5]
         # self.holding_signal = self.datas[4]
         self.rebalance_counter = 0
         # self.etf_num={0:'cyb_etf',1:'hs300_etf',2:'ndaq_etf',3:'gold_etf'}
@@ -148,12 +148,14 @@ class TradeRecorder(bt.Analyzer):
 
 class MyAnalyzer(bt.Analyzer):
     def __init__(self):
-        self.log_df = pd.DataFrame(columns=[
-            'date', 'cyb_etf_position', 'hs300_etf_position','ndaq_etf_position','gold_etf_position','jp_etf_position',
-            'total_position', 'cash', 'calculate_returns_growth_etf',
-            'calculate_returns_dividend_etf', 'value'
-        ])
-
+        # self.log_df = pd.DataFrame(columns=[
+        #     'date', 'cyb_etf_position', 'hs300_etf_position','ndaq_etf_position','gold_etf_position','jp_etf_position',
+        #     'total_position', 'cash', 'calculate_returns_growth_etf',
+        #     'calculate_returns_dividend_etf', 'value'
+        # ])
+        self.stock_name_list={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf'}
+        self.log_df=pd.DataFrame(columns=['date'] + list(self.stock_name_list.values()))
+        self.num=0
     def next(self):
 
         # 计算持仓股、份额、账户总份额和现金等信息
@@ -171,19 +173,20 @@ class MyAnalyzer(bt.Analyzer):
         # calculate_returns_cyb_etf = self.strategy.calculate_returns(self.strategy.cyb_etf)
         # calculate_returns_dividend_etf = self.strategy.calculate_returns(self.strategy.dividend_etf)
         value = self.strategy.broker.getvalue()
-
-        self.log_df = self.log_df.append({
-            'date': date,
-            'cyb_etf_position': cyb_etf_position,
-            'hs300_etf_position':hs300_etf_position,
-            'ndaq_etf_position':ndaq_etf_position,
-            'gold_etf_position':gold_etf_position,
-            'total_position': total_position,
-            'cash': cash,
-            # 'calculate_returns_growth_etf': calculate_returns_growth_etf,
-            # 'calculate_returns_dividend_etf': calculate_returns_dividend_etf,
-            'value': value
-        }, ignore_index=True)
+        self.num=self.num+1
+        self.log_df[self.num] =[date] + etf_position+[total_position,cash,value]
+        # = self.log_df.append({
+        #     'date': date,
+        #     'cyb_etf_position': cyb_etf_position,
+        #     'hs300_etf_position':hs300_etf_position,
+        #     'ndaq_etf_position':ndaq_etf_position,
+        #     'gold_etf_position':gold_etf_position,
+        #     'total_position': total_position,
+        #     'cash': cash,
+        #     # 'calculate_returns_growth_etf': calculate_returns_growth_etf,
+        #     # 'calculate_returns_dividend_etf': calculate_returns_dividend_etf,
+        #     'value': value
+        # }, ignore_index=True)
 
     def get_analysis(self):
         return {'log_df': self.log_df}
@@ -221,9 +224,9 @@ if __name__ == '__main__':
     hs300_etf= ak.fund_etf_hist_em(symbol='510300', adjust='qfq')
     ndaq_etf= ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
     gold_etf= ak.fund_etf_hist_em(symbol='518880', adjust='qfq')
-    jp_etf= ak.fund_etf_hist_em(symbol='513520', adjust='qfq')
-    stock_collection={1:cyb_etf,2:hs300_etf,3:ndaq_etf,4:gold_etf,5:jp_etf}
-    stock_name={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf',5:'jp_etf'}
+    # jp_etf= ak.fund_etf_hist_em(symbol='513520', adjust='qfq')
+    stock_collection={1:cyb_etf,2:hs300_etf,3:ndaq_etf,4:gold_etf}
+    stock_name={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf'}
     stock_name_list=list(stock_name.values())
     # dividend_etf_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
     # dividend_etf_data=ak.fund_etf_hist_sina(symbol='sz159649')
@@ -264,7 +267,8 @@ if __name__ == '__main__':
     for i in stock_collection.values():
         date_start_list.append(i.index[0])
 
-    start_date = max(date_start_list)
+    # start_date = max(date_start_list)
+    start_date = datetime.datetime(2019, 6, 15)
     end_date = datetime.datetime(2023, 12, 31)
 
     holding_signal = MyData(dataname=holding_df, fromdate=start_date, todate=end_date)
@@ -297,7 +301,7 @@ if __name__ == '__main__':
     cerebro.broker.setcommission(commission=0.0001)
     res = cerebro.run()
     # # cerebro.plot()
-    # z=res[0].analyzers.log.get_analysis()
+    z=res[0].analyzers.log.get_analysis()
 
     # res2={}
     # for i in range(0,len(res)):

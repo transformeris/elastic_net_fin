@@ -51,15 +51,17 @@ class ETFBacktest(bt.Strategy):
         self.information_ratio = None
         self.win_rate = None
 
-
-        self.cyb_etf = self.datas[0]
-        self.hs300_etf = self.datas[1]
-        self.ndaq_etf = self.datas[2]
-        self.gold_etf = self.datas[3]
-        self.holding_signal = self.datas[4]
+        stock_name = {1: 'cyb_etf', 2: 'hs300_etf', 3: 'ndaq_etf', 4: 'gold_etf'}
+        self.holding_signal = self.datas[0]
+        self.cyb_etf = self.datas[1]
+        self.hs300_etf = self.datas[2]
+        self.ndaq_etf = self.datas[3]
+        self.gold_etf = self.datas[4]
+        self.jp_etf = self.datas[5]
+        # self.holding_signal = self.datas[4]
         self.rebalance_counter = 0
-        self.etf_num={0:'cyb_etf',1:'hs300_etf',2:'ndaq_etf',3:'gold_etf'}
-
+        # self.etf_num={0:'cyb_etf',1:'hs300_etf',2:'ndaq_etf',3:'gold_etf'}
+        self.etf_num=list(range(1,len(self.datas)))
         self.log_returns = []
         self.log_df = pd.DataFrame(columns=[
             'date', 'growth_etf_position', 'dividend_etf_position',
@@ -79,7 +81,7 @@ class ETFBacktest(bt.Strategy):
         select_etf_number= self.holding_signal.max_return_20_etf_number[0]
         print(select_etf_number)
 
-        self.etf_num=[0,1,2,3]
+
         long=[]
         short=[]
 
@@ -117,10 +119,7 @@ class ETFBacktest(bt.Strategy):
 
 
 
-    def calculate_returns(self, data):
 
-        returns = (data.close[0] - data.close[-self.params.period]) / data.close[-self.params.period]
-        return returns
 
 
     def get_log_df(self):
@@ -150,7 +149,7 @@ class TradeRecorder(bt.Analyzer):
 class MyAnalyzer(bt.Analyzer):
     def __init__(self):
         self.log_df = pd.DataFrame(columns=[
-            'date', 'cyb_etf_position', 'hs300_etf_position','ndaq_etf_position','gold_etf_position',
+            'date', 'cyb_etf_position', 'hs300_etf_position','ndaq_etf_position','gold_etf_position','jp_etf_position',
             'total_position', 'cash', 'calculate_returns_growth_etf',
             'calculate_returns_dividend_etf', 'value'
         ])
@@ -158,11 +157,15 @@ class MyAnalyzer(bt.Analyzer):
     def next(self):
 
         # 计算持仓股、份额、账户总份额和现金等信息
+        etf_position=[]
+        for i in range(1,len(self.strategy.datas)):
+            etf_position.append(self.strategy.getposition(self.strategy.datas[i]).size)
         cyb_etf_position = self.strategy.getposition(self.strategy.cyb_etf).size
         hs300_etf_position = self.strategy.getposition(self.strategy.hs300_etf).size
         ndaq_etf_position = self.strategy.getposition(self.strategy.ndaq_etf).size
         gold_etf_position = self.strategy.getposition(self.strategy.gold_etf).size
-        total_position = cyb_etf_position + hs300_etf_position+ndaq_etf_position+gold_etf_position
+        jp_etf_position = self.strategy.getposition(self.strategy.jp_etf).size
+        total_position = sum(etf_position)
         cash = self.strategy.broker.get_cash()
         date = self.strategy.datas[0].datetime.date(0)
         # calculate_returns_cyb_etf = self.strategy.calculate_returns(self.strategy.cyb_etf)
@@ -218,10 +221,10 @@ if __name__ == '__main__':
     hs300_etf= ak.fund_etf_hist_em(symbol='510300', adjust='qfq')
     ndaq_etf= ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
     gold_etf= ak.fund_etf_hist_em(symbol='518880', adjust='qfq')
-
-    stock_collection={1:cyb_etf,2:hs300_etf,3:ndaq_etf,4:gold_etf}
-    stock_name={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf'}
-    stock_list=list(stock_collection.values())
+    jp_etf= ak.fund_etf_hist_em(symbol='513520', adjust='qfq')
+    stock_collection={1:cyb_etf,2:hs300_etf,3:ndaq_etf,4:gold_etf,5:jp_etf}
+    stock_name={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf',5:'jp_etf'}
+    stock_name_list=list(stock_name.values())
     # dividend_etf_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
     # dividend_etf_data=ak.fund_etf_hist_sina(symbol='sz159649')
     # growth_etf_data=ak.stock_zh_index_daily_em(symbol='sh000300')
@@ -235,15 +238,15 @@ if __name__ == '__main__':
 
     # 计算二十日收益率
     for etf in etfs.values():
-        etf['return_20'] = etf['close'].pct_change(periods=22)
+        etf['return_20'] = etf['close'].pct_change(periods=21)
 
     # 合并四个表格
     holding_df = pd.concat(etfs, axis=1, join='inner')
     holding_df=holding_df.filter(regex='return_20')
     holding_df.columns=stock_name.values()
-    etf_number=[0,1,2,3]
+    etf_number=list(range(1,len(stock_name)+1))
     holding_df['max_return_20_etf_name']=holding_df.idxmax(axis=1)
-    holding_df['max_return_20_etf_number']=holding_df['max_return_20_etf_name'].replace(['cyb_etf','hs300_etf','ndaq_etf','gold_etf'],etf_number)
+    holding_df['max_return_20_etf_number']=holding_df['max_return_20_etf_name'].replace(stock_name_list,etf_number)
 
 
     # 找出每天二十日收益率最大的品种
@@ -256,31 +259,45 @@ if __name__ == '__main__':
     # zzzzz=ak.stock_zh_index_spot()
     # dividend_etf_data=rename_columns(dividend_etf_data)
 
-    start_date = max(hs300_etf.index[0], cyb_etf.index[0], ndaq_etf.index[0], gold_etf.index[0])
+
+    date_start_list = []
+    for i in stock_collection.values():
+        date_start_list.append(i.index[0])
+
+    start_date = max(date_start_list)
     end_date = datetime.datetime(2023, 12, 31)
 
-    cyb_etf_data = bt.feeds.PandasData(dataname=cyb_etf, fromdate=start_date, todate=end_date)
-    hs300_etf_data=bt.feeds.PandasData(dataname=hs300_etf, fromdate=start_date, todate=end_date)
-    ndaq_etf_data=bt.feeds.PandasData(dataname=ndaq_etf, fromdate=start_date, todate=end_date)
-    gold_etf_data=bt.feeds.PandasData(dataname=gold_etf, fromdate=start_date, todate=end_date)
-
-    holding_signal=MyData(dataname=holding_df, fromdate=start_date, todate=end_date)
-
-    # hs_300 =bt.feeds.PandasData(dataname=hs_300, fromdate=start_date, todate=end_date)
-
-    cerebro.adddata(cyb_etf_data)
-    cerebro.adddata(hs300_etf_data)
-    cerebro.adddata(ndaq_etf_data)
-    cerebro.adddata(gold_etf_data)
-
+    holding_signal = MyData(dataname=holding_df, fromdate=start_date, todate=end_date)
     cerebro.adddata(holding_signal)
+    data_collection = []
+    for i in stock_collection.values():
+        data_collection.append(bt.feeds.PandasData(dataname=i, fromdate=start_date, todate=end_date))
+    for i in data_collection:
+        cerebro.adddata(i)
+
+
+    # cyb_etf_data = bt.feeds.PandasData(dataname=cyb_etf, fromdate=start_date, todate=end_date)
+    # hs300_etf_data=bt.feeds.PandasData(dataname=hs300_etf, fromdate=start_date, todate=end_date)
+    # ndaq_etf_data=bt.feeds.PandasData(dataname=ndaq_etf, fromdate=start_date, todate=end_date)
+    # gold_etf_data=bt.feeds.PandasData(dataname=gold_etf, fromdate=start_date, todate=end_date)
+    #
+    # holding_signal=MyData(dataname=holding_df, fromdate=start_date, todate=end_date)
+    #
+    # # hs_300 =bt.feeds.PandasData(dataname=hs_300, fromdate=start_date, todate=end_date)
+    #
+    # cerebro.adddata(cyb_etf_data)
+    # cerebro.adddata(hs300_etf_data)
+    # cerebro.adddata(ndaq_etf_data)
+    # cerebro.adddata(gold_etf_data)
+    #
+    # cerebro.adddata(holding_signal)
     # cerebro.addanalyzer(TradeRecorder, _name='trade_recorder')
     cerebro.addanalyzer(MyAnalyzer, _name='log')
     cerebro.broker.setcash(1000000.0)
-    cerebro.broker.setcommission(commission=0.000)
+    cerebro.broker.setcommission(commission=0.0001)
     res = cerebro.run()
-    # cerebro.plot()
-    z=res[0].analyzers.log.get_analysis()
+    # # cerebro.plot()
+    # z=res[0].analyzers.log.get_analysis()
 
     # res2={}
     # for i in range(0,len(res)):
@@ -288,8 +305,8 @@ if __name__ == '__main__':
     # import pickle
     # with open('茅台——国债动量配对.pickle', 'wb') as f:
     #     pickle.dump(res2, f)
-    z['log_df'].loc[:,'value'].plot()
-    plt.show()
+    # z['log_df'].loc[:,'value'].plot()
+    # plt.show()
 
 
 

@@ -103,7 +103,7 @@ class ETFBacktest(bt.Strategy):
 
                 else:
                     self.order_target_percent(self.growth_etf, target=0,exectype=bt.Order.Market)
-                    self.order_target_percent(self.dividend_etf, target=0.98,exectype=bt.Order.Close)
+                    self.order_target_percent(self.dividend_etf, target=1,exectype=bt.Order.Close)
 
                     self.trade_size = int(self.broker.getcash() / self.dividend_etf.close[0])
                     self.trade_price = self.dividend_etf.close[0]

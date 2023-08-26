@@ -50,8 +50,6 @@ class ETFBacktest(bt.Strategy):
         self.sharpe_ratio = None
         self.information_ratio = None
         self.win_rate = None
-
-        stock_name = {1: 'cyb_etf', 2: 'hs300_etf', 3: 'ndaq_etf', 4: 'gold_etf'}
         self.holding_signal = self.datas[0]
         # self.cyb_etf = self.datas[1]
         # self.hs300_etf = self.datas[2]
@@ -90,7 +88,7 @@ class ETFBacktest(bt.Strategy):
                 short.append(i)
         for j in short:
             self.order_target_percent(self.datas[j], target=0,exectype=bt.Order.Market)
-        self.order_target_percent(self.datas[int(select_etf_number)], target=0.99,exectype=bt.Order.Close)
+        self.order_target_percent(self.datas[int(select_etf_number)], target=0.9,exectype=bt.Order.Close)
 
 
 
@@ -117,11 +115,6 @@ class ETFBacktest(bt.Strategy):
             'value': value
         }, ignore_index=True)
 
-
-
-
-
-
     def get_log_df(self):
         return self.log_df
 
@@ -147,14 +140,15 @@ class TradeRecorder(bt.Analyzer):
         self.trades.append([self.strategy.datetime.datetime(0),trade])
 
 class MyAnalyzer(bt.Analyzer):
+    params = (('stock_name_list',None),)
     def __init__(self):
         # self.log_df = pd.DataFrame(columns=[
         #     'date', 'cyb_etf_position', 'hs300_etf_position','ndaq_etf_position','gold_etf_position','jp_etf_position',
         #     'total_position', 'cash', 'calculate_returns_growth_etf',
         #     'calculate_returns_dividend_etf', 'value'
         # ])
-        self.stock_name_list={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf'}
-        self.log_df=pd.DataFrame(columns=['date'] + list(self.stock_name_list.values()))
+        # self.stock_name_list={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf'}
+        self.log_df=pd.DataFrame(columns=['date'] + list(self.params.stock_name_list.values())+['total_position','cash','value'])
         self.num=0
     def next(self):
 
@@ -162,11 +156,11 @@ class MyAnalyzer(bt.Analyzer):
         etf_position=[]
         for i in range(1,len(self.strategy.datas)):
             etf_position.append(self.strategy.getposition(self.strategy.datas[i]).size)
-        cyb_etf_position = self.strategy.getposition(self.strategy.cyb_etf).size
-        hs300_etf_position = self.strategy.getposition(self.strategy.hs300_etf).size
-        ndaq_etf_position = self.strategy.getposition(self.strategy.ndaq_etf).size
-        gold_etf_position = self.strategy.getposition(self.strategy.gold_etf).size
-        jp_etf_position = self.strategy.getposition(self.strategy.jp_etf).size
+        # cyb_etf_position = self.strategy.getposition(self.strategy.cyb_etf).size
+        # hs300_etf_position = self.strategy.getposition(self.strategy.hs300_etf).size
+        # ndaq_etf_position = self.strategy.getposition(self.strategy.ndaq_etf).size
+        # gold_etf_position = self.strategy.getposition(self.strategy.gold_etf).size
+        # jp_etf_position = self.strategy.getposition(self.strategy.jp_etf).size
         total_position = sum(etf_position)
         cash = self.strategy.broker.get_cash()
         date = self.strategy.datas[0].datetime.date(0)
@@ -174,7 +168,7 @@ class MyAnalyzer(bt.Analyzer):
         # calculate_returns_dividend_etf = self.strategy.calculate_returns(self.strategy.dividend_etf)
         value = self.strategy.broker.getvalue()
         self.num=self.num+1
-        self.log_df[self.num] =[date] + etf_position+[total_position,cash,value]
+        self.log_df.loc[self.num] =[date] + etf_position+[total_position,cash,value]
         # = self.log_df.append({
         #     'date': date,
         #     'cyb_etf_position': cyb_etf_position,
@@ -220,13 +214,21 @@ if __name__ == '__main__':
     cerebro.addstrategy(ETFBacktest)
 
     # hs_300=ak.stock_zh_index_daily_em(symbol='sh000300')
+    # cyb_etf = ak.fund_etf_hist_em(symbol='510150', adjust='qfq')
+    # # hs300_etf = ak.fund_etf_hist_em(symbol='510880', adjust='qfq')
+    # # ndaq_etf = ak.stock_zh_index_daily_em(symbol='sh000013')
+    # jp_etf = ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
     cyb_etf = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
-    hs300_etf= ak.fund_etf_hist_em(symbol='510300', adjust='qfq')
+    hs300_etf= ak.fund_etf_hist_em(symbol='510050', adjust='qfq')
     ndaq_etf= ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
     gold_etf= ak.fund_etf_hist_em(symbol='518880', adjust='qfq')
     # jp_etf= ak.fund_etf_hist_em(symbol='513520', adjust='qfq')
+    # zaiquan_etf= ak.stock_zh_index_daily_em(symbol='sh000013')
     stock_collection={1:cyb_etf,2:hs300_etf,3:ndaq_etf,4:gold_etf}
     stock_name={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf'}
+
+    # stock_collection={1:cyb_etf,2:jp_etf}
+    # stock_name={1:'cyb_etf',2:'jp_etf'}
     stock_name_list=list(stock_name.values())
     # dividend_etf_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
     # dividend_etf_data=ak.fund_etf_hist_sina(symbol='sz159649')
@@ -267,8 +269,8 @@ if __name__ == '__main__':
     for i in stock_collection.values():
         date_start_list.append(i.index[0])
 
-    # start_date = max(date_start_list)
-    start_date = datetime.datetime(2019, 6, 15)
+    start_date = max(date_start_list)
+    # start_date = datetime.datetime(2019, 6, 15)
     end_date = datetime.datetime(2023, 12, 31)
 
     holding_signal = MyData(dataname=holding_df, fromdate=start_date, todate=end_date)
@@ -296,9 +298,9 @@ if __name__ == '__main__':
     #
     # cerebro.adddata(holding_signal)
     # cerebro.addanalyzer(TradeRecorder, _name='trade_recorder')
-    cerebro.addanalyzer(MyAnalyzer, _name='log')
+    cerebro.addanalyzer(MyAnalyzer, _name='log',stock_name_list=stock_name)
     cerebro.broker.setcash(1000000.0)
-    cerebro.broker.setcommission(commission=0.0001)
+    cerebro.broker.setcommission(commission=0)
     res = cerebro.run()
     # # cerebro.plot()
     z=res[0].analyzers.log.get_analysis()
@@ -309,8 +311,8 @@ if __name__ == '__main__':
     # import pickle
     # with open('茅台——国债动量配对.pickle', 'wb') as f:
     #     pickle.dump(res2, f)
-    # z['log_df'].loc[:,'value'].plot()
-    # plt.show()
+    z['log_df'].loc[:,'value'].plot()
+    plt.show()
 
 
 

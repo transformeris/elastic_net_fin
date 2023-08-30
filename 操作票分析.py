@@ -35,40 +35,7 @@
 # 检查监控后台信息无异常。
 # '''
 
-text='''# 核对相关设备运行方式。
-# 合上16P 110kV孟平线保护屏110kV孟平线1551开关控制电源1DK2。
-# 取下110kV孟平线线路侧15514刀闸操作把手上的“禁止合闸，线路有人工作”标示牌。
-# 投上110kV孟平线线路抽取电压5ZK。
-# 拉开110kV孟平线线路侧155140接地刀闸。
-# 检查110kV孟平线线路侧155140接地刀闸三相确在拉开位置。
-# 汇报调度。
-# 再经调度令。
-# 检查110kV孟平线1551开关确在分闸位置。
-# 在110kV孟平线2M侧15512刀闸机构箱：
-# 合上刀闸控制电源QF2空气开关。
-# 合上刀闸电机电源QF3空气开关。
-# 在110kV孟平线1551开关端子箱：合上110kV孟平线2M侧15512刀闸电机电源1ZK空气开关。
-# 合上110kV孟平线2M侧15512刀闸。
-# 检查110kV孟平线2M侧15512刀闸三相确在合上位置。
-# 在110kV孟平线2M侧15512刀闸机构箱：
-# 断开刀闸控制电源QF2空气开关。
-# 断开刀闸电机电源QF3空气开关。
-# 在110kV孟平线线路侧15514刀闸机构箱：
-# 合上刀闸控制电源QF2空气开关。
-# 合上刀闸电机电源QF3空气开关。
-# 在110kV孟平线1551开关端子箱：
-# 断开110kV孟平线2M侧15512刀闸电机电源1ZK空气开关。
-# 合上110kV孟平线线路侧15514刀闸电机电源2ZK空气开关。
-# 合上110kV孟平线线路侧15514刀闸。
-# 检查110kV孟平线线路侧15514刀闸三相确在合上位置。
-# 在110kV孟平线线路侧15514刀闸机构箱：
-# 断开刀闸控制电源QF2空气开关。
-# 断开刀闸电机电源QF3空气开关。
-# 在110kV孟平线1551开关端子箱：断开110kV孟平线线路侧15514刀闸电机电源2ZK空气开关。
-# 合上110kV孟平线1551开关。
-# 将5P 110kV线路测控屏110kV线路1551开关远方/就地切换开关切换至远方位置。
-# 检查110kV孟平线1551开关在合闸位置。
-# 检查监控后台信息无异常'''
+text='''检监控后台信息无异常。'''
 # import spacy
 # nlp = spacy.load("en_core_web_sm")
 # doc = nlp(text)
@@ -96,9 +63,16 @@ import gensim
 
 'D:\hanlp模型20230611\large_corpus_cws_albert_base_20211228_160926'
 hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_SMALL_ZH
-tokenizer = hanlp.load(hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_BASE_ZH)
+hanlp.pretrained.tok.COARSE_ELECTRA_SMALL_ZH
+hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_BASE_ZH
+hanlp.pretrained.mtl.CLOSE_TOK_POS_NER_SRL_DEP_SDP_CON_ERNIE_GRAM_ZH
+hanlp.pretrained.mtl.OPEN_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_BASE_ZH
+hanlp.pretrained.srl.CPB3_SRL_ELECTRA_SMALL
+hanlp.pretrained.ner.MSRA_NER_BERT_BASE_ZH
+tokenizer = hanlp.load(hanlp.pretrained.ner.MSRA_NER_BERT_BASE_ZH)
 ner_tagger = hanlp.load(hanlp.pretrained.ner.MSRA_NER_BERT_BASE_ZH)
-segment = tokenizer(text)
+srl=hanlp.load(hanlp.pretrained.srl.CPB3_SRL_ELECTRA_SMALL)
+segment = tokenizer(['检查','监控后台','信息','无','异常','。'])
 
 result = tokenizer(text)
 sdp = result['sdp']

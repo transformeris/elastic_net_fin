@@ -219,7 +219,7 @@ if __name__ == '__main__':
     # # ndaq_etf = ak.stock_zh_index_daily_em(symbol='sh000013')
     # jp_etf = ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
     cyb_etf = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
-    hs300_etf= ak.fund_etf_hist_em(symbol='510050', adjust='qfq')
+    hs300_etf= ak.fund_etf_hist_em(symbol='510300', adjust='qfq')
     ndaq_etf= ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
     gold_etf= ak.fund_etf_hist_em(symbol='518880', adjust='qfq')
     # jp_etf= ak.fund_etf_hist_em(symbol='513520', adjust='qfq')
@@ -301,7 +301,7 @@ if __name__ == '__main__':
     cerebro.addanalyzer(MyAnalyzer, _name='log',stock_name_list=stock_name)
     cerebro.broker.setcash(1000000.0)
     cerebro.broker.setcommission(commission=0)
-    res = cerebro.run()
+    # res = cerebro.run()
     # # cerebro.plot()
     z=res[0].analyzers.log.get_analysis()
 

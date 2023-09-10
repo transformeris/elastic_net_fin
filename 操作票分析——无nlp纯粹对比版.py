@@ -14,7 +14,7 @@ for i in buzhou:
     if i.startswith(tuple(verb)):
         print(i)
     else:
-        res.append(i)
+        res.append(i
 # qiongju=list(combinations(buzhou,2))
 # res=[]
 # for i in combinations(buzhou,2):

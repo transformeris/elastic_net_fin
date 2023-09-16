@@ -106,5 +106,5 @@ for i in xuanzheti:
         res_xuan2['D']=re.search(r'D(.*?)$', i).group(1)
     res_xuan2['答案'] = daan
 
-pd.DataFrame(res_xuan).T.to_excel('D:\新建文件夹 (3)\OneDrive - 7x541z\桌面\登高作业600题(含解析）2.xlsx')
-pd.Series(panduanti).to_excel('D:\新建文件夹 (3)\OneDrive - 7x541z\桌面\登高作业600题(含解析）.xlsx')
+# pd.DataFrame(res_xuan).T.to_excel('D:\新建文件夹 (3)\OneDrive - 7x541z\桌面\登高作业600题(含解析）2.xlsx')
+# pd.Series(panduanti).to_excel('D:\新建文件夹 (3)\OneDrive - 7x541z\桌面\登高作业600题(含解析）.xlsx')

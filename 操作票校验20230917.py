@@ -29,6 +29,7 @@ for i in buzhou:
         res.append(i)
 res2=[]
 device_name=[]
+device_name2=[]
 rest=[]
 res3=[]
 for i in buzhou:
@@ -40,6 +41,14 @@ for i in buzhou:
             match = re.search(heshang_pattern, i)
             if match:  # 添加一个条件判断以防止没有匹配时产生的错误
                 device_name.append(match.group(1))
+
+        elif '''”''' in i:
+            res3.append(i)
+            heshang_pattern = r'取下(.*?)“'
+            match = re.search(heshang_pattern, i)
+            if match:  # 添加一个条件判断以防止没有匹配时产生的错误
+                device_name2.append(match.group(1))
+
 
 rest = list(set(res2) - set(res3))
 

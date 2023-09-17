@@ -30,32 +30,19 @@ for i in buzhou:
 res2=[]
 device_name=[]
 rest=[]
+res3=[]
 for i in buzhou:
     if i.startswith('取下'):
-        heshang_pattern = r'合上(.*)。'
-        match = re.search(heshang_pattern, i)
-        if match:  # 添加一个条件判断以防止没有匹配时产生的错误
-            device_name.append(match.group(1))
+        res2.append(i)
+        if '操作把手' in i:
+            res3.append(i)
+            heshang_pattern = r'取下(.*)操作把手'
+            match = re.search(heshang_pattern, i)
+            if match:  # 添加一个条件判断以防止没有匹配时产生的错误
+                device_name.append(match.group(1))
 
+rest = list(set(res2) - set(res3))
 
-
-    cheliang_pattern = r'测量(.*?)两端对地电位正常'
-    match = re.search(cheliang_pattern, i)
-    if match:  # 添加一个条件判断以防止没有匹配时产生的错误
-        device_name.append(match.group(1))
-
-    #
-    toushang_pattern = r'投上(.*)。'
-    match = re.search(toushang_pattern, i)
-    if match:  # 添加一个条件判断以防止没有匹配时产生的错误
-        device_name.append(match.group(1))
-    #
-    # if i.startswith('合上'):
-    #     heshang_pattern = r'合上(.*)。'
-    #     match = re.search(heshang_pattern, i)
-    #     if match:  # 添加一个条件判断以防止没有匹配时产生的错误
-    #         device_name.append(match.group(1))
-    #
 
 #
 # from docx import Document

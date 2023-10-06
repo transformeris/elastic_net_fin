@@ -30,8 +30,10 @@ for i in buzhou:
 res2=[]
 device_name=[]
 device_name2=[]
+device_name3=[]
 rest=[]
 res3=[]
+res4=[]
 for i in buzhou:
     if i.startswith('取下'):
         res2.append(i)
@@ -48,6 +50,19 @@ for i in buzhou:
             match = re.search(heshang_pattern, i)
             if match:  # 添加一个条件判断以防止没有匹配时产生的错误
                 device_name2.append(match.group(1))
+        else:
+            res3.append(i)
+            heshang_pattern = r'取下(.*?)。'
+            match = re.search(heshang_pattern, i)
+            if match:  # 添加一个条件判断以防止没有匹配时产生的错误
+                device_name3.append(match.group(1))
+
+    elif i.startswith('投上'):
+        res4.append(i)
+        heshang_pattern = r'投上(.*?)。'
+        match = re.search(heshang_pattern, i)
+        if match:  # 添加一个条件判断以防止没有匹配时产生的错误
+            device_name3.append(match.group(1))
 
 
 rest = list(set(res2) - set(res3))

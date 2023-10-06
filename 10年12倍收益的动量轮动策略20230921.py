@@ -76,19 +76,18 @@ class ETFBacktest(bt.Strategy):
         It is used to calculate the RSRS indicator, check if it is above the
         threshold, and place orders accordingly.
         """
-        select_etf_number= self.holding_signal.max_return_20_etf_number[0]
-        print(select_etf_number)
+
 
         self.etf_num=[0,1,2,3]
         long=[]
         short=[]
 
-        for i in self.etf_num:
-            if i!=select_etf_number:
-                short.append(i)
-        for j in short:
-            self.order_target_percent(self.datas[j], target=0,exectype=bt.Order.Market)
-        self.order_target_percent(self.datas[int(select_etf_number)], target=0.95,exectype=bt.Order.Close)
+
+        self.order_target_percent(self.datas[0], target=self.datas[4].cyb_etf,exectype=bt.Order.Market)
+        self.order_target_percent(self.datas[1], target=self.datas[4].hs300_etf, exectype=bt.Order.Market)
+        self.order_target_percent(self.datas[2], target=self.datas[4].ndaq_etf, exectype=bt.Order.Market)
+        self.order_target_percent(self.datas[3], target=self.datas[4].gold_etf, exectype=bt.Order.Market)
+
 
 
 
@@ -101,6 +100,7 @@ class ETFBacktest(bt.Strategy):
         #     self.log_returns
         # ])
         #
+
         # # 计算持仓股、份额、账户总份额和现金等信息
 
 
@@ -201,19 +201,22 @@ def rename_columns(datas):
     return res
 
 class MyData(bt.feeds.PandasData):
-    lines= ('max_return_20_etf_number',)
+    lines= ('cyb_etf','hs300_etf','ndaq_etf','gold_etf',)
     params = (
-        ('max_return_20_etf_number', -1),
+        ('cyb_etf', -1),
+        ('hs300_etf', -1),
+        ('ndaq_etf', -1),
+        ('gold_etf', -1),
     )
 
 
 
 if __name__ == '__main__':
+
     cerebro = bt.Cerebro(tradehistory=True)
     # cerebro.optstrategy(ETFBacktest,period=range(1,150))
     cerebro.addstrategy(ETFBacktest)
 
-    # hs_300=ak.stock_zh_index_daily_em(symbol='sh000300')
     cyb_etf = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
     hs300_etf= ak.fund_etf_hist_em(symbol='510300', adjust='qfq')
     ndaq_etf= ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
@@ -222,11 +225,6 @@ if __name__ == '__main__':
     stock_collection={1:cyb_etf,2:hs300_etf,3:ndaq_etf,4:gold_etf}
     stock_name={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf'}
     stock_list=list(stock_collection.values())
-    # dividend_etf_data = ak.fund_etf_hist_em(symbol='512890', adjust='qfq')
-    # dividend_etf_data=ak.fund_etf_hist_sina(symbol='sz159649')
-    # growth_etf_data=ak.stock_zh_index_daily_em(symbol='sh000300')
-    # growth_etf_data=ak.stock_zh_a_hist(symbol="600519", start_date="20000101")
-    # dividend_etf_data=ak.stock_zh_index_daily_em(symbol='sh000013')
     etfs=rename_columns(stock_collection)
 
 
@@ -244,52 +242,82 @@ if __name__ == '__main__':
     etf_number=[0,1,2,3]
     holding_df['max_return_20_etf_name']=holding_df.idxmax(axis=1)
     holding_df['max_return_20_etf_number']=holding_df['max_return_20_etf_name'].replace(['cyb_etf','hs300_etf','ndaq_etf','gold_etf'],etf_number)
+    etf_open = pd.concat(etfs, axis=1, join='inner').filter(regex='open')
+    etf_open.columns=stock_name.values()
+    etf_close = pd.concat(etfs, axis=1, join='inner').filter(regex='close')
+    etf_close.columns = stock_name.values()
+    # 仓位调节
+
+    stock_percent=holding_df.iloc[:,0:4].clip(lower=0,inplace=False).dropna().div(holding_df.iloc[:,0:4].clip(lower=0,inplace=False).dropna().sum(axis=1),axis=0).shift(1).fillna(0)
+
+    stock_percent
 
 
-    # 找出每天二十日收益率最大的品种
 
 
-
-    # dividend_etf_data=ak.stock_zh_index_daily_em(symbol='sh000016')
-
-    # hs_300=rename_columns(hs_300)
-    # zzzzz=ak.stock_zh_index_spot()
-    # dividend_etf_data=rename_columns(dividend_etf_data)
 
     start_date = max(hs300_etf.index[0], cyb_etf.index[0], ndaq_etf.index[0], gold_etf.index[0])
     end_date = datetime.datetime(2023, 12, 31)
 
-    cyb_etf_data = bt.feeds.PandasData(dataname=cyb_etf, fromdate=start_date, todate=end_date)
-    hs300_etf_data=bt.feeds.PandasData(dataname=hs300_etf, fromdate=start_date, todate=end_date)
-    ndaq_etf_data=bt.feeds.PandasData(dataname=ndaq_etf, fromdate=start_date, todate=end_date)
-    gold_etf_data=bt.feeds.PandasData(dataname=gold_etf, fromdate=start_date, todate=end_date)
+    import pandas as pd
+    import numpy as np
 
-    holding_signal=MyData(dataname=holding_df, fromdate=start_date, todate=end_date)
+    # 读取数据
+    # weights = pd.read_csv('weights.csv')
+    # weights['date'] = pd.to_datetime(weights['date'])
+    # weights.set_index('date', inplace=True)
+    #
+    # open_prices = pd.read_csv('open_prices.csv')
+    # open_prices['date'] = pd.to_datetime(open_prices['date'])
+    # open_prices.set_index('date', inplace=True)
+    #
+    # close_prices = pd.read_csv('close_prices.csv')
+    # close_prices['date'] = pd.to_datetime(close_prices['date'])
+    # close_prices.set_index('date', inplace=True)
 
-    # hs_300 =bt.feeds.PandasData(dataname=hs_300, fromdate=start_date, todate=end_date)
+    # 初始现金
+    cash = 10000
 
-    cerebro.adddata(cyb_etf_data)
-    cerebro.adddata(hs300_etf_data)
-    cerebro.adddata(ndaq_etf_data)
-    cerebro.adddata(gold_etf_data)
+    # 交易费用和滑点
+    transaction_cost = 0.001  # 0.1%
+    slippage = 0.0005  # 0.05%
 
-    cerebro.adddata(holding_signal)
-    # cerebro.addanalyzer(TradeRecorder, _name='trade_recorder')
-    cerebro.addanalyzer(MyAnalyzer, _name='log')
-    cerebro.broker.setcash(1000000.0)
-    cerebro.broker.setcommission(commission=0.000)
-    res = cerebro.run()
-    # cerebro.plot()
-    z=res[0].analyzers.log.get_analysis()
+    # 初始化一个新的DataFrame来存储每日的ETF份额
+    etf_shares = pd.DataFrame(index=stock_percent.index, columns=stock_percent.columns)
 
-    # res2={}
-    # for i in range(0,len(res)):
-    #     res2[i]=res[i][0].analyzers.log.get_analysis()
-    # import pickle
-    # with open('茅台——国债动量配对.pickle', 'wb') as f:
-    #     pickle.dump(res2, f)
-    z['log_df'].loc[:,'value'].plot()
-    plt.show()
+    for i in range(len(stock_percent)):
+        print(i)
+        if i == 0:
+            # 在第一天，按照ETF权重购买
+            etf_shares.iloc[i] = (cash * (1 - transaction_cost) * stock_percent.iloc[i]).div(
+                etf_open.iloc[i] * (1 + slippage))
+        else:
+            # 计算新的ETF份额
+            new_shares = (stock_percent.iloc[i,:] * cash).div(etf_close.iloc[i] * (1 + slippage))
+            # 计算需要卖出的ETF份额
+            sell_shares = etf_shares.iloc[i - 1] - new_shares
+            sell_shares = sell_shares[sell_shares > 0]
+            # 计算卖出的成本
+            sell_value = (sell_shares * etf_open.iloc[i] * (1 - slippage)).sum()
+            # 扣除卖出的交易成本并增加现金
+            cash += sell_value * (1 - transaction_cost)
+
+            # 计算需要购买的ETF份额
+            buy_shares = new_shares - etf_shares.iloc[i - 1]
+            buy_shares = buy_shares[buy_shares > 0]
+            # 计算购买的成本
+            buy_value = (buy_shares * etf_close.iloc[i] * (1 + slippage)).sum()
+            # 扣除购买的交易成本并减少现金
+            cash -= buy_value * (1 + transaction_cost)
+
+            # 更新ETF份额
+            etf_shares.iloc[i] = etf_shares.iloc[i - 1] + buy_shares - sell_shares
+
+    # 计算每日的投资组合价值
+    portfolio_value = (etf_shares * etf_close).sum(axis=1)
+
+    # 输出最终的投资组合价值
+    print(portfolio_value)
 
 
 

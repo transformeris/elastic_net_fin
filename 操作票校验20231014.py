@@ -24,13 +24,13 @@ res2=[]
 刀闸=[]
 空气开关=[]
 熔断器=[]
+地刀=[]
 rest=[]
 ##对取下进行分析##
 for i in step_all:
     if i.startswith('取下'):
-        res1.append(i)
+        ##对取下进行分析##
         if '''“禁止合闸，线路有人工作”''' in i:
-
             if '操作把手上' in i:
                 pattern = r'''取下(.*)操作把手上“禁止合闸，线路有人工作”标示牌。'''
                 match = re.search(pattern, i)
@@ -51,6 +51,37 @@ for i in step_all:
                 match = re.search(pattern, i)
                 if match:  # 添加一个条件判断以防止没有匹配时产生的错误
                     熔断器.append(match.group(1))
+        elif '熔断器' in i:
+            pattern = r'''取下(.*)。'''
+            match = re.search(pattern, i)
+            if match:  # 添加一个条件判断以防止没有匹配时产生的错误
+                熔断器.append(match.group(1))
         else:
             rest.append(i)
+    elif i.startswith('投上'):
+        if '熔断器' in i:
+            pattern = r'''投上(.*)。'''
+            match = re.search(pattern, i)
+            if match:  # 添加一个条件判断以防止没有匹配时产生的错误
+                熔断器.append(match.group(1))
+        else:
+            rest.append(i)
+
+    elif i.startswith('拉开'):
+        if '地刀' in i:
+            pattern = r'''拉开(.*)。'''
+            match = re.search(pattern, i)
+            if match:  # 添加一个条件判断以防止没有匹配时产生的错误
+                地刀.append(match.group(1))
+
+        elif '刀闸' in i:
+            pattern = r'''拉开(.*)。'''
+            match = re.search(pattern, i)
+            if match:  # 添加一个条件判断以防止没有匹配时产生的错误
+                刀闸.append(match.group(1))
+        else:
+            rest.append(i)
+
+    elif i.startswith('检查'):
+        res1.append(i)
 

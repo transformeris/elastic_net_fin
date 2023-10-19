@@ -25,6 +25,7 @@ res2=[]
 空气开关=[]
 熔断器=[]
 地刀=[]
+压板=[]
 rest=[]
 ##对取下进行分析##
 for i in step_all:
@@ -84,4 +85,5 @@ for i in step_all:
 
     elif i.startswith('检查'):
         res1.append(i)
-
+        if '压板' in i:
+            rest.append(i)

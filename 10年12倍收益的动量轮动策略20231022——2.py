@@ -67,6 +67,8 @@ if __name__=='__main__':
     for etf in etfs.values():
         etf['return_20'] = etf['close'].pct_change(periods=21)
 
+    a=etf['date'].shift(20)[-1]
+    b=etf.shift(21)
     # 合并四个表格
     holding_df = pd.concat(etfs, axis=1, join='inner')
     holding_df=holding_df.filter(regex='return_20')
@@ -74,5 +76,9 @@ if __name__=='__main__':
     etf_number=[0,1,2,3]
     holding_df['max_return_20_etf_name']=holding_df.idxmax(axis=1)
     holding_df['max_return_20_etf_number']=holding_df['max_return_20_etf_name'].replace(['cyb_etf','hs300_etf','ndaq_etf','gold_etf'],etf_number)
+    holding_df_last21=holding_df.tail(21).to_html()
+    etf_close = pd.concat(etfs, axis=1, join='inner').filter(regex='close').tail(21).to_html()
+    res=[holding_df_last21,etf_close]
+
 
 

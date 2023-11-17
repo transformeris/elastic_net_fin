@@ -107,15 +107,15 @@ def jinlirun(stock_zh_a_hist_df,stock):
 def jinlirun_ttm(stock_zh_a_hist_df,stock):
     stock_structure = get_StockStructure(stock)
 
-    stock_zh_a_hist_df['日期'] = pd.to_datetime(stock_zh_a_hist_df['日期'], format='%Y-%m-%d')
-    stock_zh_a_hist_df.set_index('日期', inplace=True)
+    stock_zh_a_hist_df['date'] = pd.to_datetime(stock_zh_a_hist_df['date'], format='%Y-%m-%d')
+    stock_zh_a_hist_df.set_index('date', inplace=True)
     zz = combanation_stock_hist_structure(stock_zh_a_hist_df, stock_structure)
     stock_financial_report_sina_df = ak.stock_financial_report_sina(stock="000001", symbol="利润表")
 
     stock_financial_report_sina_df = ak.stock_financial_report_sina(stock="000001", symbol="利润表")
     stock_financial_report_sina_df = pd.DataFrame(stock_financial_report_sina_df)
-    stock_financial_report_sina_df['报表日期'] = pd.to_datetime(stock_financial_report_sina_df['报表日期'], format='%Y%m%d')
-    stock_financial_report_sina_df.set_index('报表日期', inplace=True)
+    stock_financial_report_sina_df['更新日期'] = pd.to_datetime(stock_financial_report_sina_df['更新日期'])
+    stock_financial_report_sina_df.set_index('更新日期', inplace=True)
     stock_financial_report_sina_df = stock_financial_report_sina_df.sort_index(ascending=True)
 
     # for i in stock_financial_report_sina_df.iterrows():
@@ -140,7 +140,7 @@ def jinlirun_ttm(stock_zh_a_hist_df,stock):
         year0 = list(date_range)
         year0.sort()
         year1 = year0[1:]
-        profit_ttm = stock_financial_report_sina_df.loc[year1, '五、净利润']
+        profit_ttm = stock_financial_report_sina_df.loc[year1, '净利润']
 
         date_hist = pd.date_range(previous, current - pd.Timedelta('1 days'))
         date_hist2 = date_stock & set(list(date_hist))
@@ -210,25 +210,27 @@ def zhichan():
     stock_zh_a_hist_df.loc[date_range, '总资产'] = float(zhichanfuzhai.loc[previous]['负债及股东权益总计'])
 
 if __name__=='__main__':
-    stock_structure = get_StockStructure('000001')
+    stock_structure = get_StockStructure('600600')
     stock_zh_a_hist_df = ak.stock_zh_a_hist(symbol="000001", start_date="19900101", end_date='20211230', adjust="")
     stock_zh_a_hist_df['日期'] = pd.to_datetime(stock_zh_a_hist_df['日期'], format='%Y-%m-%d')
     stock_zh_a_hist_df.set_index('日期', inplace=True)
 
     xianjinliuliangbiao = ak.stock_financial_report_sina(stock='000001', symbol='现金流量表')
-    xianjinliuliangbiao['报表日期'] = pd.to_datetime(xianjinliuliangbiao['报表日期'], format='%Y%m%d')
-    xianjinliuliangbiao.set_index('报表日期', inplace=True)
+    xianjinliuliangbiao['更新日期'] = pd.to_datetime(xianjinliuliangbiao['更新日期'])
+    xianjinliuliangbiao.set_index('更新日期', inplace=True)
     xianjinliuliangbiao = xianjinliuliangbiao.sort_index(ascending=True)
     zz=xianjinliuliangbiao['经营活动产生的现金流量净额']
     date_baobiao=list(xianjinliuliangbiao.index)
-    for i in zz.index:
-        print(i)
-
-    import akshare as ak
-
-    stock_zcfz_em_df = ak.stock_em_xjll(date="20200331")
-    print(stock_zcfz_em_df)
-
-    ak.stock_em_xjll(date="20200331")
+    股价 = ak.stock_zh_a_daily(symbol="sh600600", adjust='hfq')
+    zz=jinlirun_ttm(股价,600600)
+    # for i in zz.index:
+    #     print(i)
+    #
+    # import akshare as ak
+    #
+    # stock_zcfz_em_df = ak.stock_em_xjll(date="20200331")
+    # print(stock_zcfz_em_df)
+    #
+    # ak.stock_em_xjll(date="20200331")
 
 

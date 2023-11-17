@@ -5,19 +5,18 @@ import pandas as pd
 import yagmail
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR, EVENT_ALL, EVENT_JOB_MISSED
 def rename_columns(datas):
-    res= {}
-    for j,i in datas.items():
-
+    res = {}
+    for j, i in datas.items():
         i.rename(columns={
             '日期': 'date', '收盘': 'close', '开盘': 'open', '最高': 'high',
             '最低': 'low', '成交量': 'volume', '成交额': 'amount',
             '振幅': 'amplitude', '涨跌幅': 'pct_change'
         }, inplace=True)
         i.set_index(pd.to_datetime(i.loc[:, 'date']), inplace=True)
-        res[j]=i
+        res[j] = i
     return res
-
 
 
 def price_percent_align(etf_open, etf_close, stock_percent):
@@ -49,30 +48,29 @@ def price_percent_align(etf_open, etf_close, stock_percent):
     return etf_open, etf_close, stock_percent
 
     cyb_etf = ak.fund_etf_hist_em(symbol='159915', adjust='qfq')
-    hs300_etf= ak.fund_etf_hist_em(symbol='510300', adjust='qfq')
-    ndaq_etf= ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
-    gold_etf= ak.fund_etf_hist_em(symbol='518880', adjust='qfq')
+    hs300_etf = ak.fund_etf_hist_em(symbol='510300', adjust='qfq')
+    ndaq_etf = ak.fund_etf_hist_em(symbol='513100', adjust='qfq')
+    gold_etf = ak.fund_etf_hist_em(symbol='518880', adjust='qfq')
 
-    stock_collection={1:cyb_etf,2:hs300_etf,3:ndaq_etf,4:gold_etf}
-    stock_name={1:'cyb_etf',2:'hs300_etf',3:'ndaq_etf',4:'gold_etf'}
-    stock_list=list(stock_collection.values())
-    etfs=rename_columns(stock_collection)
-
+    stock_collection = {1: cyb_etf, 2: hs300_etf, 3: ndaq_etf, 4: gold_etf}
+    stock_name = {1: 'cyb_etf', 2: 'hs300_etf', 3: 'ndaq_etf', 4: 'gold_etf'}
+    stock_list = list(stock_collection.values())
+    etfs = rename_columns(stock_collection)
 
     # 假设cyb_etf、hs300_etf、ndaq_etf、gold_etf是四个pandas dataframe表格
-
 
     # 计算二十日收益率
     for etf in etfs.values():
         etf['return_20'] = etf['close'].pct_change(periods=21)
-    date_last20=etf['date'].shift(20)[-1]
+    date_last20 = etf['date'].shift(20)[-1]
     # 合并四个表格
     holding_df = pd.concat(etfs, axis=1, join='inner')
-    holding_df=holding_df.filter(regex='return_20')
-    holding_df.columns=stock_name.values()
-    etf_number=[0,1,2,3]
-    holding_df['max_return_20_etf_name']=holding_df.idxmax(axis=1)
-    holding_df['max_return_20_etf_number']=holding_df['max_return_20_etf_name'].replace(['cyb_etf','hs300_etf','ndaq_etf','gold_etf'],etf_number)
+    holding_df = holding_df.filter(regex='return_20')
+    holding_df.columns = stock_name.values()
+    etf_number = [0, 1, 2, 3]
+    holding_df['max_return_20_etf_name'] = holding_df.idxmax(axis=1)
+    holding_df['max_return_20_etf_number'] = holding_df['max_return_20_etf_name'].replace(
+        ['cyb_etf', 'hs300_etf', 'ndaq_etf', 'gold_etf'], etf_number)
 
 
 def holding_df_calculate():
@@ -127,56 +125,52 @@ def mailres(content):
     # 关闭连接
     yag.close()
 
+
 task_successful = False
+
+
 def job_function():
-    global task_successful
+
+    holding_df = holding_df_calculate()
+    mailres(holding_df)
+    print("Task successful! Email sent.")
 
 
-    try:
-        holding_df = holding_df_calculate()
-        mailres(holding_df)
-        print("Task successful! Email sent.")
-        task_successful = True  # 设置任务为成功
-
-    except:
-        print("Task failed! Email not sent. Rescheduling...by retry function")
-        scheduler.add_job(job_function_retry, 'interval', minutes=10, max_instances=1,id='retry')
-
-def my_listener():
-    print('cu')
-
-
-
-    scheduler.add_job(job_function_retry, 'interval', seconds=5)
-
-def job_function_retry():
-    global task_successful
-
-    # 如果今天的任务已成功，不再尝试
-    if task_successful:
-        print("Today's task already successful. Not retrying.")
+def my_listener(event):
+    if event.code==EVENT_JOB_MISSED or event.code==EVENT_JOB_ERROR:
         try:
+            scheduler.add_job(job_function_retry, 'interval', minutes=5,id='retry')
+        except:
+            pass
+    elif event.code==EVENT_JOB_EXECUTED:
+        try:
+
             scheduler.remove_job('retry')
         except:
             pass
-        return
-
-    try:
-        holding_df = holding_df_calculate()
-        mailres(holding_df)
-        print("Task retry successful! Email sent.")
-        task_successful = True  # 设置任务为成功
-
-    except:
-        print("Task retry failed! Email not sent. Rescheduling...")
 
 
 
-if __name__=='__main__':
 
+
+
+
+def job_function_retry():
+
+    holding_df = holding_df_calculate()
+    mailres(holding_df)
+    print("Task retry successful! Email sent.")
+
+
+
+    print("Task retry failed! Email not sent. Rescheduling...")
+
+
+if __name__ == '__main__':
     scheduler = BlockingScheduler()
-    scheduler.add_job(job_function, 'interval', hours=24, start_date='2023-10-21 23:00:00',coalesce=False,max_instances=1)
+    scheduler.add_job(job_function, 'interval', hours=12, start_date='2023-10-21 20:00:00', coalesce=False,
+                      max_instances=1)
     scheduler.add_listener(my_listener)
-    print(scheduler.get_jobs())
+    # print(scheduler.get_jobs())
     scheduler.start()
 
